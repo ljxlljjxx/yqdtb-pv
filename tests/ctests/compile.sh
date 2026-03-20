@@ -7,3 +7,4 @@ done
 gcc main.c *.o ../../src/PowerViolenceObjects/*.o -o main
 rm *.o ../../src/PowerViolenceObjects/*.o
 ./main
+//
