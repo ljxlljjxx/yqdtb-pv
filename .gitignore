@@ -1,4 +1,6 @@
 *.sh
 hi.py
-# *.html
+*.html
 .DS_Store
+Icon.py
+.gitignore
