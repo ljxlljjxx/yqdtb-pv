@@ -23,4 +23,4 @@
 * 本项目的测试部分位于**tests**目录下, 其中**ctests**目录下主要为**PowerViolenceObjects**的测试, **pytests**目录下主要为**PowerViolence**的测试。
 * 本项目另附一个简单实现, 被命名为**PowerViolence_simplified**, 不完全实现规则, 且只能一名玩家和一名电脑进行对战。该文件为*macOS*可执行文件。
 
-[PV_rule](rule/PV_rule.html)
+[PV_rule](rule/PV_rule.pdf)

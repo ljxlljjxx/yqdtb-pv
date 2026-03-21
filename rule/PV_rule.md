@@ -11,7 +11,7 @@ Rules for the Power Violence Edition
 Rule version: 0.0.15<br>
 <br>
 规则撰写日期: 2026年1月24日<br>
-Date of rule writing: January 24, 2026<br>$$
+Date of rule writing: January 24, 2026<br>
 </div></font>
 
 <font size="3"><div style="text-align: right;">
