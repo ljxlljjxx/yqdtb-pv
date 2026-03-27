@@ -3,4 +3,4 @@ hi.py
 *.html
 .DS_Store
 Icon.py
-.gitignore
+.venv/
