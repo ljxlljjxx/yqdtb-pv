@@ -1,7 +1,7 @@
 *.sh
 hi.py
 *.html
-*.pdf
+PV_rule.pdf
 .DS_Store
 Icon.py
 .venv/
