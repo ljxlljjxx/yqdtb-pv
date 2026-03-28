@@ -1,6 +1,7 @@
 *.sh
 hi.py
 *.html
+*.pdf
 .DS_Store
 Icon.py
 .venv/

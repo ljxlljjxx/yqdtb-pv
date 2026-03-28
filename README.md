@@ -10,17 +10,16 @@
 * The testing section of this project is located in the **tests** directory. The **ctests** directory mainly contains tests for **PowerViolenceObjects**, and the **pytests** directory mainly contains tests for **PowerViolence**.
 * This project also includes a simple implementation, named **PowerViolence_simplified**, which does not fully implement the rules and can only allow one player and one computer to play against each other. This file is a **macOS** executable file.
 
-
-## 元气打腿版
-
-### 本项目整体介绍
-* 本项目用来制作`元气打腿版`, 包含其规则和程序。
-* 本项目目前尚未完全实现。本项目程序尚未搭完框架。本项目规则版本为**0.0.15**, 本项目更新公告最新版本为**0.0.19**。
-
-### 本项目具体实现
-* 本项目的实现放在**src**目录下。其中**PowerViolenceObjects**为`打腿版`中的一些数据类型, 主要语言为*C*。**PowerViolence**目录下为`打腿版`游戏的程序实现, 主要语言为*Python*。
-* 本项目的规则部分包含总规则和更新公告。总规则使用*Markdown*撰写, 并对应生成*PDF*文件。更新公告也使用*Markdown*撰写, 但不生成*PDF*文件。规则部分另附有一些图片以及生成该图片的*Python*文件。
-* 本项目的测试部分位于**tests**目录下, 其中**ctests**目录下主要为**PowerViolenceObjects**的测试, **pytests**目录下主要为**PowerViolence**的测试。
-* 本项目另附一个简单实现, 被命名为**PowerViolence_simplified**, 不完全实现规则, 且只能一名玩家和一名电脑进行对战。该文件为*macOS*可执行文件。
-
-[PV_rule](rule/PV_rule.pdf)
+[PV_rule_0](rule/PV_rule/images_0.png)
+[PV_rule_1](rule/PV_rule/images_1.png)
+[PV_rule_2](rule/PV_rule/images_2.png)
+[PV_rule_3](rule/PV_rule/images_3.png)
+[PV_rule_4](rule/PV_rule/images_4.png)
+[PV_rule_5](rule/PV_rule/images_5.png)
+[PV_rule_6](rule/PV_rule/images_6.png)
+[PV_rule_7](rule/PV_rule/images_7.png)
+[PV_rule_8](rule/PV_rule/images_8.png)
+[PV_rule_9](rule/PV_rule/images_9.png)
+[PV_rule_10](rule/PV_rule/images_10.png)
+[PV_rule_11](rule/PV_rule/images_11.png)
+[PV_rule_12](rule/PV_rule/images_12.png)
