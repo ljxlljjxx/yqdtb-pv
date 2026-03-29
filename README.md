@@ -10,16 +10,18 @@
 * The testing section of this project is located in the **tests** directory. The **ctests** directory mainly contains tests for **PowerViolenceObjects**, and the **pytests** directory mainly contains tests for **PowerViolence**.
 * This project also includes a simple implementation, named **PowerViolence_simplified**, which does not fully implement the rules and can only allow one player and one computer to play against each other. This file is a **macOS** executable file.
 
-[PV_rule_0](rule/PV_rule/images_0.png)
-[PV_rule_1](rule/PV_rule/images_1.png)
-[PV_rule_2](rule/PV_rule/images_2.png)
-[PV_rule_3](rule/PV_rule/images_3.png)
-[PV_rule_4](rule/PV_rule/images_4.png)
-[PV_rule_5](rule/PV_rule/images_5.png)
-[PV_rule_6](rule/PV_rule/images_6.png)
-[PV_rule_7](rule/PV_rule/images_7.png)
-[PV_rule_8](rule/PV_rule/images_8.png)
-[PV_rule_9](rule/PV_rule/images_9.png)
-[PV_rule_10](rule/PV_rule/images_10.png)
-[PV_rule_11](rule/PV_rule/images_11.png)
-[PV_rule_12](rule/PV_rule/images_12.png)
+<center><img src="rule/PV_rule/images_0.png"></center>
+<center><img src="rule/PV_rule/images_1.png"></center>
+<center><img src="rule/PV_rule/images_2.png"></center>
+<center><img src="rule/PV_rule/images_3.png"></center>
+<center><img src="rule/PV_rule/images_4.png"></center>
+<center><img src="rule/PV_rule/images_5.png"></center>
+<center><img src="rule/PV_rule/images_6.png"></center>
+<center><img src="rule/PV_rule/images_7.png"></center>
+<center><img src="rule/PV_rule/images_8.png"></center>
+<center><img src="rule/PV_rule/images_9.png"></center>
+<center><img src="rule/PV_rule/images_10.png"></center>
+<center><img src="rule/PV_rule/images_11.png"></center>
+<center><img src="rule/PV_rule/images_12.png"></center>
+
+> Thank you to https://github.com/KaSui2333/PdfToImg.git for providing the program for converting PDF to PNG.
