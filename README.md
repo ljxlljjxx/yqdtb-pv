@@ -2,7 +2,7 @@
 
 ### Overall Introduction of This Project
 * This project is designed to create the `Power Violence Edition`, including its rules and procedures. 
-* This project has not yet been fully completed. The main part of the project's program has not been fully built.(In fact, it is almost empty.) The version of the project's rules is **0.0.15**, and the latest version of the project's update announcement is **0.0.19**.
+* This project has not yet been fully completed. The main part of the project's program has not been fully built.(In fact, it is almost empty.) The version of the project's rules is **0.0.19**.
 
 ### Specific Implementation of This Project
 * The implementation of this project is placed in the **src** directory. **PowerViolenceObjects** is a set of data types in `PV`, mainly written in **C**. The **PowerViolence** directory contains the program implementation of `PV`, mainly written in **Python**.
