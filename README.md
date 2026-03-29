@@ -23,5 +23,35 @@
 <center><img src="rule/PV_rule/images_10.png"></center>
 <center><img src="rule/PV_rule/images_11.png"></center>
 <center><img src="rule/PV_rule/images_12.png"></center>
+<center><img src="rule/PV_rule/images_13.png"></center>
+<center><img src="rule/PV_rule/images_14.png"></center>
+<center><img src="rule/PV_rule/images_15.png"></center>
+<center><img src="rule/PV_rule/images_16.png"></center>
+<center><img src="rule/PV_rule/images_17.png"></center>
+<center><img src="rule/PV_rule/images_18.png"></center>
+<center><img src="rule/PV_rule/images_19.png"></center>
+<center><img src="rule/PV_rule/images_20.png"></center>
+<center><img src="rule/PV_rule/images_21.png"></center>
+<center><img src="rule/PV_rule/images_22.png"></center>
+<center><img src="rule/PV_rule/images_23.png"></center>
+<center><img src="rule/PV_rule/images_24.png"></center>
+<center><img src="rule/PV_rule/images_25.png"></center>
+<center><img src="rule/PV_rule/images_26.png"></center>
+<center><img src="rule/PV_rule/images_27.png"></center>
+<center><img src="rule/PV_rule/images_28.png"></center>
+<center><img src="rule/PV_rule/images_29.png"></center>
+<center><img src="rule/PV_rule/images_30.png"></center>
+<center><img src="rule/PV_rule/images_31.png"></center>
+<center><img src="rule/PV_rule/images_32.png"></center>
+<center><img src="rule/PV_rule/images_33.png"></center>
+<center><img src="rule/PV_rule/images_34.png"></center>
+<center><img src="rule/PV_rule/images_35.png"></center>
+<center><img src="rule/PV_rule/images_36.png"></center>
+<center><img src="rule/PV_rule/images_37.png"></center>
+<center><img src="rule/PV_rule/images_38.png"></center>
+<center><img src="rule/PV_rule/images_39.png"></center>
+<center><img src="rule/PV_rule/images_40.png"></center>
+<center><img src="rule/PV_rule/images_41.png"></center>
+<center><img src="rule/PV_rule/images_42.png"></center>
 
 > Thank you to https://github.com/KaSui2333/PdfToImg.git for providing the program for converting PDF to PNG.
