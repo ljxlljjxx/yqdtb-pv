@@ -263,13 +263,13 @@ bool test_int128_format2(void)
     assert_string_equal(s, "0000000000000000000000000001BF52");
     assert_equal(ans, 32);
     ans = pvc_PV_119p8_format(s, "d", &a);
-    assert_string_equal(s, "114514");
+    assert_string_equal(s, "447");
     assert_equal(ans, 6);
     ans = pvc_PV_119p8_format(s, "+d", &a);
-    assert_string_equal(s, "+114514");
+    assert_string_equal(s, "+447");
     assert_equal(ans, 7);
     ans = pvc_PV_119p8_format(s, "f", &a);
-    assert_string_equal(s, "114514.0");
+    assert_string_equal(s, "447.3203125");
     assert_equal(ans, 8);
     ans = pvc_PV_119p8_format(s, "???", &a);
     assert_string_equal(s, "unknown format");
