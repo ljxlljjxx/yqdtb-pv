@@ -179,7 +179,6 @@ bool test_int128_format(void)
     assert_string_equal(s, "0");
     assert_equal(ans, 1);
     ans = pvc_PV_119p8_format(s, "hx", &a);
-    assert_equal(ans, 64);
     assert_string_equal(s, "0000000000000000");
     assert_equal(ans, 16);
     ans = pvc_PV_119p8_format(s, "li", &a);
@@ -202,7 +201,7 @@ bool test_int128_format(void)
     assert_equal(ans, -1);
     ans = pvc_PV_119p8_format(s, "x", &a);
     assert_string_equal(s, "00000000000000000000000000000000");
-    assert_equal(ans, 34);
+    assert_equal(ans, 32);
     ans = pvc_PV_119p8_format(s, "X", &a);
     assert_string_equal(s, "00000000000000000000000000000000");
     assert_equal(ans, 32);
