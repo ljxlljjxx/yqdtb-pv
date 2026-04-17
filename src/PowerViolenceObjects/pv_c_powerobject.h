@@ -38,8 +38,8 @@ typedef struct pvc_int128
     uint64_t _2;
 } pvc_int128;
 
-extern bool pvc_int128_add(pvc_int128 *a, pvc_int128 *b, pvc_int128 *restrict res);
-extern bool pvc_int128_neg(pvc_int128 *a);
-extern char *const pvc_int128_tostring(pvc_int128 *a);
-extern int pvc_int128_format(char *restrict buffer, const char *restrict format, pvc_int128 *restrict a, ...);
-extern void pvc_int128_print(pvc_int128 *a);
+bool pvc_int128_add(pvc_int128 *a, pvc_int128 *b, pvc_int128 *restrict res);
+bool pvc_int128_neg(pvc_int128 *a);
+char *pvc_int128_tostring(pvc_int128 *a);
+int pvc_int128_format(char *restrict buffer, const char *restrict format, pvc_int128 *restrict a, ...);
+void pvc_int128_print(pvc_int128 *a);

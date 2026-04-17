@@ -15,16 +15,29 @@ on:
   schedule:
     - cron: "17 2 * * *"
 jobs:
-  greeting-bash:
+  compile-source:
+    name: compile source to *.o
+    strategy:
+        matrix:
+          os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Compile PVOs/pv_c_powerobjects.c
+        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pv_c_powerobject.c -o pvc_powerobject.o
+    
+  run-test:
+    needs: compile-source
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Compile
-        run: gcc -Wall -Wextra tests/ctests/powerobject.c -o ct_powerobject -Isrc/PowerViolenceObjects
+      - name: Compile to *.o
+        run: gcc -Wall -Wextra -c tests/ctests/powerobject.c -o ct_powerobject.o -Isrc/PowerViolenceObjects
+      - name: link
+        run: gcc pvc_powerobject.o ct_powerobject.o -o ct_powerobject
       - name: Run
-        run: gcc -Wall -Wextra tests/ctests/powerobject.c -o ct_powerobject -Isrc/PowerViolenceObjects
+        run: ./ct_powerobject
 

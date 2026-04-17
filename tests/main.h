@@ -10,8 +10,8 @@
 #define TestFuncState_enable  1
 #define TestFuncState_disable 0
 
-extern char test_format_buffer[100000];
-extern char test_temp_buffer[100000];
+char test_format_buffer[100000];
+char test_temp_buffer[100000];
 
 typedef bool (*const testfunc_type)(void);
 
