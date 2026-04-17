@@ -243,7 +243,7 @@ bool test_int128_format2(void)
     assert_equal(ans, 6);
     ans = pvc_PV_119p8_format(s, "lu", &a);
     assert_string_equal(s, "114514");
-    assert_equal(ans, 1);
+    assert_equal(ans, 6);
     ans = pvc_PV_119p8_format(s, "lx", &a);
     assert_string_equal(s, "000000000001bf52");
     assert_equal(ans, 16);
