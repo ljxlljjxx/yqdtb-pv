@@ -7,3 +7,5 @@ Icon.py
 .venv/
 _*
 announcement/
+*.o
+ct_*
