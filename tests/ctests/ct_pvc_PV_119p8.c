@@ -264,13 +264,13 @@ bool test_int128_format2(void)
     assert_equal(ans, 32);
     ans = pvc_PV_119p8_format(s, "d", &a);
     assert_string_equal(s, "447");
-    assert_equal(ans, 6);
+    assert_equal(ans, 3);
     ans = pvc_PV_119p8_format(s, "+d", &a);
     assert_string_equal(s, "+447");
-    assert_equal(ans, 7);
+    assert_equal(ans, 4);
     ans = pvc_PV_119p8_format(s, "f", &a);
     assert_string_equal(s, "447.3203125");
-    assert_equal(ans, 8);
+    assert_equal(ans, 11);
     ans = pvc_PV_119p8_format(s, "???", &a);
     assert_string_equal(s, "unknown format");
     assert_equal(ans, -1);
