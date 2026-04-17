@@ -164,7 +164,7 @@ bool test_int128_tostring(void)
     test_end();
 }
 
-bool test_int128_format(void)
+bool test_int128_format1(void)
 {
     pvc_PV_119p8 a;
     int ans;
@@ -221,12 +221,70 @@ bool test_int128_format(void)
     test_end();
 }
 
+bool test_int128_format2(void)
+{
+    pvc_PV_119p8 a;
+    int ans;
+    char s[200];
+    test_start();
+
+    a._1 = 0, a._2 = 114514;
+    ans = pvc_PV_119p8_format(s, "hi", &a);
+    assert_string_equal(s, "0");
+    assert_equal(ans, 1);
+    ans = pvc_PV_119p8_format(s, "hu", &a);
+    assert_string_equal(s, "0");
+    assert_equal(ans, 1);
+    ans = pvc_PV_119p8_format(s, "hx", &a);
+    assert_string_equal(s, "0000000000000000");
+    assert_equal(ans, 16);
+    ans = pvc_PV_119p8_format(s, "li", &a);
+    assert_string_equal(s, "114514");
+    assert_equal(ans, 6);
+    ans = pvc_PV_119p8_format(s, "lu", &a);
+    assert_string_equal(s, "114514");
+    assert_equal(ans, 1);
+    ans = pvc_PV_119p8_format(s, "lx", &a);
+    assert_string_equal(s, "000000000001bf52");
+    assert_equal(ans, 16);
+    ans = pvc_PV_119p8_format(s, "b", &a);
+    assert_string_equal(s, "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000011011111101010010");
+    assert_equal(ans, 128);
+    ans = pvc_PV_119p8_format(s, "B", &a);
+    assert_string_equal(s, "true");
+    assert_equal(ans, 5);
+    ans = pvc_PV_119p8_format(s, "#B", &a);
+    assert_string_equal(s, "unknown format");
+    assert_equal(ans, -1);
+    ans = pvc_PV_119p8_format(s, "x", &a);
+    assert_string_equal(s, "0000000000000000000000000001bf52");
+    assert_equal(ans, 32);
+    ans = pvc_PV_119p8_format(s, "X", &a);
+    assert_string_equal(s, "0000000000000000000000000001BF52");
+    assert_equal(ans, 32);
+    ans = pvc_PV_119p8_format(s, "d", &a);
+    assert_string_equal(s, "114514");
+    assert_equal(ans, 6);
+    ans = pvc_PV_119p8_format(s, "+d", &a);
+    assert_string_equal(s, "+114514");
+    assert_equal(ans, 7);
+    ans = pvc_PV_119p8_format(s, "f", &a);
+    assert_string_equal(s, "114514.0");
+    assert_equal(ans, 8);
+    ans = pvc_PV_119p8_format(s, "???", &a);
+    assert_string_equal(s, "unknown format");
+    assert_equal(ans, -1);
+    
+    test_end();
+}
+
 const TestFunc c_powerobject_tests[] = {
-    {"test_addi64_overflow", test_addi64_overflow, TestFuncState_enable},
-    {"test_addu64_overflow", test_addu64_overflow, TestFuncState_enable},
-    {"test_pvc_PV_119p8_neg",  test_pvc_PV_119p8_neg,  TestFuncState_enable},
-    {"test_int128_tostring", test_int128_tostring, TestFuncState_enable},
-    {"test_int128_format",   test_int128_format,   TestFuncState_enable},
+    {"test_addi64_overflow", test_addi64_overflow,    TestFuncState_enable},
+    {"test_addu64_overflow", test_addu64_overflow,    TestFuncState_enable},
+    {"test_pvc_PV_119p8_neg", test_pvc_PV_119p8_neg,  TestFuncState_enable},
+    {"test_int128_tostring", test_int128_tostring,    TestFuncState_enable},
+    {"test_int128_format",   test_int128_format1,     TestFuncState_enable},
+    {"test_int128_format",   test_int128_format2,     TestFuncState_enable},
     {NULL, NULL, 0}
 };
 
