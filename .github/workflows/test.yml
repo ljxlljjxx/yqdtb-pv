@@ -24,7 +24,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Compile
-        run: gcc -Wall -Wextra tests/ctests/powerobject.c -o ct_powerobject
+        run: gcc -Wall -Wextra tests/ctests/powerobject.c -o ct_powerobject -Isrc/PowerViolenceObjects
       - name: Run
-        run: gcc -Wall -Wextra tests/ctests/powerobject.c -o ct_powerobject
+        run: gcc -Wall -Wextra tests/ctests/powerobject.c -o ct_powerobject -Isrc/PowerViolenceObjects
 
