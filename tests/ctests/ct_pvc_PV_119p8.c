@@ -252,7 +252,7 @@ bool test_int128_format2(void)
     assert_equal(ans, 128);
     ans = pvc_PV_119p8_format(s, "B", &a);
     assert_string_equal(s, "true");
-    assert_equal(ans, 5);
+    assert_equal(ans, 4);
     ans = pvc_PV_119p8_format(s, "#B", &a);
     assert_string_equal(s, "unknown format");
     assert_equal(ans, -1);
