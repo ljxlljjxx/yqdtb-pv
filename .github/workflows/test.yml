@@ -1,0 +1,61 @@
+name: C test pvc_PV_119p8
+run-name: C test pvc_PV_119p8 triggered bt ${{ github.actor }}
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+on:
+  label:
+    types:
+      - created
+      - edited
+      - deleted
+  push:
+    branches:
+      - main
+      - "**"
+  schedule:
+    - cron: "17 2 * * *"
+jobs:
+  compile-source-ubuntu:
+    name: compile source to *.o
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Compile PVOs/pvc_PV_119p8.c
+        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_PV_119p8.c -o pvc_PV_119p8-ubuntu.o
+      - name: Compile to *.o
+        run: gcc -Wall -Wextra -c tests/ctests/ct_pvc_PV_119p8.c -o ct_pvc_PV_119p8-ubuntu.o -Isrc/PowerViolenceObjects
+      - name: link
+        run: gcc pvc_PV_119p8-ubuntu.o ct_pvc_PV_119p8-ubuntu.o -o ct_pvc_PV_119p8-ubuntu
+      - name: Run
+        run: ./ct_pvc_PV_119p8-ubuntu
+
+  compile-source-macos:
+    name: compile source to *.o
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Compile PVOs/pvc_PV_119p8.c
+        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_PV_119p8.c -o pvc_PV_119p8-macos.o
+      - name: Compile to *.o
+        run: gcc -Wall -Wextra -c tests/ctests/ct_pvc_PV_119p8.c -o ct_pvc_PV_119p8-macos.o -Isrc/PowerViolenceObjects
+      - name: link
+        run: gcc pvc_PV_119p8-macos.o ct_pvc_PV_119p8-macos.o -o ct_pvc_PV_119p8-macos
+      - name: Run
+        run: ./ct_pvc_PV_119p8-macos
+
+  compile-source-windows:
+    name: compile source to *.o
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Compile PVOs/pvc_PV_119p8.c
+        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_PV_119p8.c -o pvc_PV_119p8-windows.o
+      - name: Compile to *.o
+        run: gcc -Wall -Wextra -c tests/ctests/ct_pvc_PV_119p8.c -o ct_pvc_PV_119p8-windows.o -Isrc/PowerViolenceObjects
+      - name: link
+        run: gcc pvc_PV_119p8-windows.o ct_pvc_PV_119p8-windows.o -o ct_pvc_PV_119p8-windows
+      - name: Run
+        run: ./ct_pvc_PV_119p8-windows

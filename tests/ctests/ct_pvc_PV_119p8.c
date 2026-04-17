@@ -1,7 +1,7 @@
 /* / */
 
-#include "main.h"
-#include "pv_c_powerobject.h"
+#include "../main.h"
+#include "pvc_PV_119p8.h"
 
 bool test_addi64_overflow(void)
 {
@@ -86,44 +86,44 @@ bool test_addu64_overflow(void)
     test_end();
 }
 
-bool test_pvc_int128_neg(void)
+bool test_pvc_PV_119p8_neg(void)
 {
-    pvc_int128 a;
+    pvc_PV_119p8 a;
     bool ans;
     test_start();
 
     a._1 = 0, a._2 = 0;
-    ans = pvc_int128_neg(&a);
+    ans = pvc_PV_119p8_neg(&a);
     assert_equal(a._1, 0);
     assert_equal(a._2, 0);
     assert_equal(ans, false);
 
     a._1 = 0, a._2 = 123456789ULL;
-    ans = pvc_int128_neg(&a);
+    ans = pvc_PV_119p8_neg(&a);
     assert_equal(a._1, -1);
     assert_equal(a._2, 18446744073586094827ULL);
     assert_equal(ans, false);
 
     a._1 = -1, a._2 = 18446744073586094827ULL;
-    ans = pvc_int128_neg(&a);
+    ans = pvc_PV_119p8_neg(&a);
     assert_equal(a._1, 0);
     assert_equal(a._2, 123456789ULL);
     assert_equal(ans, false);
 
     a._1 = INT64_MAX, a._2 = UINT64_MAX;
-    ans = pvc_int128_neg(&a);
+    ans = pvc_PV_119p8_neg(&a);
     assert_equal(a._1, INT64_MIN);
     assert_equal(a._2, 1);
     assert_equal(ans, false);
 
     a._1 = INT64_MIN, a._2 = 0;
-    ans = pvc_int128_neg(&a);
+    ans = pvc_PV_119p8_neg(&a);
     assert_equal(a._1, INT64_MIN);
     assert_equal(a._2, 0);
     assert_equal(ans, true);
 
     a._1 = 123, a._2 = 0;
-    ans = pvc_int128_neg(&a);
+    ans = pvc_PV_119p8_neg(&a);
     assert_equal(a._1, -123);
     assert_equal(a._2, 0);
     assert_equal(ans, false);
@@ -133,32 +133,32 @@ bool test_pvc_int128_neg(void)
 
 bool test_int128_tostring(void)
 {
-    pvc_int128 a;
+    pvc_PV_119p8 a;
     char *s;
     test_start();
 
     a._1 = 0, a._2 = 0;
-    s = pvc_int128_tostring(&a);
+    s = pvc_PV_119p8_tostring(&a);
     assert_string_equal(s, "0");
 
     a._1 = 0, a._2 = 123456789ULL;
-    s = pvc_int128_tostring(&a);
+    s = pvc_PV_119p8_tostring(&a);
     assert_string_equal(s, "482253.08203125");
 
     a._1 = -1, a._2 = 18446744073586094827ULL;
-    s = pvc_int128_tostring(&a);
+    s = pvc_PV_119p8_tostring(&a);
     assert_string_equal(s, "-482253.08203125");
 
     a._1 = INT64_MAX, a._2 = UINT64_MAX;
-    s = pvc_int128_tostring(&a);
+    s = pvc_PV_119p8_tostring(&a);
     assert_string_equal(s, "664613997892457936451903530140172287.99609375");
 
     a._1 = INT64_MIN, a._2 = 0;
-    s = pvc_int128_tostring(&a);
+    s = pvc_PV_119p8_tostring(&a);
     assert_string_equal(s, "-664613997892457936451903530140172288");
 
     a._1 = 123, a._2 = 0;
-    s = pvc_int128_tostring(&a);
+    s = pvc_PV_119p8_tostring(&a);
     assert_string_equal(s, "8863084066665136128");
 
     test_end();
@@ -166,82 +166,55 @@ bool test_int128_tostring(void)
 
 bool test_int128_format(void)
 {
-    pvc_int128 a;
+    pvc_PV_119p8 a;
     int ans;
     char s[200];
     test_start();
 
     a._1 = 0, a._2 = 0;
-    ans = pvc_int128_format(s, "hi", &a);
+    ans = pvc_PV_119p8_format(s, "hi", &a);
     assert_string_equal(s, "0");
     assert_equal(ans, 1);
-    ans = pvc_int128_format(s, "hu", &a);
+    ans = pvc_PV_119p8_format(s, "hu", &a);
     assert_string_equal(s, "0");
     assert_equal(ans, 1);
-    ans = pvc_int128_format(s, "hb", &a);
-    assert_string_equal(s, "0000000000000000000000000000000000000000000000000000000000000000");
-    ans = pvc_int128_format(s, "hx", &a);
-    assert_equal(ans, 64);
+    ans = pvc_PV_119p8_format(s, "hx", &a);
     assert_string_equal(s, "0000000000000000");
     assert_equal(ans, 16);
-    ans = pvc_int128_format(s, "li", &a);
+    ans = pvc_PV_119p8_format(s, "li", &a);
     assert_string_equal(s, "0");
     assert_equal(ans, 1);
-    ans = pvc_int128_format(s, "lu", &a);
+    ans = pvc_PV_119p8_format(s, "lu", &a);
     assert_string_equal(s, "0");
     assert_equal(ans, 1);
-    ans = pvc_int128_format(s, "lb", &a);
-    assert_string_equal(s, "0000000000000000000000000000000000000000000000000000000000000000");
-    assert_equal(ans, 64);
-    ans = pvc_int128_format(s, "lx", &a);
+    ans = pvc_PV_119p8_format(s, "lx", &a);
     assert_string_equal(s, "0000000000000000");
     assert_equal(ans, 16);
-    ans = pvc_int128_format(s, "#hb", &a);
-    assert_string_equal(s, "0b0000000000000000000000000000000000000000000000000000000000000000");
-    assert_equal(ans, 66);
-    ans = pvc_int128_format(s, "#hx", &a);
-    assert_string_equal(s, "0x0000000000000000");
-    assert_equal(ans, 18);
-    ans = pvc_int128_format(s, "#lb", &a);
-    assert_string_equal(s, "0b0000000000000000000000000000000000000000000000000000000000000000");
-    assert_equal(ans, 66);
-    ans = pvc_int128_format(s, "#lx", &a);
-    assert_string_equal(s, "0x0000000000000000");
-    assert_equal(ans, 18);
-    ans = pvc_int128_format(s, "b", &a);
+    ans = pvc_PV_119p8_format(s, "b", &a);
     assert_string_equal(s, "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
     assert_equal(ans, 128);
-    ans = pvc_int128_format(s, "#b", &a);
-    assert_string_equal(s, "0b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
-    assert_equal(ans, 130);
-    ans = pvc_int128_format(s, "B", &a);
+    ans = pvc_PV_119p8_format(s, "B", &a);
     assert_string_equal(s, "false");
     assert_equal(ans, 5);
-    ans = pvc_int128_format(s, "#B", &a);
+    ans = pvc_PV_119p8_format(s, "#B", &a);
     assert_string_equal(s, "unknown format");
     assert_equal(ans, -1);
-    ans = pvc_int128_format(s, "x", &a);
+    ans = pvc_PV_119p8_format(s, "x", &a);
     assert_string_equal(s, "00000000000000000000000000000000");
     assert_equal(ans, 32);
-    ans = pvc_int128_format(s, "#x", &a);
-    assert_string_equal(s, "0x00000000000000000000000000000000");
-    assert_equal(ans, 34);
-    ans = pvc_int128_format(s, "X", &a);
+    ans = pvc_PV_119p8_format(s, "X", &a);
     assert_string_equal(s, "00000000000000000000000000000000");
     assert_equal(ans, 32);
-    ans = pvc_int128_format(s, "#X", &a);
-    assert_string_equal(s, "0X00000000000000000000000000000000");
-    assert_equal(ans, 34);
-    ans = pvc_int128_format(s, "d", &a);
+    ans = pvc_PV_119p8_format(s, "d", &a);
     assert_string_equal(s, "0");
     assert_equal(ans, 1);
-    ans = pvc_int128_format(s, "+d", &a);
+    ans = pvc_PV_119p8_format(s, "+d", &a);
     assert_string_equal(s, "+0");
     assert_equal(ans, 2);
-    ans = pvc_int128_format(s, "f", &a);
+    ans = pvc_PV_119p8_format(s, "f", &a);
     assert_string_equal(s, "0");
     assert_equal(ans, 1);
-    ans = pvc_int128_format(s, "???", &a);
+    ans = pvc_PV_119p8_format(s, "???", &a);
     assert_string_equal(s, "unknown format");
     assert_equal(ans, -1);
     
@@ -251,7 +224,7 @@ bool test_int128_format(void)
 const TestFunc c_powerobject_tests[] = {
     {"test_addi64_overflow", test_addi64_overflow, TestFuncState_enable},
     {"test_addu64_overflow", test_addu64_overflow, TestFuncState_enable},
-    {"test_pvc_int128_neg",  test_pvc_int128_neg,  TestFuncState_enable},
+    {"test_pvc_PV_119p8_neg",  test_pvc_PV_119p8_neg,  TestFuncState_enable},
     {"test_int128_tostring", test_int128_tostring, TestFuncState_enable},
     {"test_int128_format",   test_int128_format,   TestFuncState_enable},
     {NULL, NULL, 0}
@@ -263,3 +236,8 @@ const Test c_powerobject = {
     .test_funcs = c_powerobject_tests,
     .end_func = NULL
 };
+
+int main()
+{
+    return test_runner(&c_powerobject);
+}

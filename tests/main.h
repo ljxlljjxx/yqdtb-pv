@@ -5,12 +5,13 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdarg.h>
+#include <time.h>
 
 #define TestFuncState_enable  1
 #define TestFuncState_disable 0
 
-extern char test_format_buffer[100000];
-extern char test_temp_buffer[100000];
+char test_format_buffer[100000];
+char test_temp_buffer[100000];
 
 typedef bool (*const testfunc_type)(void);
 
@@ -106,6 +107,46 @@ static int _ctest_sprintf(int s, ...)
     strcat(test_format_buffer, ")"); \
 } while (0)
 
-extern const Test c_powerobject;
+int test_runner(const Test *now)
+{
+    const TestFunc *test_func;
+    clock_t start, end;
+    int count_fail = 0, count_ok = 0;
+    printf("\033[93mnow=%p running: \033[0m%s\n", now, now->file_name);
+    if (now->init_func) now->init_func();
+    test_func = now->test_funcs;
+    while (test_func->name)
+    {
+        test_format_buffer[0] = 0;
+        if (test_func->state == TestFuncState_disable) goto increase;
+        start = clock();
+        if (!test_func->func())
+        {
+            end = clock();
+            count_fail++;
+            printf(
+                "\033[91m%s failed: (used %lu μs)\n    \033[1m%s\n\033[0m", 
+                test_func->name, 
+                (end - start) * 1000000 / CLOCKS_PER_SEC, 
+                test_format_buffer
+            );
+        }
+        else
+        {
+            end = clock();
+            count_ok++;
+            printf(
+                "\033[92m%-30s ok (used %lu μs)\n\033[0m", 
+                test_func->name, 
+                (end - start) * 1000000 / CLOCKS_PER_SEC
+            );
+        }
+    increase:
+        test_func++;
+    }
+    if (now->end_func) now->end_func();
+    printf("\033[91m%d failed\033[0m, \033[92m%d ok\n\033[0m", count_fail, count_ok);
+    return count_fail;
+}
 
 #endif /* _CTESTS_MAIN_H */

@@ -1,13 +1,13 @@
-#include "pv_c_powerobject.h"
+#include "pvc_PV_119p8.h"
 
-void pvc_int128_set(__int128_t *a, pvc_int128 *res)
+void pvc_PV_119p8_set(__int128_t *a, pvc_PV_119p8 *res)
 {
     __int128_t pos = INT64_MAX + (__int128_t)1;
     res->_2 = *a & INT64_MIN;
     res->_1 = *a / pos;
 }
 
-bool pvc_int128_add(pvc_int128 *a, pvc_int128 *b, pvc_int128 *restrict res)
+bool pvc_PV_119p8_add(pvc_PV_119p8 *a, pvc_PV_119p8 *b, pvc_PV_119p8 *restrict res)
 {
     res->_2 = a->_2 + b->_2;
     res->_1 = a->_1 + b->_1 + (res->_2 < a->_2);
@@ -19,7 +19,15 @@ bool pvc_int128_add(pvc_int128 *a, pvc_int128 *b, pvc_int128 *restrict res)
     return false;
 }
 
-bool pvc_int128_neg(pvc_int128 *a)
+/**
+ * @brief   let *a becomes -*a.
+ * @param   a pvc_PV_119p8
+ * @return  bool
+ * @retval  overflow
+ * @author  ljx
+ * @date    2026-04-17 21:48
+ */
+bool pvc_PV_119p8_neg(pvc_PV_119p8 *a)
 {
     if (a->_2) a->_2 = -a->_2, a->_1 = ~a->_1;
     else if (a->_1 == INT64_MIN) return true;
@@ -27,14 +35,14 @@ bool pvc_int128_neg(pvc_int128 *a)
     return false;
 }
 
-char *const pvc_int128_tostring(pvc_int128 *a)
+char *pvc_PV_119p8_tostring(pvc_PV_119p8 *a)
 {
     static char buffer[40];
     static char temp[40];
     size_t temp_size = 0, cnt = 0;
     static const char *const ss[] = {"",".00390625",".0078125",".01171875",".015625",".01953125",".0234375",".02734375",".03125",".03515625",".0390625",".04296875",".046875",".05078125",".0546875",".05859375",".0625",".06640625",".0703125",".07421875",".078125",".08203125",".0859375",".08984375",".09375",".09765625",".1015625",".10546875",".109375",".11328125",".1171875",".12109375",".125",".12890625",".1328125",".13671875",".140625",".14453125",".1484375",".15234375",".15625",".16015625",".1640625",".16796875",".171875",".17578125",".1796875",".18359375",".1875",".19140625",".1953125",".19921875",".203125",".20703125",".2109375",".21484375",".21875",".22265625",".2265625",".23046875",".234375",".23828125",".2421875",".24609375",".25",".25390625",".2578125",".26171875",".265625",".26953125",".2734375",".27734375",".28125",".28515625",".2890625",".29296875",".296875",".30078125",".3046875",".30859375",".3125",".31640625",".3203125",".32421875",".328125",".33203125",".3359375",".33984375",".34375",".34765625",".3515625",".35546875",".359375",".36328125",".3671875",".37109375",".375",".37890625",".3828125",".38671875",".390625",".39453125",".3984375",".40234375",".40625",".41015625",".4140625",".41796875",".421875",".42578125",".4296875",".43359375",".4375",".44140625",".4453125",".44921875",".453125",".45703125",".4609375",".46484375",".46875",".47265625",".4765625",".48046875",".484375",".48828125",".4921875",".49609375",".5",".50390625",".5078125",".51171875",".515625",".51953125",".5234375",".52734375",".53125",".53515625",".5390625",".54296875",".546875",".55078125",".5546875",".55859375",".5625",".56640625",".5703125",".57421875",".578125",".58203125",".5859375",".58984375",".59375",".59765625",".6015625",".60546875",".609375",".61328125",".6171875",".62109375",".625",".62890625",".6328125",".63671875",".640625",".64453125",".6484375",".65234375",".65625",".66015625",".6640625",".66796875",".671875",".67578125",".6796875",".68359375",".6875",".69140625",".6953125",".69921875",".703125",".70703125",".7109375",".71484375",".71875",".72265625",".7265625",".73046875",".734375",".73828125",".7421875",".74609375",".75",".75390625",".7578125",".76171875",".765625",".76953125",".7734375",".77734375",".78125",".78515625",".7890625",".79296875",".796875",".80078125",".8046875",".80859375",".8125",".81640625",".8203125",".82421875",".828125",".83203125",".8359375",".83984375",".84375",".84765625",".8515625",".85546875",".859375",".86328125",".8671875",".87109375",".875",".87890625",".8828125",".88671875",".890625",".89453125",".8984375",".90234375",".90625",".91015625",".9140625",".91796875",".921875",".92578125",".9296875",".93359375",".9375",".94140625",".9453125",".94921875",".953125",".95703125",".9609375",".96484375",".96875",".97265625",".9765625",".98046875",".984375",".98828125",".9921875",".99609375"};
     uint64_t high, low, tmp;
-    pvc_int128 b;
+    pvc_PV_119p8 b;
     if (a == NULL) return strcpy(buffer, "(null)");
     if (!a->_1)
     {
@@ -62,7 +70,7 @@ char *const pvc_int128_tostring(pvc_int128 *a)
     if (b._1 & INT64_MIN)
     {
         buffer[cnt++] = '-';
-        if (pvc_int128_neg(&b))
+        if (pvc_PV_119p8_neg(&b))
         {
             strcpy(buffer+1, "664613997892457936451903530140172288");
             return buffer;
@@ -73,7 +81,7 @@ char *const pvc_int128_tostring(pvc_int128 *a)
     while (low || high)
     {
         tmp = high % 10;
-        temp[temp_size++] = (6 * tmp + low) % 10 | '0';
+        temp[temp_size++] = (6 * tmp + low) % 10 | 48;
         low = ((tmp << 56) + low) / 10;
         high /= 10;
     }
@@ -85,28 +93,19 @@ char *const pvc_int128_tostring(pvc_int128 *a)
     return buffer;
 }
 
-int pvc_int128_format(char *restrict buffer, const char *restrict format, pvc_int128 *restrict a, ...)
+int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_PV_119p8 *restrict a, ...)
 {
     /*
     format:
-        hi: high, int64_t
-        hu: high, uint64_t
-        hb: high, binary
-            #hb: add 0b
-        hx: high, hexadecimal
-            #hx: add 0x
-        li: low,  int64_t
-        lu: low,  uint64_t
-        lb: low,  binary
-            #lb: add 0b
-        lx: low,  hexadecimal
-            #lx: add 0x
-        b:  binary
-            #b:  add 0b
-        x:  hexadecimal
-            #x:  add 0x
-        X:  hexadecimal
-            #X:  add 0X
+        hi: high, int64_t                                      (Achieved)
+        hu: high, uint64_t                                     (Achieved)
+        hx: high, hexadecimal                                  (Achieved)
+        li: low,  int64_t                                      (Achieved)
+        lu: low,  uint64_t                                     (Achieved)
+        lx: low,  hexadecimal                                  (Achieved)
+        b:  binary                                             (Achieved)
+        x:  hexadecimal                                        (Achieved)
+        X:  hexadecimal                                        (Achieved)
         d:  integer part
             +d: display the sign bit
         f:  floating-point number.
@@ -126,21 +125,27 @@ int pvc_int128_format(char *restrict buffer, const char *restrict format, pvc_in
     size_t cnt = 0;
     int res = 0;
     static const char *const ss[] = {"",".00390625",".0078125",".01171875",".015625",".01953125",".0234375",".02734375",".03125",".03515625",".0390625",".04296875",".046875",".05078125",".0546875",".05859375",".0625",".06640625",".0703125",".07421875",".078125",".08203125",".0859375",".08984375",".09375",".09765625",".1015625",".10546875",".109375",".11328125",".1171875",".12109375",".125",".12890625",".1328125",".13671875",".140625",".14453125",".1484375",".15234375",".15625",".16015625",".1640625",".16796875",".171875",".17578125",".1796875",".18359375",".1875",".19140625",".1953125",".19921875",".203125",".20703125",".2109375",".21484375",".21875",".22265625",".2265625",".23046875",".234375",".23828125",".2421875",".24609375",".25",".25390625",".2578125",".26171875",".265625",".26953125",".2734375",".27734375",".28125",".28515625",".2890625",".29296875",".296875",".30078125",".3046875",".30859375",".3125",".31640625",".3203125",".32421875",".328125",".33203125",".3359375",".33984375",".34375",".34765625",".3515625",".35546875",".359375",".36328125",".3671875",".37109375",".375",".37890625",".3828125",".38671875",".390625",".39453125",".3984375",".40234375",".40625",".41015625",".4140625",".41796875",".421875",".42578125",".4296875",".43359375",".4375",".44140625",".4453125",".44921875",".453125",".45703125",".4609375",".46484375",".46875",".47265625",".4765625",".48046875",".484375",".48828125",".4921875",".49609375",".5",".50390625",".5078125",".51171875",".515625",".51953125",".5234375",".52734375",".53125",".53515625",".5390625",".54296875",".546875",".55078125",".5546875",".55859375",".5625",".56640625",".5703125",".57421875",".578125",".58203125",".5859375",".58984375",".59375",".59765625",".6015625",".60546875",".609375",".61328125",".6171875",".62109375",".625",".62890625",".6328125",".63671875",".640625",".64453125",".6484375",".65234375",".65625",".66015625",".6640625",".66796875",".671875",".67578125",".6796875",".68359375",".6875",".69140625",".6953125",".69921875",".703125",".70703125",".7109375",".71484375",".71875",".72265625",".7265625",".73046875",".734375",".73828125",".7421875",".74609375",".75",".75390625",".7578125",".76171875",".765625",".76953125",".7734375",".77734375",".78125",".78515625",".7890625",".79296875",".796875",".80078125",".8046875",".80859375",".8125",".81640625",".8203125",".82421875",".828125",".83203125",".8359375",".83984375",".84375",".84765625",".8515625",".85546875",".859375",".86328125",".8671875",".87109375",".875",".87890625",".8828125",".88671875",".890625",".89453125",".8984375",".90234375",".90625",".91015625",".9140625",".91796875",".921875",".92578125",".9296875",".93359375",".9375",".94140625",".9453125",".94921875",".953125",".95703125",".9609375",".96484375",".96875",".97265625",".9765625",".98046875",".984375",".98828125",".9921875",".99609375"};
-    static const int slen[] = {0,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,4,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,3,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,4,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,2,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,4,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,3,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,4,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,1,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,4,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,3,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,4,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,2,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,4,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,3,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,4,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8};
+    static const int slen[] = {-1,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,4,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,3,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,4,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,2,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,4,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,3,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,4,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,1,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,4,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,3,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,4,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,2,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,4,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,3,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,4,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8};
     
     static char format_b_temp[40];
     size_t format_b_temp_size = 0;
     uint64_t format_b_high, format_b_low, format_b_tmp;
-    pvc_int128 format_b_b;
+    pvc_PV_119p8 format_b_b;
 
     int precision;
     va_list argv;
-    int PleasantGoat = 1;
-    int BigBigWolfState;
+    int format_nowp = 1;
+    int format_d_type;
     size_t len2541;
-    char *s2541;
+    const char *s2541;
 
     int carry_level;
+
+    if (a == NULL)
+    {
+        strcpy(buffer, "(null)");
+        return -1;
+    }
 
     switch (*format)
     {
@@ -149,11 +154,6 @@ int pvc_int128_format(char *restrict buffer, const char *restrict format, pvc_in
         {
         case 'i': return sprintf(buffer, "%lld", a->_1);
         case 'u': return sprintf(buffer, "%llu", a->_1);
-        case 'b': 
-        format_hb:
-            for (int i = 63; i >= 0; i--) buffer[cnt++] = ((a->_1 >> i) & 1) | 48;
-            buffer[cnt] = 0;
-            return 64;
         case 'x': return sprintf(buffer, "%016llx", a->_1);;
         default: goto unknown_format;
         }
@@ -162,54 +162,9 @@ int pvc_int128_format(char *restrict buffer, const char *restrict format, pvc_in
         {
         case 'i': return sprintf(buffer, "%lld", a->_2);
         case 'u': return sprintf(buffer, "%llu", a->_2);
-        case 'b': 
-        format_lb:
-            for (int i = 63; i >= 0; i--) buffer[cnt++] = ((a->_2 >> i) & 1) | 48;
-            buffer[cnt] = 0;
-            return 64;
         case 'x': return sprintf(buffer, "%016llx", a->_2);
         default:  goto unknown_format;
         }
-    case '#':
-        if (format[2] == 'b')
-        {
-            buffer[cnt++] = '0';
-            buffer[cnt++] = 'b';
-            if (format[1] == 'h')
-            {
-                for (int i = 63; i >= 0; i--)
-                    buffer[cnt++] = ((a->_1 >> i) & 1) | 48;
-            }
-            else if (format[1] == 'l') 
-            {
-                for (int i = 63; i >= 0; i--) 
-                    buffer[cnt++] = ((a->_2 >> i) & 1) | 48;
-            }
-            else goto unknown_format;
-            buffer[cnt] = 0;
-            return 66;
-        }
-        if (format[2] == 'x')
-        {
-            if (format[1] == 'h') return sprintf(buffer, "0x%016llx", a->_1);
-            if (format[1] == 'l') return sprintf(buffer, "0x%016llx", a->_2);
-            goto unknown_format;
-        }
-        if (format[2] == 0)
-        {
-            if (format[1] == 'b')
-            {
-                buffer[cnt++] = '0';
-                buffer[cnt++] = 'b';    
-                for (int i = 63; i >= 0; i--) buffer[cnt++] = ((a->_1 >> i) & 1) | 48;
-                for (int i = 63; i >= 0; i--) buffer[cnt++] = ((a->_2 >> i) & 1) | 48;
-                buffer[cnt] = 0;
-                return 130;
-            }
-            if (format[1] == 'x') return sprintf(buffer, "0x%016llx%016llx", a->_1, a->_2);
-            if (format[1] == 'X') return sprintf(buffer, "0X%016llX%016llX", a->_1, a->_2);
-        }
-        goto unknown_format;
     case 'b':
     format_b:
         for (int i = 63; i >= 0; i--) buffer[cnt++] = ((a->_1 >> i) & 1) | 48;
@@ -219,21 +174,16 @@ int pvc_int128_format(char *restrict buffer, const char *restrict format, pvc_in
     case 'x': return sprintf(buffer, "%016llx%016llx", a->_1, a->_2);
     case 'X': return sprintf(buffer, "%016llX%016llX", a->_1, a->_2);
     case 'd':
-        BigBigWolfState = 0;
+        format_d_type = 0;
     format_d:
-        if (a == NULL)
-        {
-            strcpy(buffer, "(null)");
-            return -1;
-        }
         format_b_b = *a;
         if (!a->_1)
         {
             if (!a->_2)
             {
-                buffer[cnt++] = '0';
+                buffer[cnt++] = 48;
                 buffer[cnt] = 0;
-                goto format_b_return;
+                goto format_d_return;
             }
             format_b_tmp = a->_2 >> 8;
             while (format_b_tmp)
@@ -246,16 +196,16 @@ int pvc_int128_format(char *restrict buffer, const char *restrict format, pvc_in
                 buffer[cnt++] = format_b_temp[--format_b_temp_size];
             }
             buffer[cnt] = 0;
-            goto format_b_return;
+            goto format_d_return;
         }
         if (format_b_b._1 < 0)
         {
             buffer[cnt++] = '-';
-            if (pvc_int128_neg(&format_b_b))
+            if (pvc_PV_119p8_neg(&format_b_b))
             {
                 strcpy(buffer+cnt, "664613997892457936451903530140172288");
                 cnt += 36;
-                goto format_b_return;
+                goto format_d_return;
             }
         }
         format_b_high = format_b_b._1;
@@ -263,7 +213,7 @@ int pvc_int128_format(char *restrict buffer, const char *restrict format, pvc_in
         while (format_b_low || format_b_high)
         {
             format_b_tmp = format_b_high % 10;
-            format_b_temp[format_b_temp_size++] = (6 * format_b_tmp + format_b_low) % 10 | '0';
+            format_b_temp[format_b_temp_size++] = (6 * format_b_tmp + format_b_low) % 10 | 48;
             format_b_low = ((format_b_tmp << 56) + format_b_low) / 10;
             format_b_high /= 10;
         }
@@ -271,14 +221,14 @@ int pvc_int128_format(char *restrict buffer, const char *restrict format, pvc_in
         {
             buffer[cnt++] = format_b_temp[--format_b_temp_size];
         }
-    format_b_return:
-        switch (BigBigWolfState)
+    format_d_return:
+        switch (format_d_type)
         {
         case 0:
             return cnt;
         case 1:
             strcpy(buffer + cnt, ss[format_b_b._2 & 255]);
-            return cnt + (slen ? slen + 1 : slen);
+            return cnt + slen[format_b_b._2 & 255] + 1;
         case 2:
         
         case 5:
@@ -294,7 +244,7 @@ int pvc_int128_format(char *restrict buffer, const char *restrict format, pvc_in
                     }
                     if (s2541[precision + 1] > '5')
                     {
-                        ???
+                        // 进位
                     }
                 }
             }
@@ -309,10 +259,10 @@ int pvc_int128_format(char *restrict buffer, const char *restrict format, pvc_in
         }
     case '+':
         if (a->_1 >= 0) buffer[cnt++] = '+';
-        BigBigWolfState = 0;
+        format_d_type = 0;
         goto format_d;
     case 'f':
-        BigBigWolfState = 1;
+        format_d_type = 1;
         goto format_d;
     case 'B':
         if (a->_2 || a->_1)
@@ -330,19 +280,19 @@ int pvc_int128_format(char *restrict buffer, const char *restrict format, pvc_in
         {
             va_start(argv, a);
             precision = va_arg(argv, int);
-            PleasantGoat = 2;
+            format_nowp = 2;
         }
         else
         {
-            while (isdigit(format[PleasantGoat]))
+            while (isdigit(format[format_nowp]))
             {
-                precision = precision * 10 + format[PleasantGoat++];
+                precision = precision * 10 + format[format_nowp++];
             }
         }
-        switch (format[PleasantGoat])
+        switch (format[format_nowp])
         {
             case 'f':
-                BigBigWolfState = 5;
+                format_d_type = 5;
                 goto format_d;
         }
     }
@@ -351,32 +301,32 @@ unknown_format:
     return -1;
 carry:
     len2541 = (*buffer == '-');
-    for (int i = 1; i < cnt - len2541; i++)
+    for (int i = cnt-1; i > len2541; i--)
     {
-        if (buffer[cnt-i] != ':')
+        if (buffer[i] != ':')
         {
-            if (buffer[cnt-i] != '/')
+            if (buffer[i] != '/')
             {
                 break;
             }
             else
             {
-                buffer[cnt-i] = '.';
-                buffer[cnt-i-1]++;
+                buffer[i] = '.';
+                buffer[i-1]++;
             }
         }
         else
         {
-            buffer[cnt-i] = '0';
-            buffer[cnt-i-1]++;
+            buffer[i] = 48;
+            buffer[i-1]++;
         }
     }
     if (buffer[len2541] == ':')
     {
-        if (precision == 0 && BigBigWolfState == 5)
+        if (precision == 0 && format_d_type == 5)
         {
             buffer[len2541] = '1';
-            buffer[cnt++] = '0';
+            buffer[cnt++] = 48;
             buffer[cnt] = 0;
         }
         else
