@@ -1,6 +1,6 @@
 /* / */
 
-#include "main.h"
+#include "../main.h"
 #include "pv_c_powerobject.h"
 
 bool test_addi64_overflow(void)
@@ -263,3 +263,8 @@ const Test c_powerobject = {
     .test_funcs = c_powerobject_tests,
     .end_func = NULL
 };
+
+int main()
+{
+    return test_runner(&c_powerobject);
+}
