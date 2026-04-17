@@ -23,11 +23,6 @@ jobs:
         uses: actions/checkout@v4
       - name: Compile PVOs/pvc_PV_119p8.c
         run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_PV_119p8.c -o pvc_PV_119p8-ubuntu.o
-    
-  run-test-ubuntu:
-    needs: compile-source-ubuntu
-    runs-on: ubuntu-latest
-    steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Compile to *.o
@@ -45,11 +40,6 @@ jobs:
         uses: actions/checkout@v4
       - name: Compile PVOs/pvc_PV_119p8.c
         run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_PV_119p8.c -o pvc_PV_119p8-macos.o
-    
-  run-test-macos:
-    needs: compile-source-macos
-    runs-on: macos-latest
-    steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Compile to *.o
@@ -67,11 +57,6 @@ jobs:
         uses: actions/checkout@v4
       - name: Compile PVOs/pvc_PV_119p8.c
         run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_PV_119p8.c -o pvc_PV_119p8-windows.o
-    
-  run-test-windows:
-    needs: compile-source-windows
-    runs-on: windows-latest
-    steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Compile to *.o
