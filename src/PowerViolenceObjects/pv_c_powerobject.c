@@ -27,7 +27,7 @@ bool pvc_int128_neg(pvc_int128 *a)
     return false;
 }
 
-char *const pvc_int128_tostring(pvc_int128 *a)
+char *pvc_int128_tostring(pvc_int128 *a)
 {
     static char buffer[40];
     static char temp[40];
@@ -294,7 +294,7 @@ int pvc_int128_format(char *restrict buffer, const char *restrict format, pvc_in
                     }
                     if (s2541[precision + 1] > '5')
                     {
-                        ???
+                        //
                     }
                 }
             }
