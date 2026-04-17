@@ -15,31 +15,68 @@ on:
   schedule:
     - cron: "17 2 * * *"
 jobs:
-  compile-source:
+  compile-source-ubuntu:
     name: compile source to *.o
-    strategy:
-        matrix:
-          os: [ubuntu-latest, macos-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Compile PVOs/pvc_PV_119p8.c
-        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_PV_119p8.c -o pvc_PV_119p8.o
+        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_PV_119p8.c -o pvc_PV_119p8-ubuntu.o
     
-  run-test:
-    needs: compile-source
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+  run-test-ubuntu:
+    needs: compile-source-ubuntu
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Compile to *.o
-        run: gcc -Wall -Wextra -c tests/ctests/ct_pvc_PV_119p8.c -o ct_pvc_PV_119p8.o -Isrc/PowerViolenceObjects
+        run: gcc -Wall -Wextra -c tests/ctests/ct_pvc_PV_119p8.c -o ct_pvc_PV_119p8-ubuntu.o -Isrc/PowerViolenceObjects
       - name: link
-        run: gcc pvc_PV_119p8.o ct_pvc_PV_119p8.o -o ct_pvc_PV_119p8
+        run: gcc pvc_PV_119p8-ubuntu.o ct_pvc_PV_119p8-ubuntu.o -o ct_pvc_PV_119p8-ubuntu
       - name: Run
-        run: ./ct_pvc_PV_119p8
+        run: ./ct_pvc_PV_119p8-ubuntu
 
+  compile-source-macos:
+    name: compile source to *.o
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Compile PVOs/pvc_PV_119p8.c
+        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_PV_119p8.c -o pvc_PV_119p8-macos.o
+    
+  run-test-macos:
+    needs: compile-source-macos
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Compile to *.o
+        run: gcc -Wall -Wextra -c tests/ctests/ct_pvc_PV_119p8.c -o ct_pvc_PV_119p8-macos.o -Isrc/PowerViolenceObjects
+      - name: link
+        run: gcc pvc_PV_119p8-macos.o ct_pvc_PV_119p8-macos.o -o ct_pvc_PV_119p8-macos
+      - name: Run
+        run: ./ct_pvc_PV_119p8-macos
+
+  compile-source-windows:
+    name: compile source to *.o
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Compile PVOs/pvc_PV_119p8.c
+        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_PV_119p8.c -o pvc_PV_119p8-windows.o
+    
+  run-test-windows:
+    needs: compile-source-windows
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Compile to *.o
+        run: gcc -Wall -Wextra -c tests/ctests/ct_pvc_PV_119p8.c -o ct_pvc_PV_119p8-windows.o -Isrc/PowerViolenceObjects
+      - name: link
+        run: gcc pvc_PV_119p8-windows.o ct_pvc_PV_119p8-windows.o -o ct_pvc_PV_119p8-windows
+      - name: Run
+        run: ./ct_pvc_PV_119p8-windows
