@@ -35,7 +35,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Compile to *.o
-        run: gcc -Wall -Wextra -c tests/ctests/pvc_PV_119p8.c -o ct_pvc_PV_119p8.o -Isrc/PowerViolenceObjects
+        run: gcc -Wall -Wextra -c tests/ctests/ct_pvc_PV_119p8.c -o ct_pvc_PV_119p8.o -Isrc/PowerViolenceObjects
       - name: link
         run: gcc pvc_PV_119p8.o ct_pvc_PV_119p8.o -o ct_pvc_PV_119p8
       - name: Run

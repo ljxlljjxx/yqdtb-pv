@@ -137,7 +137,7 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
     int format_nowp = 1;
     int format_d_type;
     size_t len2541;
-    char *s2541;
+    const char *s2541;
 
     int carry_level;
 
