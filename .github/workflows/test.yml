@@ -1,5 +1,5 @@
-name: C test powerobject
-run-name: C test powerobject triggered bt ${{ github.actor }}
+name: C test pvc_PV_119p8
+run-name: C test pvc_PV_119p8 triggered bt ${{ github.actor }}
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 on:
@@ -24,8 +24,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Compile PVOs/pv_c_powerobjects.c
-        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pv_c_powerobject.c -o pvc_powerobject.o
+      - name: Compile PVOs/pvc_PV_119p8.c
+        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_PV_119p8.c -o pvc_PV_119p8.o
     
   run-test:
     needs: compile-source
@@ -35,9 +35,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Compile to *.o
-        run: gcc -Wall -Wextra -c tests/ctests/powerobject.c -o ct_powerobject.o -Isrc/PowerViolenceObjects
+        run: gcc -Wall -Wextra -c tests/ctests/pvc_PV_119p8.c -o ct_pvc_PV_119p8.o -Isrc/PowerViolenceObjects
       - name: link
-        run: gcc pvc_powerobject.o ct_powerobject.o -o ct_powerobject
+        run: gcc pvc_PV_119p8.o ct_pvc_PV_119p8.o -o ct_pvc_PV_119p8
       - name: Run
-        run: ./ct_powerobject
+        run: ./ct_pvc_PV_119p8
 
