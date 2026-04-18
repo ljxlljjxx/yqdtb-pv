@@ -294,6 +294,10 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
             {
                 if (cnt - (*buffer == '-') <= -precision)
                 {
+                    if (cnt - (*buffer == '-') < -precision)
+                    {
+                        goto format_f_negp_uncarry;
+                    }
                     if (buffer[*buffer == '-'] > '5')
                     {
                     format_f_negp_carry:
@@ -302,10 +306,12 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
                         {
                             buffer[i] = '0';
                         }
+                        buffer[cnt++] = '0';
                         goto function_return;
                     }
                     else if (buffer[*buffer == '-'] == '5')
                     {
+                        if ((format_b_b._2 & 256) != 0) goto format_f_negp_carry;
                         for (int i = (*buffer == '-') + 1; i < (*buffer == '-') - precision; i++)
                         {
                             if (buffer[i] != 48)
@@ -314,6 +320,7 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
                             }
                         }
                     }
+                format_f_negp_uncarry:
                     buffer[0] = '0';
                     buffer[1] = 0;
                     return 1;
@@ -327,7 +334,7 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
                         buffer[i] = '0';
                     }
                 }
-                if (buffer[cnt+precision] > '5' || (buffer[cnt+precision] == '5' && (flag || buffer[cnt+precision-1] & 1)))
+                if (buffer[cnt+precision] > '5' || (buffer[cnt+precision] == '5' && (flag || buffer[cnt+precision-1] & 1 || format_b_b._2)))
                 {
                     buffer[cnt+precision] = '0';
                     buffer[cnt+precision-1]++;
