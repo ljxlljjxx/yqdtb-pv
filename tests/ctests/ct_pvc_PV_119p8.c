@@ -264,6 +264,42 @@ bool test_int128_format3(void)
     assert_string_length_equal(s, ans, "-9.9960938");
     ans = pvc_PV_119p8_format(s, ".100f", &a);
     assert_string_length_equal(s, ans, "-9.9960937500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+        
+    a._1 = INT64_MAX, a._2 = UINT64_MAX;
+    ans = pvc_PV_119p8_format(s, "f", &a);
+    assert_string_length_equal(s, ans, "664613997892457936451903530140172287.99609375");
+    ans = pvc_PV_119p8_format(s, ".0f", &a);
+    assert_string_length_equal(s, ans, "664613997892457936451903530140172288");
+    ans = pvc_PV_119p8_format(s, ".1f", &a);
+    assert_string_length_equal(s, ans, "664613997892457936451903530140172288.0");
+    ans = pvc_PV_119p8_format(s, ".2f", &a);
+    assert_string_length_equal(s, ans, "664613997892457936451903530140172288.00");
+    ans = pvc_PV_119p8_format(s, ".3f", &a);
+    assert_string_length_equal(s, ans, "664613997892457936451903530140172287.996");
+    ans = pvc_PV_119p8_format(s, ".5f", &a);
+    assert_string_length_equal(s, ans, "664613997892457936451903530140172287.99609");
+    ans = pvc_PV_119p8_format(s, ".7f", &a);
+    assert_string_length_equal(s, ans, "664613997892457936451903530140172287.9960938");
+    ans = pvc_PV_119p8_format(s, ".100f", &a);
+    assert_string_length_equal(s, ans, "664613997892457936451903530140172287.9960937500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+    
+    a._1 = 13877787807814ll, a._2 = 8425648038478872575ll;
+    ans = pvc_PV_119p8_format(s, "f", &a);
+    assert_string_length_equal(s, ans, "999999999999999999999999999999.99609375");
+    ans = pvc_PV_119p8_format(s, ".0f", &a);
+    assert_string_length_equal(s, ans, "1000000000000000000000000000000");
+    ans = pvc_PV_119p8_format(s, ".1f", &a);
+    assert_string_length_equal(s, ans, "1000000000000000000000000000000.0");
+    ans = pvc_PV_119p8_format(s, ".2f", &a);
+    assert_string_length_equal(s, ans, "1000000000000000000000000000000.00");
+    ans = pvc_PV_119p8_format(s, ".3f", &a);
+    assert_string_length_equal(s, ans, "999999999999999999999999999999.996");
+    ans = pvc_PV_119p8_format(s, ".5f", &a);
+    assert_string_length_equal(s, ans, "999999999999999999999999999999.99609");
+    ans = pvc_PV_119p8_format(s, ".7f", &a);
+    assert_string_length_equal(s, ans, "999999999999999999999999999999.9960938");
+    ans = pvc_PV_119p8_format(s, ".100f", &a);
+    assert_string_length_equal(s, ans, "999999999999999999999999999999.9960937500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
     
     test_end();
 }
