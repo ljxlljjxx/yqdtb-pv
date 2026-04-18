@@ -10,3 +10,4 @@ announcement/
 *.o
 ct_*.o
 *-macos
+PV_rule/
