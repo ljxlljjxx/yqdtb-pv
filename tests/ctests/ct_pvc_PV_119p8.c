@@ -1,4 +1,10 @@
-/* / */
+/* 
+Test:
+gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_PV_119p8.c -o pvc_PV_119p8-macos.o
+gcc -Wall -Wextra -c tests/ctests/ct_pvc_PV_119p8.c -o ct_pvc_PV_119p8-macos.o -Isrc/PowerViolenceObjects
+gcc pvc_PV_119p8-macos.o ct_pvc_PV_119p8-macos.o -o ct_pvc_PV_119p8-macos
+./ct_pvc_PV_119p8-macos
+*/
 
 #include "../main.h"
 #include "pvc_PV_119p8.h"
@@ -214,6 +220,18 @@ bool test_int128_format1(void)
     ans = pvc_PV_119p8_format(s, "f", &a);
     assert_string_equal(s, "0");
     assert_equal(ans, 1);
+    ans = pvc_PV_119p8_format(s, ".3f", &a);
+    assert_string_equal(s, "0.000");
+    assert_equal(ans, 5);
+    ans = pvc_PV_119p8_format(s, ".5f", &a);
+    assert_string_equal(s, "0.00000");
+    assert_equal(ans, 7);
+    ans = pvc_PV_119p8_format(s, ".7f", &a);
+    assert_string_equal(s, "0.0000000");
+    assert_equal(ans, 9);
+    ans = pvc_PV_119p8_format(s, ".100f", &a);
+    assert_string_equal(s, "0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+    assert_equal(ans, 102);
     ans = pvc_PV_119p8_format(s, "???", &a);
     assert_string_equal(s, "unknown format");
     assert_equal(ans, -1);
@@ -271,6 +289,18 @@ bool test_int128_format2(void)
     ans = pvc_PV_119p8_format(s, "f", &a);
     assert_string_equal(s, "447.3203125");
     assert_equal(ans, 11);
+    ans = pvc_PV_119p8_format(s, ".3f", &a);
+    assert_string_equal(s, "447.320");
+    assert_equal(ans, 7);
+    ans = pvc_PV_119p8_format(s, ".6f", &a);
+    assert_string_equal(s, "447.320312");
+    assert_equal(ans, 10);
+    ans = pvc_PV_119p8_format(s, ".7f", &a);
+    assert_string_equal(s, "447.3203125");
+    assert_equal(ans, 11);
+    ans = pvc_PV_119p8_format(s, ".100f", &a);
+    assert_string_equal(s, "447.3203125000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+    assert_equal(ans, 104);
     ans = pvc_PV_119p8_format(s, "???", &a);
     assert_string_equal(s, "unknown format");
     assert_equal(ans, -1);
