@@ -59,3 +59,20 @@ jobs:
         run: gcc pvc_PV_119p8-windows.o ct_pvc_PV_119p8-windows.o -o ct_pvc_PV_119p8-windows
       - name: Run
         run: ./ct_pvc_PV_119p8-windows
+
+  notify-ubuntu:
+    needs: [compile-source-ubuntu, compile-source-macos, compile-source-windows]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send email notification
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          subject: "✅ GitHub Actions: 测试通过通知"
+          to: "recipient@example.com"
+          from: "GitHub Actions"
+          body: |
+            项目 ${{ github.repository }} 的测试已成功通过！
+
+            提交信息: ${{ github.event.head_commit.message }}
+            提交者: ${{ github.actor }}
