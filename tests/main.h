@@ -61,6 +61,13 @@ typedef struct Test
         } \
     } while (0)
 
+#define assert_string_length_equal(str, len, ans) \
+    do \
+    { \
+        assert_string_equal(str, ans); \
+        assert_equal(len, strlen(ans)); \
+    } while (0)
+
 static int _ctest_sprintf(int s, ...)
 {
     va_list args;
@@ -112,7 +119,7 @@ int test_runner(const Test *now)
     const TestFunc *test_func;
     clock_t start, end;
     int count_fail = 0, count_ok = 0;
-    printf("\033[93mnow=%p running: \033[0m%s\n", now, now->file_name);
+    printf("running: \033[0m%s\n", now->file_name);
     if (now->init_func) now->init_func();
     test_func = now->test_funcs;
     while (test_func->name)

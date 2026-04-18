@@ -97,49 +97,42 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
 {
     /*
     format:
-        hi: high, int64_t                                      (Achieved)
-        hu: high, uint64_t                                     (Achieved)
-        hx: high, hexadecimal                                  (Achieved)
-        li: low,  int64_t                                      (Achieved)
-        lu: low,  uint64_t                                     (Achieved)
-        lx: low,  hexadecimal                                  (Achieved)
-        b:  binary                                             (Achieved)
-        x:  hexadecimal                                        (Achieved)
-        X:  hexadecimal                                        (Achieved)
-        d:  integer part
-            +d: display the sign bit
-        f:  floating-point number.
-            .{n}f: the precision
-            .*f: the next parameter specified is the precision
-        e:  scientific notation. the default precision is 3.
-            .{n}e: the precision
-            .*e: the next parameter specified is the precision
-        E:  scientific notation. the default precision is 3.
-            .{n}E: the precision
-            .*E: the next parameter specified is the precision
-        g:  Automatically select %f or %e based on the value. Use the %e format when the exponent is less than -4 or greater than or equal to the precision.
-            .{n}g: the precision
-            .*g: the next parameter specified is the precision
-        B:  if a == 0, return "true". else return "false".
+        (Achieved) (Tested) hi: high, int64_t
+        (Achieved) (Tested) hu: high, uint64_t
+        (Achieved) (Tested) hx: high, hexadecimal
+        (Achieved) (Tested) li: low,  int64_t
+        (Achieved) (Tested) lu: low,  uint64_t
+        (Achieved) (Tested) lx: low,  hexadecimal
+        (Achieved) (Tested) b:  binary
+        (Achieved) (Tested) x:  hexadecimal
+        (Achieved) (Tested) X:  hexadecimal
+        (Achieved) (Tested) d:  integer part
+        (Achieved) (Tested)     +d: display the sign bit
+        (Achieved) (Tested) f:  floating-point number.
+        (--------) (------)     .{n}f: the precision
+        (--------) (------)     .*f: the next parameter specified is the precision
+        (--------) (------) e:  scientific notation. the default precision is 3.
+        (--------) (------)     .{n}e: the precision
+        (--------) (------)     .*e: the next parameter specified is the precision
+        (--------) (------) E:  scientific notation. the default precision is 3.
+        (--------) (------)     .{n}E: the precision
+        (--------) (------)     .*E: the next parameter specified is the precision
+        (--------) (------) g:  Automatically select %f or %e based on the value. Use the %e format when the exponent is less than -4 or greater than or equal to the precision.
+        (--------) (------)     .{n}g: the precision
+        (--------) (------)     .*g: the next parameter specified is the precision
+        (Achieved) (Tested) B:  if a == 0, return "true". else return "false".
     */
     size_t cnt = 0;
-    int res = 0;
-    static const char *const ss[] = {"",".00390625",".0078125",".01171875",".015625",".01953125",".0234375",".02734375",".03125",".03515625",".0390625",".04296875",".046875",".05078125",".0546875",".05859375",".0625",".06640625",".0703125",".07421875",".078125",".08203125",".0859375",".08984375",".09375",".09765625",".1015625",".10546875",".109375",".11328125",".1171875",".12109375",".125",".12890625",".1328125",".13671875",".140625",".14453125",".1484375",".15234375",".15625",".16015625",".1640625",".16796875",".171875",".17578125",".1796875",".18359375",".1875",".19140625",".1953125",".19921875",".203125",".20703125",".2109375",".21484375",".21875",".22265625",".2265625",".23046875",".234375",".23828125",".2421875",".24609375",".25",".25390625",".2578125",".26171875",".265625",".26953125",".2734375",".27734375",".28125",".28515625",".2890625",".29296875",".296875",".30078125",".3046875",".30859375",".3125",".31640625",".3203125",".32421875",".328125",".33203125",".3359375",".33984375",".34375",".34765625",".3515625",".35546875",".359375",".36328125",".3671875",".37109375",".375",".37890625",".3828125",".38671875",".390625",".39453125",".3984375",".40234375",".40625",".41015625",".4140625",".41796875",".421875",".42578125",".4296875",".43359375",".4375",".44140625",".4453125",".44921875",".453125",".45703125",".4609375",".46484375",".46875",".47265625",".4765625",".48046875",".484375",".48828125",".4921875",".49609375",".5",".50390625",".5078125",".51171875",".515625",".51953125",".5234375",".52734375",".53125",".53515625",".5390625",".54296875",".546875",".55078125",".5546875",".55859375",".5625",".56640625",".5703125",".57421875",".578125",".58203125",".5859375",".58984375",".59375",".59765625",".6015625",".60546875",".609375",".61328125",".6171875",".62109375",".625",".62890625",".6328125",".63671875",".640625",".64453125",".6484375",".65234375",".65625",".66015625",".6640625",".66796875",".671875",".67578125",".6796875",".68359375",".6875",".69140625",".6953125",".69921875",".703125",".70703125",".7109375",".71484375",".71875",".72265625",".7265625",".73046875",".734375",".73828125",".7421875",".74609375",".75",".75390625",".7578125",".76171875",".765625",".76953125",".7734375",".77734375",".78125",".78515625",".7890625",".79296875",".796875",".80078125",".8046875",".80859375",".8125",".81640625",".8203125",".82421875",".828125",".83203125",".8359375",".83984375",".84375",".84765625",".8515625",".85546875",".859375",".86328125",".8671875",".87109375",".875",".87890625",".8828125",".88671875",".890625",".89453125",".8984375",".90234375",".90625",".91015625",".9140625",".91796875",".921875",".92578125",".9296875",".93359375",".9375",".94140625",".9453125",".94921875",".953125",".95703125",".9609375",".96484375",".96875",".97265625",".9765625",".98046875",".984375",".98828125",".9921875",".99609375"};
-    static const int slen[] = {-1,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,4,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,3,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,4,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,2,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,4,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,3,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,4,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,1,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,4,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,3,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,4,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,2,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,4,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,3,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8,4,8,7,8,6,8,7,8,5,8,7,8,6,8,7,8};
-    
     static char format_b_temp[40];
     size_t format_b_temp_size = 0;
     uint64_t format_b_high, format_b_low, format_b_tmp;
     pvc_PV_119p8 format_b_b;
 
-    int precision;
+    int precision = 0;
     va_list argv;
     int format_nowp = 1;
     int format_d_type;
-    size_t len2541;
     const char *s2541;
-
-    int carry_level;
 
     if (a == NULL)
     {
@@ -166,7 +159,6 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
         default:  goto unknown_format;
         }
     case 'b':
-    format_b:
         for (int i = 63; i >= 0; i--) buffer[cnt++] = ((a->_1 >> i) & 1) | 48;
         for (int i = 63; i >= 0; i--) buffer[cnt++] = ((a->_2 >> i) & 1) | 48;
         buffer[cnt] = 0;
@@ -225,27 +217,67 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
         switch (format_d_type)
         {
         case 0:
-            return cnt;
+            goto function_return;
         case 1:
-            strcpy(buffer + cnt, ss[format_b_b._2 & 255]);
-            return cnt + slen[format_b_b._2 & 255] + 1;
+            buffer[cnt++] = '.';
+            strcpy(buffer + cnt, quick_float[format_b_b._2 & 255]);
+            return cnt + quick_float_len[format_b_b._2 & 255];
         case 2:
         
         case 5:
-            if (precision)
+            if (precision > 0)
             {
-                len2541 = slen[format_b_b._2 & 255];
-                s2541 = ss[format_b_b._2 & 255];
-                if (precision < len2541)
+                buffer[cnt++] = '.';
+                if (precision <= 8)
                 {
+                    if (
+                        (precision == 2 && (format_b_b._2 & 255) == 255) ||
+                        (precision == 1 && quick_float_co1[format_b_b._2 & 255])
+                    )
+                    {
+                        buffer[cnt-2]++;
+                        for (int i = cnt-2; i >= 0; i--)
+                        {
+                            if (buffer[i] != 58)
+                            {
+                                if (buffer[i] != 46)
+                                {
+                                    break;
+                                }
+                                buffer[i] = '-';
+                                buffer[i+1] = '1';
+                                buffer[cnt-1] = '0';
+                                buffer[cnt++] = '.';
+                                break;
+                            }
+                            if (i == 0)
+                            {
+                                buffer[i] = '1';
+                                buffer[cnt-1] = '0';
+                                buffer[cnt++] = '.';
+                                break;
+                            }
+                            buffer[i] = 48;
+                            buffer[i-1]++;
+                        }
+                    }
+                    s2541 = quick_floats[precision][format_b_b._2 & 255];
                     for (int i = 0; i < precision; i++)
                     {
                         buffer[cnt++] = s2541[i];
                     }
-                    if (s2541[precision + 1] > '5')
+                }
+                else
+                {
+                    for (int i = 0; i < 8; i++)
                     {
-                        // 进位
+                        buffer[cnt++] = quick_float_8[format_b_b._2 & 255][i];
                     }
+                    for (int i = 8; i < precision; i++)
+                    {
+                        buffer[cnt++] = '0';
+                    }
+                    goto function_return;
                 }
             }
             else
@@ -254,9 +286,10 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
                 {
                     buffer[cnt-1]++;
                 }
-                len2541 = (*buffer == '-');
+                goto carry;
             }
         }
+        goto function_return;
     case '+':
         if (a->_1 >= 0) buffer[cnt++] = '+';
         format_d_type = 0;
@@ -286,7 +319,7 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
         {
             while (isdigit(format[format_nowp]))
             {
-                precision = precision * 10 + format[format_nowp++];
+                precision = precision * 10 + (format[format_nowp++] & 15);
             }
         }
         switch (format[format_nowp])
@@ -300,38 +333,57 @@ unknown_format:
     strcpy(buffer, "unknown format");
     return -1;
 carry:
-    len2541 = (*buffer == '-');
-    for (int i = cnt-1; i > len2541; i--)
+    if (*buffer == '-')
     {
-        if (buffer[i] != ':')
+        for (int i = cnt-1; i > 1; i--)
         {
-            if (buffer[i] != '/')
+            if (buffer[i] != 58)
             {
-                break;
+                goto function_return;
             }
             else
             {
-                buffer[i] = '.';
+                buffer[i] = 48;
                 buffer[i-1]++;
             }
         }
-        else
+        if (buffer[1] == 58)
         {
-            buffer[i] = 48;
-            buffer[i-1]++;
+            if (format_d_type == 5)
+            {
+                // _debug puts(buffer);
+                buffer[1] = '1';
+                buffer[cnt++] = 48;
+                buffer[cnt] = 0;
+            }
         }
     }
-    if (buffer[len2541] == ':')
+    else
     {
-        if (precision == 0 && format_d_type == 5)
+        for (int i = cnt-1; i > 0; i--)
         {
-            buffer[len2541] = '1';
-            buffer[cnt++] = 48;
-            buffer[cnt] = 0;
+            if (buffer[i] != 58)
+            {
+                goto function_return;
+            }
+            else
+            {
+                buffer[i] = 48;
+                buffer[i-1]++;
+            }
         }
-        else
+        if (*buffer == 58)
         {
-            // What a shit!!
+            if (format_d_type == 5)
+            {
+                // _debug puts(buffer);
+                buffer[0] = '1';
+                buffer[cnt++] = 48;
+                buffer[cnt] = 0;
+            }
         }
     }
+function_return:
+    buffer[cnt] = 0;
+    return cnt;
 }

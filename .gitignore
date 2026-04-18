@@ -8,4 +8,5 @@ Icon.py
 _*
 announcement/
 *.o
-ct_*
+ct_*.o
+*-macos
