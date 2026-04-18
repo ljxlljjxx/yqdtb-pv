@@ -132,9 +132,9 @@ int test_runner(const Test *now)
             end = clock();
             count_fail++;
             printf(
-                "\033[91m%s failed: (used %llu ns)\n    \033[1m%s\n\033[0m", 
+                "\033[91m%s failed: (used %lu μs)\n    \033[1m%s\n\033[0m", 
                 test_func->name, 
-                (end - start) * 1000000000ll / CLOCKS_PER_SEC, 
+                (end - start) * 1000000 / CLOCKS_PER_SEC, 
                 test_format_buffer
             );
         }
@@ -143,9 +143,9 @@ int test_runner(const Test *now)
             end = clock();
             count_ok++;
             printf(
-                "\033[92m%-40s ok (used %llu ns)\n\033[0m", 
+                "\033[92m%-40s ok (used %lu μs)\n\033[0m", 
                 test_func->name, 
-                (end - start) * 1000000000ll / CLOCKS_PER_SEC
+                (end - start) * 1000000 / CLOCKS_PER_SEC
             );
         }
     increase:

@@ -10,6 +10,8 @@
 * The testing section of this project is located in the **tests** directory. The **ctests** directory mainly contains tests for **PowerViolenceObjects**, and the **pytests** directory mainly contains tests for **PowerViolence**.
 * This project also includes a simple implementation, named **PowerViolence_simplified**, which does not fully implement the rules and can only allow one player and one computer to play against each other. This file is a **macOS** executable file.
 
+<center><img src="rule/PV_rule.png"></center>
+
 <center><img src="rule/PV_rule/images_0.png"></center>
 <center><img src="rule/PV_rule/images_1.png"></center>
 <center><img src="rule/PV_rule/images_2.png"></center>
