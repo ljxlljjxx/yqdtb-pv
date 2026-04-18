@@ -336,7 +336,7 @@ bool test_int128_format3(void)
     assert_string_length_equal(s, ans, "101307907862338465673935864443609275.0078125");
     ans = pvc_PV_119p8_format(s, ".100f", &a);
     assert_string_length_equal(s, ans, "101307907862338465673935864443609275.0078125000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
-    for (volatile a = 0; a < 100000; a++) for (volatile b = 0; b < 10000; b++)
+    for (volatile int a = 0; a < 100000; a++) for (volatile int b = 0; b < 10000; b++)
     test_end();
 }
 
