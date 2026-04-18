@@ -61,6 +61,13 @@ typedef struct Test
         } \
     } while (0)
 
+#define assert_string_length_equal(str, len, ans) \
+    do \
+    { \
+        assert_string_equal(str, ans); \
+        assert_equal(len, strlen(ans)); \
+    } while (0)
+
 static int _ctest_sprintf(int s, ...)
 {
     va_list args;

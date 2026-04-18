@@ -36,4 +36,21 @@
 
 #define _debug
 
+#include "pvc_defines.h"
+
+extern const char *quick_float[];
+extern const int quick_float_len[];
+extern const char *quick_float_1[];
+extern const bool quick_float_co1[];
+extern const char *quick_float_2[];
+extern const bool quick_float_co2[];
+extern const char *quick_float_3[];
+extern const char *quick_float_4[];
+extern const char *quick_float_5[];
+extern const char *quick_float_6[];
+extern const char *quick_float_7[];
+extern const char *quick_float_8[];
+extern const char *const *const quick_floats[];
+
+
 #endif /* _PVC_MAIN_H */
