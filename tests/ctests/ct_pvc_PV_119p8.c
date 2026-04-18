@@ -10,89 +10,6 @@ gcc pvc_PV_119p8-macos.o ct_pvc_PV_119p8-macos.o pvc_defines-macos.o -o ct_pvc_P
 #include "../main.h"
 #include "pvc_PV_119p8.h"
 
-bool test_addi64_overflow(void)
-{
-    int64_t a, b, res;
-    bool ans;
-    test_start();
-
-    a = 1, b = 2;
-    ans = addi64_overflow(a, b, &res);
-    assert_equal(ans, false);
-    assert_equal(res, 3);
-
-    a = INT64_MAX, b = 1;
-    ans = addi64_overflow(a, b, &res);
-    assert_equal(ans, true);
-    assert_equal(res, INT64_MIN);
-
-    a = INT64_MAX, b = -1;
-    ans = addi64_overflow(a, b, &res);
-    assert_equal(ans, false);
-    assert_equal(res, INT64_MAX-1);
-
-    a = INT64_MIN, b = -1;
-    ans = addi64_overflow(a, b, &res);
-    assert_equal(ans, true);
-    assert_equal(res, INT64_MAX);
-
-    a = INT64_MIN, b = 0;
-    ans = addi64_overflow(a, b, &res);
-    assert_equal(ans, false);
-    assert_equal(res, INT64_MIN);
-
-    a = INT64_MIN, b = INT64_MIN;
-    ans = addi64_overflow(a, b, &res);
-    assert_equal(ans, true);
-    assert_equal(res, 0);
-
-    a = INT64_MAX, b = INT64_MIN;
-    ans = addi64_overflow(a, b, &res);
-    assert_equal(ans, false);
-    assert_equal(res, -1);
-
-    a = 1, b = INT64_MAX;
-    ans = addi64_overflow(a, b, &res);
-    assert_equal(ans, true);
-    assert_equal(res, INT64_MIN);
-
-    test_end();
-}
-
-bool test_addu64_overflow(void)
-{
-    uint64_t a, b, res;
-    bool ans;
-    test_start();
-
-    a = 0, b = 0;
-    ans = addu64_overflow(a, b, &res);
-    assert_equal(ans, false);
-    assert_equal(res, 0);
-
-    a = UINT64_MAX, b = 1;
-    ans = addu64_overflow(a, b, &res);
-    assert_equal(ans, true);
-    assert_equal(res, 0);
-
-    a = UINT64_MAX, b = 0;
-    ans = addu64_overflow(a, b, &res);
-    assert_equal(ans, false);
-    assert_equal(res, UINT64_MAX);
-
-    a = 1, b = UINT64_MAX;
-    ans = addu64_overflow(a, b, &res);
-    assert_equal(ans, true);
-    assert_equal(res, 0);
-
-    a = UINT64_MAX, b = UINT64_MAX;
-    ans = addu64_overflow(a, b, &res);
-    assert_equal(ans, true);
-    assert_equal(res, UINT64_MAX-1);
-
-    test_end();
-}
-
 bool test_pvc_PV_119p8_neg(void)
 {
     pvc_PV_119p8 a;
@@ -351,9 +268,7 @@ bool test_int128_format3(void)
     test_end();
 }
 
-const TestFunc c_powerobject_tests[] = {
-    {"test_addi64_overflow", test_addi64_overflow,    TestFuncState_enable},
-    {"test_addu64_overflow", test_addu64_overflow,    TestFuncState_enable},
+const TestFunc c_PV_119p8_tests[] = {
     {"test_pvc_PV_119p8_neg", test_pvc_PV_119p8_neg,  TestFuncState_enable},
     {"test_int128_tostring", test_int128_tostring,    TestFuncState_enable},
     {"test_int128_format1",  test_int128_format1,     TestFuncState_enable},
@@ -362,14 +277,14 @@ const TestFunc c_powerobject_tests[] = {
     {NULL, NULL, 0}
 };
 
-const Test c_powerobject = {
+const Test c_PV_119p8 = {
     .file_name = __FILE__,
     .init_func = NULL,
-    .test_funcs = c_powerobject_tests,
+    .test_funcs = c_PV_119p8_tests,
     .end_func = NULL
 };
 
 int main()
 {
-    return test_runner(&c_powerobject);
+    return test_runner(&c_PV_119p8);
 }
