@@ -563,6 +563,30 @@ bool test_pvc_PV_119p8_format_negf(void)
     ans = pvc_PV_119p8_format(s, ".*f", &a, -4);
     assert_string_length_equal(s, ans, "0");
 
+    a._1 = 0, a._2 = 128000;
+    ans = pvc_PV_119p8_format(s, "f", &a);
+    assert_string_length_equal(s, ans, "500.0");
+    ans = pvc_PV_119p8_format(s, ".-0f", &a);
+    assert_string_length_equal(s, ans, "500");
+    ans = pvc_PV_119p8_format(s, ".*f", &a, -0);
+    assert_string_length_equal(s, ans, "500");
+    ans = pvc_PV_119p8_format(s, ".-1f", &a);
+    assert_string_length_equal(s, ans, "500");
+    ans = pvc_PV_119p8_format(s, ".*f", &a, -1);
+    assert_string_length_equal(s, ans, "500");
+    ans = pvc_PV_119p8_format(s, ".-2f", &a);
+    assert_string_length_equal(s, ans, "500");
+    ans = pvc_PV_119p8_format(s, ".*f", &a, -2);
+    assert_string_length_equal(s, ans, "500");
+    ans = pvc_PV_119p8_format(s, ".-3f", &a);
+    assert_string_length_equal(s, ans, "0");
+    ans = pvc_PV_119p8_format(s, ".*f", &a, -3);
+    assert_string_length_equal(s, ans, "0");
+    ans = pvc_PV_119p8_format(s, ".-4f", &a);
+    assert_string_length_equal(s, ans, "0");
+    ans = pvc_PV_119p8_format(s, ".*f", &a, -4);
+    assert_string_length_equal(s, ans, "0");
+
     a._1 = ~0, a._2 = -384000;
     ans = pvc_PV_119p8_format(s, "f", &a);
     assert_string_length_equal(s, ans, "-1500.0");
