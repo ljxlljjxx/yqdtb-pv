@@ -55,7 +55,7 @@ bool test_pvc_PV_119p8_neg(void)
     test_end();
 }
 
-bool test_int128_tostring(void)
+bool test_pvc_PV_119p8_tostring(void)
 {
     pvc_PV_119p8 a;
     char *s;
@@ -88,7 +88,7 @@ bool test_int128_tostring(void)
     test_end();
 }
 
-bool test_int128_format1(void)
+bool test_pvc_PV_119p8_format_pointf_1(void)
 {
     pvc_PV_119p8 a;
     int ans;
@@ -140,7 +140,7 @@ bool test_int128_format1(void)
     test_end();
 }
 
-bool test_int128_format2(void)
+bool test_pvc_PV_119p8_format_pointf_2(void)
 {
     pvc_PV_119p8 a;
     int ans;
@@ -192,7 +192,7 @@ bool test_int128_format2(void)
     test_end();
 }
 
-bool test_int128_format3(void)
+bool test_pvc_PV_119p8_format_pointf_3(void)
 {
     pvc_PV_119p8 a;
     int ans;
@@ -342,10 +342,10 @@ bool test_int128_format3(void)
 
 const TestFunc c_PV_119p8_tests[] = {
     {"test_pvc_PV_119p8_neg", test_pvc_PV_119p8_neg,  TestFuncState_enable},
-    {"test_int128_tostring", test_int128_tostring,    TestFuncState_enable},
-    {"test_int128_format1",  test_int128_format1,     TestFuncState_enable},
-    {"test_int128_format2",  test_int128_format2,     TestFuncState_enable},
-    {"test_int128_format3",  test_int128_format3,     TestFuncState_enable},
+    {"test_pvc_PV_119p8_tostring", test_pvc_PV_119p8_tostring,    TestFuncState_enable},
+    {"test_pvc_PV_119p8_format_pointf_1",  test_pvc_PV_119p8_format_pointf_1,     TestFuncState_enable},
+    {"test_pvc_PV_119p8_format_pointf_2",  test_pvc_PV_119p8_format_pointf_2,     TestFuncState_enable},
+    {"test_pvc_PV_119p8_format_pointf_3",  test_pvc_PV_119p8_format_pointf_3,     TestFuncState_enable},
     {NULL, NULL, 0}
 };
 
