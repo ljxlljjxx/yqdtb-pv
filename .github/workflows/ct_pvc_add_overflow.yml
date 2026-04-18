@@ -24,8 +24,6 @@ jobs:
       - name: Compile PVOs/pvc_defines.c
         run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_defines.c -o pvc_defines-ubuntu.o
       - name: Compile PVOs/pvc_add_overflow.c
-        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_add_overflow.c -o pvc_add_overflow-ubuntu.o
-      - name: Compile to *.o
         run: gcc -Wall -Wextra -c tests/ctests/ct_pvc_add_overflow.c -o ct_pvc_add_overflow-ubuntu.o -Isrc/PowerViolenceObjects
       - name: link
         run: gcc pvc_add_overflow-ubuntu.o ct_pvc_add_overflow-ubuntu.o pvc_defines-ubuntu.o -o ct_pvc_add_overflow-ubuntu
@@ -41,8 +39,6 @@ jobs:
       - name: Compile PVOs/pvc_defines.c
         run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_defines.c -o pvc_defines-macos.o
       - name: Compile PVOs/pvc_add_overflow.c
-        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_add_overflow.c -o pvc_add_overflow-macos.o
-      - name: Compile to *.o
         run: gcc -Wall -Wextra -c tests/ctests/ct_pvc_add_overflow.c -o ct_pvc_add_overflow-macos.o -Isrc/PowerViolenceObjects
       - name: link
         run: gcc pvc_add_overflow-macos.o ct_pvc_add_overflow-macos.o pvc_defines-macos.o -o ct_pvc_add_overflow-macos
@@ -58,8 +54,6 @@ jobs:
       - name: Compile PVOs/pvc_defines.c
         run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_defines.c -o pvc_defines-windows.o
       - name: Compile PVOs/pvc_add_overflow.c
-        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_add_overflow.c -o pvc_add_overflow-windows.o
-      - name: Compile to *.o
         run: gcc -Wall -Wextra -c tests/ctests/ct_pvc_add_overflow.c -o ct_pvc_add_overflow-windows.o -Isrc/PowerViolenceObjects
       - name: link
         run: gcc pvc_add_overflow-windows.o ct_pvc_add_overflow-windows.o pvc_defines-windows.o -o ct_pvc_add_overflow-windows
