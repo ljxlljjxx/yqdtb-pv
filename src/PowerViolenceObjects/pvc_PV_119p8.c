@@ -109,8 +109,8 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
         (Achieved) (Tested) d:  integer part
         (Achieved) (Tested)     +d: display the sign bit
         (Achieved) (Tested) f:  floating-point number.
-        (--------) (------)     .{n}f: the precision
-        (--------) (------)     .*f: the next parameter specified is the precision
+        (Achieved) (Tested)     .{n}f: the precision
+        (Achieved) (Tested)     .*f: the next parameter specified is the precision
         (--------) (------) e:  scientific notation. the default precision is 3.
         (--------) (------)     .{n}e: the precision
         (--------) (------)     .*e: the next parameter specified is the precision
@@ -122,7 +122,7 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
         (--------) (------)     .*g: the next parameter specified is the precision
         (Achieved) (Tested) B:  if a == 0, return "true". else return "false".
     */
-    size_t cnt = 0;
+    int cnt = 0;
     static char format_b_temp[40];
     size_t format_b_temp_size = 0;
     uint64_t format_b_high, format_b_low, format_b_tmp;
@@ -133,6 +133,8 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
     int format_nowp = 1;
     int format_d_type;
     const char *s2541;
+
+    int flag;
 
     if (a == NULL)
     {
@@ -280,13 +282,72 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
                     goto function_return;
                 }
             }
-            else
+            else if (precision == 0)
             {
                 if ((format_b_b._2 & 255) > 128 || ((format_b_b._2 & 255) == 128 && (buffer[cnt-1] & 1)))
                 {
                     buffer[cnt-1]++;
                 }
                 goto carry;
+            }
+            else
+            {
+                if (cnt - (*buffer == '-') <= -precision)
+                {
+                    if (buffer[*buffer == '-'] > '5')
+                    {
+                    format_f_negp_carry:
+                        buffer[*buffer == '-'] = '1';
+                        for (int i = (*buffer == '-') + 1; i <= (*buffer == '-') - precision; i++)
+                        {
+                            buffer[i] = '0';
+                        }
+                        goto function_return;
+                    }
+                    else if (buffer[*buffer == '-'] == '5')
+                    {
+                        for (int i = (*buffer == '-') + 1; i < (*buffer == '-') - precision; i++)
+                        {
+                            if (buffer[i] != 48)
+                            {
+                                goto format_f_negp_carry;
+                            }
+                        }
+                    }
+                    buffer[0] = '0';
+                    buffer[1] = 0;
+                    return 1;
+                }
+                flag = 0;
+                for (int i = cnt-1; i > cnt+precision; i--)
+                {
+                    if (buffer[i] != '0')
+                    {
+                        flag = 1;
+                        buffer[i] = '0';
+                    }
+                }
+                if (buffer[cnt+precision] > '5' || (buffer[cnt+precision] == '5' && (flag || buffer[cnt+precision-1] & 1)))
+                {
+                    buffer[cnt+precision] = '0';
+                    buffer[cnt+precision-1]++;
+                    for (int i = cnt+precision-1; i > (*buffer == '-'); i--)
+                    {
+                        if (buffer[i] == 58)
+                        {
+                            buffer[i] = 48;
+                            buffer[i-1]++;
+                        }
+                    }
+                    if (buffer[*buffer == '-'] == 58)
+                    {
+                        buffer[*buffer == '-'] = '1';
+                        buffer[cnt++] = '0';
+                    }
+                    goto function_return;
+                }
+                buffer[cnt+precision] = '0';
+                goto function_return;
             }
         }
         goto function_return;
@@ -297,6 +358,9 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
     case 'f':
         format_d_type = 1;
         goto format_d;
+    case 'e':
+        format_d_type = 2;
+
     case 'B':
         if (a->_2 || a->_1)
         {
@@ -317,10 +381,19 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
         }
         else
         {
+            flag = 1;
+            while (format[format_nowp] == '+' || format[format_nowp] == '-')
+            {
+                if (format[format_nowp++] == '-')
+                {
+                    flag ^= 1;
+                }
+            }
             while (isdigit(format[format_nowp]))
             {
                 precision = precision * 10 + (format[format_nowp++] & 15);
             }
+            if (!flag) precision = -precision;
         }
         switch (format[format_nowp])
         {
@@ -328,6 +401,7 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
                 format_d_type = 5;
                 goto format_d;
         }
+        goto unknown_format;
     }
 unknown_format:
     strcpy(buffer, "unknown format");
@@ -351,7 +425,6 @@ carry:
         {
             if (format_d_type == 5)
             {
-                // _debug puts(buffer);
                 buffer[1] = '1';
                 buffer[cnt++] = 48;
                 buffer[cnt] = 0;
@@ -376,7 +449,6 @@ carry:
         {
             if (format_d_type == 5)
             {
-                // _debug puts(buffer);
                 buffer[0] = '1';
                 buffer[cnt++] = 48;
                 buffer[cnt] = 0;
