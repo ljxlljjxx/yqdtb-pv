@@ -122,12 +122,12 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
         (Achieved) (Tested) f:  floating-point number.
         (Achieved) (Tested)     .{n}f: the precision
         (Achieved) (Tested)     .*f: the next parameter specified is the precision
-        (--------) (------) e:  scientific notation. the default precision is 2.
-        (--------) (------)     .{n}e: the precision
-        (--------) (------)     .*e: the next parameter specified is the precision
-        (--------) (------) E:  scientific notation. the default precision is 2.
-        (--------) (------)     .{n}E: the precision
-        (--------) (------)     .*E: the next parameter specified is the precision
+        (Achieved) (------) e:  scientific notation. the default precision is 1.
+        (Achieved) (------)     .{n}e: the precision
+        (Achieved) (------)     .*e: the next parameter specified is the precision
+        (Achieved) (------) E:  scientific notation. the default precision is 1.
+        (Achieved) (------)     .{n}E: the precision
+        (Achieved) (------)     .*E: the next parameter specified is the precision
         (--------) (------) g:  Automatically select %f or %e based on the value. Use the %e format when the exponent is less than -4 or greater than or equal to the precision.
         (--------) (------)     .{n}g: the precision
         (--------) (------)     .*g: the next parameter specified is the precision
