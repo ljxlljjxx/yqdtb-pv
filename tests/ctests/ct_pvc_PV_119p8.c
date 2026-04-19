@@ -669,6 +669,154 @@ bool test_pvc_PV_119p8_format_negf(void)
     test_end();
 }
 
+bool test_pvc_PV_119p8_format_pointe(void)
+{
+    pvc_PV_119p8 a;
+    int ans;
+    char s[200];
+    test_start();
+
+    a._1 = 0, a._2 = 0;
+    ans = pvc_PV_119p8_format(s, "e", &a);
+    assert_string_length_equal(s, ans, "0.0e+0");
+    ans = pvc_PV_119p8_format(s, ".3e", &a);
+    assert_string_length_equal(s, ans, "0.000e+0");
+    ans = pvc_PV_119p8_format(s, ".5e", &a);
+    assert_string_length_equal(s, ans, "0.00000e+0");
+    ans = pvc_PV_119p8_format(s, ".7e", &a);
+    assert_string_length_equal(s, ans, "0.0000000e+0");
+    ans = pvc_PV_119p8_format(s, ".100e", &a);
+    assert_string_length_equal(s, ans, "0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e+0");
+    
+    a._1 = 0, a._2 = 2432;
+    ans = pvc_PV_119p8_format(s, "e", &a);
+    assert_string_length_equal(s, ans, "9.5e+0");
+    ans = pvc_PV_119p8_format(s, ".0e", &a);
+    assert_string_length_equal(s, ans, "1e+1");
+    ans = pvc_PV_119p8_format(s, ".1e", &a);
+    assert_string_length_equal(s, ans, "9.5e+0");
+    ans = pvc_PV_119p8_format(s, ".2e", &a);
+    assert_string_length_equal(s, ans, "9.50e+0");
+    ans = pvc_PV_119p8_format(s, ".3e", &a);
+    assert_string_length_equal(s, ans, "9.500e+0");
+    ans = pvc_PV_119p8_format(s, ".5e", &a);
+    assert_string_length_equal(s, ans, "9.50000e+0");
+    ans = pvc_PV_119p8_format(s, ".7e", &a);
+    assert_string_length_equal(s, ans, "9.5000000e+0");
+    ans = pvc_PV_119p8_format(s, ".100e", &a);
+    assert_string_length_equal(s, ans, "9.5000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e+0");
+    
+    a._1 = 0, a._2 = 2559;
+    ans = pvc_PV_119p8_format(s, "e", &a);
+    assert_string_length_equal(s, ans, "9.99609375e+0");
+    ans = pvc_PV_119p8_format(s, ".0e", &a);
+    assert_string_length_equal(s, ans, "1e+1");
+    ans = pvc_PV_119p8_format(s, ".1e", &a);
+    assert_string_length_equal(s, ans, "1.0e+1");
+    ans = pvc_PV_119p8_format(s, ".2e", &a);
+    assert_string_length_equal(s, ans, "1.00e+1");
+    ans = pvc_PV_119p8_format(s, ".3e", &a);
+    assert_string_length_equal(s, ans, "9.996e+0");
+    ans = pvc_PV_119p8_format(s, ".5e", &a);
+    assert_string_length_equal(s, ans, "9.99609e+0");
+    ans = pvc_PV_119p8_format(s, ".7e", &a);
+    assert_string_length_equal(s, ans, "9.9960938e+0");
+    ans = pvc_PV_119p8_format(s, ".100e", &a);
+    assert_string_length_equal(s, ans, "9.9960937500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e+0");
+    
+    a._1 = ~0ll, a._2 = -2559;
+    ans = pvc_PV_119p8_format(s, "e", &a);
+    assert_string_length_equal(s, ans, "-1.0e+1");
+    ans = pvc_PV_119p8_format(s, ".0e", &a);
+    assert_string_length_equal(s, ans, "-1e+1");
+    ans = pvc_PV_119p8_format(s, ".1e", &a);
+    assert_string_length_equal(s, ans, "-1.0e+1");
+    ans = pvc_PV_119p8_format(s, ".2e", &a);
+    assert_string_length_equal(s, ans, "-1.00e+1");
+    ans = pvc_PV_119p8_format(s, ".3e", &a);
+    assert_string_length_equal(s, ans, "-9.996e+0");
+    ans = pvc_PV_119p8_format(s, ".5e", &a);
+    assert_string_length_equal(s, ans, "-9.99609e+0");
+    ans = pvc_PV_119p8_format(s, ".7e", &a);
+    assert_string_length_equal(s, ans, "-9.9960938e+0");
+    ans = pvc_PV_119p8_format(s, ".100e", &a);
+    assert_string_length_equal(s, ans, "-9.9960937500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e+0");
+        
+    a._1 = INT64_MAX, a._2 = UINT64_MAX;
+    ans = pvc_PV_119p8_format(s, "e", &a);
+    assert_string_length_equal(s, ans, "6.6e+35");
+    ans = pvc_PV_119p8_format(s, ".0e", &a);
+    assert_string_length_equal(s, ans, "6e+35");
+    ans = pvc_PV_119p8_format(s, ".1e", &a);
+    assert_string_length_equal(s, ans, "6.6e+35");
+    ans = pvc_PV_119p8_format(s, ".2e", &a);
+    assert_string_length_equal(s, ans, "6.65e+35");
+    ans = pvc_PV_119p8_format(s, ".3e", &a);
+    assert_string_length_equal(s, ans, "6.646e+35");
+    ans = pvc_PV_119p8_format(s, ".5e", &a);
+    assert_string_length_equal(s, ans, "6.64614e+35");
+    ans = pvc_PV_119p8_format(s, ".7e", &a);
+    assert_string_length_equal(s, ans, "6.6461400e+35");
+    ans = pvc_PV_119p8_format(s, ".100e", &a);
+    assert_string_length_equal(s, ans, "6.64613997892457936451903530140172287996093750000000000000000000000000000000000000000000000000000000000000000000e+35");
+    
+    a._1 = 13877787807814ll, a._2 = 8425648038478872575ll;
+    ans = pvc_PV_119p8_format(s, "e", &a);
+    assert_string_length_equal(s, ans, "999999999999999999999999999999.99609375");
+    ans = pvc_PV_119p8_format(s, ".0e", &a);
+    assert_string_length_equal(s, ans, "1000000000000000000000000000000");
+    ans = pvc_PV_119p8_format(s, ".1e", &a);
+    assert_string_length_equal(s, ans, "1000000000000000000000000000000.0");
+    ans = pvc_PV_119p8_format(s, ".2e", &a);
+    assert_string_length_equal(s, ans, "1000000000000000000000000000000.00");
+    ans = pvc_PV_119p8_format(s, ".3e", &a);
+    assert_string_length_equal(s, ans, "999999999999999999999999999999.996");
+    ans = pvc_PV_119p8_format(s, ".5e", &a);
+    assert_string_length_equal(s, ans, "999999999999999999999999999999.99609");
+    ans = pvc_PV_119p8_format(s, ".7e", &a);
+    assert_string_length_equal(s, ans, "999999999999999999999999999999.9960938");
+    ans = pvc_PV_119p8_format(s, ".100e", &a);
+    assert_string_length_equal(s, ans, "999999999999999999999999999999.9960937500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+    
+    a._1 = ~13877787807814ll, a._2 = -8425648038478872575ll;
+    ans = pvc_PV_119p8_format(s, "e", &a);
+    assert_string_length_equal(s, ans, "-999999999999999999999999999999.99609375");
+    ans = pvc_PV_119p8_format(s, ".0e", &a);
+    assert_string_length_equal(s, ans, "-1000000000000000000000000000000");
+    ans = pvc_PV_119p8_format(s, ".1e", &a);
+    assert_string_length_equal(s, ans, "-1000000000000000000000000000000.0");
+    ans = pvc_PV_119p8_format(s, ".2e", &a);
+    assert_string_length_equal(s, ans, "-1000000000000000000000000000000.00");
+    ans = pvc_PV_119p8_format(s, ".3e", &a);
+    assert_string_length_equal(s, ans, "-999999999999999999999999999999.996");
+    ans = pvc_PV_119p8_format(s, ".5e", &a);
+    assert_string_length_equal(s, ans, "-999999999999999999999999999999.99609");
+    ans = pvc_PV_119p8_format(s, ".7e", &a);
+    assert_string_length_equal(s, ans, "-999999999999999999999999999999.9960938");
+    ans = pvc_PV_119p8_format(s, ".100e", &a);
+    assert_string_length_equal(s, ans, "-999999999999999999999999999999.9960937500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+    
+    a._1 = 1405929648567151103ll, a._2 = 6643784628914141954ll;
+    ans = pvc_PV_119p8_format(s, "e", &a);
+    assert_string_length_equal(s, ans, "101307907862338465673935864443609275.0078125");
+    ans = pvc_PV_119p8_format(s, ".0e", &a);
+    assert_string_length_equal(s, ans, "101307907862338465673935864443609275");
+    ans = pvc_PV_119p8_format(s, ".1e", &a);
+    assert_string_length_equal(s, ans, "101307907862338465673935864443609275.0");
+    ans = pvc_PV_119p8_format(s, ".2e", &a);
+    assert_string_length_equal(s, ans, "101307907862338465673935864443609275.01");
+    ans = pvc_PV_119p8_format(s, ".3e", &a);
+    assert_string_length_equal(s, ans, "101307907862338465673935864443609275.008");
+    ans = pvc_PV_119p8_format(s, ".5e", &a);
+    assert_string_length_equal(s, ans, "101307907862338465673935864443609275.00781");
+    ans = pvc_PV_119p8_format(s, ".7e", &a);
+    assert_string_length_equal(s, ans, "101307907862338465673935864443609275.0078125");
+    ans = pvc_PV_119p8_format(s, ".100e", &a);
+    assert_string_length_equal(s, ans, "101307907862338465673935864443609275.0078125000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+    
+    test_end();
+}
+
 const TestFunc c_PV_119p8_tests[] = {
     {"test_pvc_PV_119p8_neg",              test_pvc_PV_119p8_neg,             TestFuncState_enable},
     {"test_pvc_PV_119p8_tostring",         test_pvc_PV_119p8_tostring,        TestFuncState_enable},
@@ -677,6 +825,7 @@ const TestFunc c_PV_119p8_tests[] = {
     {"test_pvc_PV_119p8_format_pointf",    test_pvc_PV_119p8_format_pointf,   TestFuncState_enable},
     {"test_pvc_PV_119p8_format_starf",     test_pvc_PV_119p8_format_starf,    TestFuncState_enable},
     {"test_pvc_PV_119p8_format_negf",      test_pvc_PV_119p8_format_negf,     TestFuncState_enable},
+    {"test_pvc_PV_119p8_format_pointe",    test_pvc_PV_119p8_format_pointe,   TestFuncState_enable},
     {NULL, NULL, 0}
 };
 
