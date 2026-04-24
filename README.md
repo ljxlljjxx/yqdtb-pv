@@ -10,6 +10,6 @@
 * The testing section of this project is located in the **tests** directory. The **ctests** directory mainly contains tests for **PowerViolenceObjects**, and the **pytests** directory mainly contains tests for **PowerViolence**.
 * This project also includes a simple implementation, named **PowerViolence_simplified**, which does not fully implement the rules and can only allow one player and one computer to play against each other. This file is a **macOS** executable file.
 
-* If you want to learn how to play this game, you can look at *rule/PV_rule.png*. (In fact, it's almost Chinese)
+* If you want to learn how to play this game, you can look at *rule/PV_rule*. (In fact, it's almost Chinese)
 
 > Thanks to https://github.com/KaSui2333/PdfToImg.git for providing the program for converting PDF to PNG.

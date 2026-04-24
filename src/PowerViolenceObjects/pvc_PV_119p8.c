@@ -1,12 +1,31 @@
 #include "pvc_PV_119p8.h"
 
-void pvc_PV_119p8_set(__int128_t *a, pvc_PV_119p8 *res)
+/**
+ * @brief   use __int128_t to set pvc_PV_119p8
+ * @param   res pvc_PV_119p8 *
+ * @param   a __int128_t *
+ * @warning This function does not check whether the parameter is null.
+ * @author  ljx
+ * @date    2026-04-24 20:12
+ */
+void pvc_PV_119p8_set(pvc_PV_119p8 *res, __int128_t *a)
 {
-    __int128_t pos = INT64_MAX + (__int128_t)1;
-    res->_2 = *a & INT64_MIN;
+    const __int128_t pos = (__int128_t)1 << 64;
+    res->_2 = *a % pos;
     res->_1 = *a / pos;
 }
 
+/**
+ * @brief   set res to a + b
+ * @param   a pvc_PV_119p8 *
+ * @param   b 参数pvc_PV_119p8 *
+ * @param   res pvc_PV_119p8 *restrict
+ * @return  bool
+ * @retval  overflow
+ * @warning This function does not check whether the parameter is null.
+ * @author  ljx
+ * @date    2026-04-24 20:14
+ */
 bool pvc_PV_119p8_add(pvc_PV_119p8 *a, pvc_PV_119p8 *b, pvc_PV_119p8 *restrict res)
 {
     res->_2 = a->_2 + b->_2;
@@ -24,6 +43,7 @@ bool pvc_PV_119p8_add(pvc_PV_119p8 *a, pvc_PV_119p8 *b, pvc_PV_119p8 *restrict r
  * @param   a pvc_PV_119p8
  * @return  bool
  * @retval  overflow
+ * @warning This function does not check whether the parameter is null.
  * @author  ljx
  * @date    2026-04-17 21:48
  */
@@ -152,6 +172,8 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
         strcpy(buffer, "(null)");
         return -1;
     }
+
+    if (format == NULL) return -1;
 
     switch (*format)
     {
@@ -595,4 +617,54 @@ carry:
 function_return:
     buffer[cnt] = 0;
     return cnt;
+}
+
+int pvc_PV_119p8_print(pvc_PV_119p8 *a)
+{
+    static char temp[40];
+    size_t temp_size = 0, cnt = 0;
+    uint64_t high, low, tmp;
+    pvc_PV_119p8 b;
+    if (a == NULL) return printf("(null)");
+    if (!a->_1)
+    {
+        if (!a->_2) return printf("0");
+        tmp = a->_2 >> 8;
+        while (tmp)
+        {
+            temp[temp_size++] = tmp % 10 | 48;
+            tmp /= 10;
+        }
+        while (temp_size)
+        {
+            cnt++;
+            putchar(temp[--temp_size]);
+        }
+        // _debug printf("cnt = %zu\n", cnt + printf(".%s", quick_float[a->_2 & 255]));
+        if (a->_2 & 255) return cnt + printf(".%s", quick_float[a->_2 & 255]);
+        return cnt;
+    }
+    b = *a;
+    if (b._1 & INT64_MIN)
+    {
+        cnt++;
+        putchar('-');
+        if (pvc_PV_119p8_neg(&b)) return 1 + printf("%s", pvc_PV_119p8_max);
+    }
+    high = b._1;
+    low = b._2 >> 8;
+    while (low || high)
+    {
+        tmp = high % 10;
+        temp[temp_size++] = (6 * tmp + low) % 10 | 48;
+        low = ((tmp << 56) + low) / 10;
+        high /= 10;
+    }
+    while (temp_size)
+    {
+        cnt++;
+        putchar(temp[--temp_size]);
+    }
+    if (b._2 & 255) return cnt + printf(".%s", quick_float[b._2 & 255]);
+    else return cnt;
 }

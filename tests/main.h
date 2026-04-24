@@ -6,6 +6,8 @@
 #include <string.h>
 #include <stdarg.h>
 #include <time.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 #define TestFuncState_enable  1
 #define TestFuncState_disable 0
@@ -67,6 +69,8 @@ typedef struct Test
         assert_string_equal(str, ans); \
         assert_equal(len, strlen(ans)); \
     } while (0)
+
+#define string_strict_print(s) for (char *i = s; *i; i++) printf("%d(%c) ", *i, *i); putchar(10);
 
 static int _ctest_sprintf(int s, ...)
 {
@@ -155,5 +159,25 @@ int test_runner(const Test *now)
     printf("\033[91m%d failed\033[0m, \033[92m%d ok\n\033[0m", count_fail, count_ok);
     return count_fail;
 }
+
+#define CAPTURE_STROUT(buffer, sentence) \
+    do {\
+        fflush(stdout); \
+        int orig_stdout = dup(fileno(stdout)); \
+        if (orig_stdout == -1) return NULL; \
+        FILE *temp = tmpfile(); \
+        dup2(fileno(temp), fileno(stdout)); \
+        sentence; \
+        fflush(stdout); \
+        dup2(orig_stdout, fileno(stdout)); \
+        close(orig_stdout); \
+        rewind(temp); \
+        fseek(temp, 0, SEEK_END); \
+        long size = ftell(temp); \
+        rewind(temp); \
+        size_t read_size = fread(buffer, 1, size, temp); \
+        buffer[read_size] = '\0'; \
+        fclose(temp);  \
+    } while (0);
 
 #endif /* _CTESTS_MAIN_H */
