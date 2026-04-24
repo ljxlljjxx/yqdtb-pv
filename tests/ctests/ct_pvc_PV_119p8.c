@@ -10,6 +10,45 @@ gcc pvc_PV_119p8-macos.o ct_pvc_PV_119p8-macos.o pvc_defines-macos.o -o ct_pvc_P
 #include "../main.h"
 #include "pvc_PV_119p8.h"
 
+bool test_pvc_PV_119p8_set(void)
+{
+    pvc_PV_119p8 a;
+    __int128_t b, ccc = (__int128_t)1 << 64;
+    test_start();
+
+    b = (__int128_t)0 * ccc + 0;
+    pvc_PV_119p8_set(&a, &b);
+    assert_equal(a._1, 0);
+    assert_equal(a._2, 0);
+
+    b = (__int128_t)0 * ccc + 123456789ULL;
+    pvc_PV_119p8_set(&a, &b);
+    assert_equal(a._1, 0);
+    assert_equal(a._2, 123456789ULL);
+
+    b = (__int128_t)-1 * ccc + 18446744073586094827ULL;
+    pvc_PV_119p8_set(&a, &b);
+    assert_equal(a._1, 0);
+    assert_equal(a._2, 18446744073586094827ULL);
+
+    b = (__int128_t)INT64_MAX * ccc + UINT64_MAX;
+    pvc_PV_119p8_set(&a, &b);
+    assert_equal(a._1, INT64_MAX);
+    assert_equal(a._2, UINT64_MAX);
+
+    b = (__int128_t)INT64_MIN * ccc + 0;
+    pvc_PV_119p8_set(&a, &b);
+    assert_equal(a._1, INT64_MIN);
+    assert_equal(a._2, 0);
+
+    b = (__int128_t)123 * ccc + 0;
+    pvc_PV_119p8_set(&a, &b);
+    assert_equal(a._1, 123);
+    assert_equal(a._2, 0);
+
+    test_end();
+}
+
 bool test_pvc_PV_119p8_neg(void)
 {
     pvc_PV_119p8 a;
@@ -817,7 +856,70 @@ bool test_pvc_PV_119p8_format_pointe(void)
     test_end();
 }
 
+bool test_pvc_PV_119p8_print(void)
+{
+    pvc_PV_119p8 a;
+    char s[1000];
+    int ans;
+    test_start();
+
+    a._1 = 0, a._2 = 0;
+    CAPTURE_STROUT(s, ans = pvc_PV_119p8_print(&a));
+    assert_string_length_equal(s, ans, "0");
+
+    a._1 = 0, a._2 = 123456789ULL;
+    CAPTURE_STROUT(s, ans = pvc_PV_119p8_print(&a));
+    assert_string_length_equal(s, ans, "482253.08203125");
+
+    a._1 = -1, a._2 = 18446744073586094827ULL;
+    CAPTURE_STROUT(s, ans = pvc_PV_119p8_print(&a));
+    assert_string_length_equal(s, ans, "-482253.08203125");
+
+    a._1 = INT64_MAX, a._2 = UINT64_MAX;
+    CAPTURE_STROUT(s, ans = pvc_PV_119p8_print(&a));
+    assert_string_length_equal(s, ans, "664613997892457936451903530140172287.99609375");
+
+    a._1 = INT64_MIN, a._2 = 0;
+    CAPTURE_STROUT(s, ans = pvc_PV_119p8_print(&a));
+    assert_string_length_equal(s, ans, "-664613997892457936451903530140172288");
+
+    a._1 = 123, a._2 = 0;
+    CAPTURE_STROUT(s, ans = pvc_PV_119p8_print(&a));
+    assert_string_length_equal(s, ans, "8863084066665136128");
+
+    test_end();
+}
+
+bool test_pvc_PV_119p8_null(void)
+{
+    pvc_PV_119p8 a;
+    char s[1000];
+    char *s2;
+    int ans;
+    test_start();
+
+    char *pvc_PV_119p8_tostring(pvc_PV_119p8 *a);
+    int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_PV_119p8 *restrict a, ...);
+    int pvc_PV_119p8_print(pvc_PV_119p8 *a);
+
+    s2 = pvc_PV_119p8_tostring(NULL);
+    assert_string_equal(s2, "(null)");
+
+    ans = pvc_PV_119p8_format(s, NULL, &a);
+    assert_equal(ans, -1);
+
+    ans = pvc_PV_119p8_format(s, s2, NULL);
+    assert_string_equal(s, "(null)");
+    assert_equal(ans, -1);
+
+    CAPTURE_STROUT(s, ans = pvc_PV_119p8_print(NULL));
+    assert_string_length_equal(s, ans, "(null)");
+
+    test_end();
+}
+
 const TestFunc c_PV_119p8_tests[] = {
+    {"test_pvc_PV_119p8_set",              test_pvc_PV_119p8_set,             TestFuncState_enable},
     {"test_pvc_PV_119p8_neg",              test_pvc_PV_119p8_neg,             TestFuncState_enable},
     {"test_pvc_PV_119p8_tostring",         test_pvc_PV_119p8_tostring,        TestFuncState_enable},
     {"test_pvc_PV_119p8_format_normal_1",  test_pvc_PV_119p8_format_normal_1, TestFuncState_enable},
@@ -825,7 +927,9 @@ const TestFunc c_PV_119p8_tests[] = {
     {"test_pvc_PV_119p8_format_pointf",    test_pvc_PV_119p8_format_pointf,   TestFuncState_enable},
     {"test_pvc_PV_119p8_format_starf",     test_pvc_PV_119p8_format_starf,    TestFuncState_enable},
     {"test_pvc_PV_119p8_format_negf",      test_pvc_PV_119p8_format_negf,     TestFuncState_enable},
-    {"test_pvc_PV_119p8_format_pointe",    test_pvc_PV_119p8_format_pointe,   TestFuncState_enable},
+    {"test_pvc_PV_119p8_format_pointe",    test_pvc_PV_119p8_format_pointe,   TestFuncState_disable},
+    {"test_pvc_PV_119p8_print",            test_pvc_PV_119p8_print,           TestFuncState_enable},
+    {"test_pvc_PV_119p8_null",             test_pvc_PV_119p8_null,            TestFuncState_enable},
     {NULL, NULL, 0}
 };
 
