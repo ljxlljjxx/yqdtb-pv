@@ -1,5 +1,6 @@
 *.sh
 hi.py
+Icon*.py
 *.html
 PV_rule.pdf
 .DS_Store
@@ -10,3 +11,4 @@ announcement/
 *.o
 ct_*.o
 *-macos
+__pycache__

@@ -143,7 +143,7 @@ int test_runner(const Test *now)
             end = clock();
             count_ok++;
             printf(
-                "\033[92m%-30s ok (used %lu μs)\n\033[0m", 
+                "\033[92m%-40s ok (used %lu μs)\n\033[0m", 
                 test_func->name, 
                 (end - start) * 1000000 / CLOCKS_PER_SEC
             );

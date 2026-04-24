@@ -51,6 +51,17 @@ extern const char *quick_float_6[];
 extern const char *quick_float_7[];
 extern const char *quick_float_8[];
 extern const char *const *const quick_floats[];
+extern const char *quick_float_e1[];
+extern const char *quick_float_e2[];
+extern const char *quick_float_e3[];
+extern const char *quick_float_e4[];
+extern const char *quick_float_e5[];
+extern const char *quick_float_e6[];
+extern const char *quick_float_e7[];
+extern const char *quick_float_e8[];
+extern const int quick_float_e[];
+extern const char *const *const quick_float_es[];
 
+extern const char *pvc_PV_119p8_max;
 
 #endif /* _PVC_MAIN_H */
