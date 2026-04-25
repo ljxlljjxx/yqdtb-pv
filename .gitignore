@@ -5,6 +5,10 @@ PV_rule.png
 .venv/
 _*
 *.o
-ct_*.o
 *-macos
 __pycache__
+!.gitignore
+Doxyfile
+!docs/*
+rule/tools/*
+dox_tool/
