@@ -1,12 +1,9 @@
-*.sh
-hi.py
 Icon*.py
 *.html
-*.css
-PV_rule.pdf
-.*
+PV_rule.png
+.DS_Store
+.venv/
 _*
-announcement/
 *.o
 *-macos
 __pycache__
