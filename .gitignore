@@ -2,6 +2,7 @@
 hi.py
 Icon*.py
 *.html
+*.css
 PV_rule.pdf
 .*
 _*
@@ -11,5 +12,6 @@ announcement/
 __pycache__
 !.gitignore
 Doxyfile
-!docs/*.html
+!docs/*
 rule/tools/*
+dox_tool/

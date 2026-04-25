@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>yqdtb-pv: Main Page</title>
+<title>yqdtb-pv: yqdtb-pv</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,6 +20,7 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="little_Icon.png"/></td>
   <td id="projectalign">
    <div id="projectname">yqdtb-pv
    </div>
@@ -68,10 +69,32 @@ $(function() {
 </div>
 </div>
 
-<div class="header">
-  <div class="headertitle"><div class="title">yqdtb-pv Documentation</div></div>
+<div><div class="header">
+  <div class="headertitle"><div class="title">yqdtb-pv </div></div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><p><a class="anchor" id="mainpage"></a> </p>
+<h1><a class="anchor" id="autotoc_md0"></a>
+Power Violence Edition</h1>
+<h2><a class="anchor" id="autotoc_md1"></a>
+Overall Introduction of This Project</h2>
+<ul>
+<li>This project is designed to create the <code>Power Violence Edition</code>, including its rules and procedures.</li>
+<li>This project has not yet been fully completed. The main part of the project's program has not been fully built.(In fact, it is almost empty.) The version of the project's rules is <b>0.0.19</b>.</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md2"></a>
+Specific Implementation of This Project</h2>
+<ul>
+<li>The implementation of this project is placed in the <b>src</b> directory. <b>PowerViolenceObjects</b> is a set of data types in <code>PV</code>, mainly written in <b>C</b>. The <b>PowerViolence</b> directory contains the program implementation of <code>PV</code>, mainly written in <b>Python</b>.</li>
+<li>The rules section of this project includes the general rules and update announcements. The general rules are written in <b>Markdown</b> and are converted into a <b>PDF</b> file. The update announcements are also written in <b>Markdown</b>, but no <b>PDF</b> file is generated. Some pictures and the corresponding <b>Python</b> files for generating those pictures are also included in the rules section.</li>
+<li>The testing section of this project is located in the <b>tests</b> directory. The <b>ctests</b> directory mainly contains tests for <b>PowerViolenceObjects</b>, and the <b>pytests</b> directory mainly contains tests for <b>PowerViolence</b>.</li>
+<li>This project also includes a simple implementation, named <b>PowerViolence_simplified</b>, which does not fully implement the rules and can only allow one player and one computer to play against each other. This file is a <b>macOS</b> executable file.</li>
+<li>If you want to learn how to play this game, you can look at <em>rule/PV_rule</em>. (In fact, it's almost Chinese)</li>
+</ul>
+<blockquote class="doxtable">
+<p>&zwj;Thanks to <a href="https://github.com/KaSui2333/PdfToImg.git">https://github.com/KaSui2333/PdfToImg.git</a> for providing the program for converting PDF to PNG. </p>
+</blockquote>
+</div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
