@@ -8,7 +8,4 @@ _*
 *-macos
 __pycache__
 !.gitignore
-Doxyfile
 !docs/*
-rule/tools/*
-dox_tool/
