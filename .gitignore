@@ -3,12 +3,13 @@ hi.py
 Icon*.py
 *.html
 PV_rule.pdf
-.DS_Store
-Icon.py
-.venv/
+.*
 _*
 announcement/
 *.o
-ct_*.o
 *-macos
 __pycache__
+!.gitignore
+Doxyfile
+!docs/*.html
+rule/tools/*
