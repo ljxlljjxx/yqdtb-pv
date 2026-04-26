@@ -93,6 +93,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:af0f25092f5762ae98863033c7d7bea00"><td class="mdescLeft">&#160;</td><td class="mdescRight">print <a class="el" href="structpvc___p_v__57p8.html">pvc_PV_57p8</a> int string  <br /></td></tr>
 <tr class="separator:af0f25092f5762ae98863033c7d7bea00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6fa1e2d5a20fec96e625d3e68eeb025" id="r_ab6fa1e2d5a20fec96e625d3e68eeb025"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pvc___p_v__57p8_8c.html#ab6fa1e2d5a20fec96e625d3e68eeb025">pvc_PV_57p8_format</a> (char *restrict buffer, const char *restrict format, <a class="el" href="structpvc___p_v__57p8.html">pvc_PV_57p8</a> *restrict a, int *format_length,...)</td></tr>
+<tr class="memdesc:ab6fa1e2d5a20fec96e625d3e68eeb025"><td class="mdescLeft">&#160;</td><td class="mdescRight">use format to write <a class="el" href="structpvc___p_v__119p8.html">pvc_PV_119p8</a>.  <br /></td></tr>
 <tr class="separator:ab6fa1e2d5a20fec96e625d3e68eeb025"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabcf61fda94d71010ec424897634ca7a" id="r_aabcf61fda94d71010ec424897634ca7a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pvc___p_v__57p8_8c.html#aabcf61fda94d71010ec424897634ca7a">pvc_PV_57p8_print</a> (<a class="el" href="structpvc___p_v__57p8.html">pvc_PV_57p8</a> *a)</td></tr>
 <tr class="separator:aabcf61fda94d71010ec424897634ca7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -195,6 +196,27 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>use format to write <a class="el" href="structpvc___p_v__119p8.html">pvc_PV_119p8</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buffer</td><td>char *restrict. the string will write here. </td></tr>
+    <tr><td class="paramname">format</td><td>a string. Legal format: (Achieved) (Tested) b: binary (Achieved) (Tested) x: hexadecimal (Achieved) (Tested) X: hexadecimal (Achieved) (Tested) d: integer part (Achieved) (Tested) +d: display the sign bit (Achieved) (Tested) f: floating-point number. (Achieved) (Tested) .{n}f: the precision (Achieved) (Tested) .*f: the next parameter specified is the precision (Achieved) (---&mdash;) e: scientific notation. the default precision is 1. (Achieved) (---&mdash;) .{n}e: the precision (Achieved) (---&mdash;) .*e: the next parameter specified is the precision (Achieved) (---&mdash;) E: scientific notation. the default precision is 1. (Achieved) (---&mdash;) .{n}E: the precision (Achieved) (---&mdash;) .*E: the next parameter specified is the precision (-----&mdash;) (---&mdash;) g: Automatically select f or e based on the value. Use the e format when the exponent is less than -4 or greater than or equal to the precision. (-----&mdash;) (---&mdash;) .{n}g: the precision (-----&mdash;) (---&mdash;) .*g: the next parameter specified is the precision (-----&mdash;) (---&mdash;) G: Automatically select f or e based on the value. Use the E format when the exponent is less than -4 or greater than or equal to the precision. (-----&mdash;) (---&mdash;) .{n}G: the precision (-----&mdash;) (---&mdash;) .*G: the next parameter specified is the precision (Achieved) (Tested) B: if a == 0, return "true". else return "false". </td></tr>
+    <tr><td class="paramname">a</td><td><a class="el" href="structpvc___p_v__119p8.html">pvc_PV_119p8</a> *restrict </td></tr>
+    <tr><td class="paramname">...</td><td>if format is .*f/.*e/.*E/.*g/.*G, this will give precision. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">the</td><td>strlen of buffer. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Please make sure buffer is enough for the answer. </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>ljx </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2026-04-26 15:34 </dd></dl>
 
 </div>
 </div>

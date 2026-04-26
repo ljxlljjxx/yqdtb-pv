@@ -29,3 +29,4 @@ const char *const *const quick_floats[] = {NULL, quick_float_1, quick_float_2, q
 const char *const *const quick_float_es[] = {NULL, quick_float_e1, quick_float_e2, quick_float_e3, quick_float_e4, quick_float_e5, quick_float_e6, quick_float_e7, quick_float_e8};
 
 const char *pvc_PV_119p8_max = "664613997892457936451903530140172288";
+const char *pvc_PV_57p8_max = "36028797018963968";
