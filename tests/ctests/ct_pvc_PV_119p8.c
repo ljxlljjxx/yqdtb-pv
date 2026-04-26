@@ -94,6 +94,111 @@ bool test_pvc_PV_119p8_neg(void)
     test_end();
 }
 
+bool test_pvc_PV_119p8_add(void)
+{
+    pvc_PV_119p8 a, b, res;
+    bool s;
+    test_start();
+    
+    // 1. 零 + 零
+    a._1 = 0, a._2 = 0;
+    b._1 = 0, b._2 = 0;
+    s = pvc_PV_119p8_add(&a, &b, &res);
+    assert_equal(res._1, 0);
+    assert_equal(res._2, 0);
+    assert_equal(s, false);
+
+    // 2. 小正数相加，无进位
+    a._1 = 0, a._2 = 1;
+    b._1 = 0, b._2 = 2;
+    s = pvc_PV_119p8_add(&a, &b, &res);
+    assert_equal(res._1, 0);
+    assert_equal(res._2, 3);
+    assert_equal(s, false);
+
+    // 3. 低位全F加1，进位到高位，无溢出
+    a._1 = 0, a._2 = UINT64_MAX;
+    b._1 = 0, b._2 = 1;
+    s = pvc_PV_119p8_add(&a, &b, &res);
+    assert_equal(res._1, 1);
+    assert_equal(res._2, 0);
+    assert_equal(s, false);
+
+    // 4. 低64位最高位相加进位，无溢出
+    a._1 = 0, a._2 = 0x8000000000000000ULL;
+    b._1 = 0, b._2 = 0x8000000000000000ULL;
+    s = pvc_PV_119p8_add(&a, &b, &res);
+    assert_equal(res._1, 1);
+    assert_equal(res._2, 0);
+    assert_equal(s, false);
+
+    // 5. -1 + 1 = 0
+    a._1 = -1, a._2 = UINT64_MAX;
+    b._1 = 0, b._2 = 1;
+    s = pvc_PV_119p8_add(&a, &b, &res);
+    assert_equal(res._1, 0);
+    assert_equal(res._2, 0);
+    assert_equal(s, false);
+
+    // 6. -2 + 2 = 0
+    a._1 = -1, a._2 = UINT64_MAX - 1;   // -2 的低位
+    b._1 = 0, b._2 = 2;
+    s = pvc_PV_119p8_add(&a, &b, &res);
+    assert_equal(res._1, 0);
+    assert_equal(res._2, 0);
+    assert_equal(s, false);
+
+    // 7. 最大正数 (2^127-1) 加 1 → 正溢出
+    a._1 = INT64_MAX, a._2 = UINT64_MAX;
+    b._1 = 0, b._2 = 1;
+    s = pvc_PV_119p8_add(&a, &b, &res);
+    assert_equal(res._1, 0);
+    assert_equal(res._2, 0);
+    assert_equal(s, true);
+
+    // 8. 最小负数 (-2^127) 加 -1 → 负溢出
+    a._1 = INT64_MIN, a._2 = 0;
+    b._1 = -1, b._2 = UINT64_MAX;
+    s = pvc_PV_119p8_add(&a, &b, &res);
+    assert_equal(res._1, 0);
+    assert_equal(res._2, 0);
+    assert_equal(s, true);
+
+    // 9. 接近最大正数加2 → 正溢出
+    a._1 = INT64_MAX, a._2 = UINT64_MAX - 1;
+    b._1 = 0, b._2 = 2;
+    s = pvc_PV_119p8_add(&a, &b, &res);
+    assert_equal(res._1, 0);
+    assert_equal(res._2, 0);
+    assert_equal(s, true);
+
+    // 10. 最小负数加0，无溢出
+    a._1 = INT64_MIN, a._2 = 0;
+    b._1 = 0, b._2 = 0;
+    s = pvc_PV_119p8_add(&a, &b, &res);
+    assert_equal(res._1, INT64_MIN);
+    assert_equal(res._2, 0);
+    assert_equal(s, false);
+
+    // 11. 最小负数加1，无溢出（结果=-2^127+1）
+    a._1 = INT64_MIN, a._2 = 0;
+    b._1 = 0, b._2 = 1;
+    s = pvc_PV_119p8_add(&a, &b, &res);
+    assert_equal(res._1, INT64_MIN);
+    assert_equal(res._2, 1);
+    assert_equal(s, false);
+
+    // 12. 5 + (-5) = 0
+    a._1 = 0, a._2 = 5;
+    b._1 = -1, b._2 = UINT64_MAX - 4;   // -5 的低位：UINT64_MAX-4
+    s = pvc_PV_119p8_add(&a, &b, &res);
+    assert_equal(res._1, 0);
+    assert_equal(res._2, 0);
+    assert_equal(s, false);
+
+    test_end();
+}
+
 bool test_pvc_PV_119p8_tostring(void)
 {
     pvc_PV_119p8 a;
@@ -921,6 +1026,7 @@ bool test_pvc_PV_119p8_null(void)
 const TestFunc c_PV_119p8_tests[] = {
     {"test_pvc_PV_119p8_set",              test_pvc_PV_119p8_set,             TestFuncState_enable},
     {"test_pvc_PV_119p8_neg",              test_pvc_PV_119p8_neg,             TestFuncState_enable},
+    {"test_pvc_PV_119p8_add",              test_pvc_PV_119p8_add,             TestFuncState_enable},
     {"test_pvc_PV_119p8_tostring",         test_pvc_PV_119p8_tostring,        TestFuncState_enable},
     {"test_pvc_PV_119p8_format_normal_1",  test_pvc_PV_119p8_format_normal_1, TestFuncState_enable},
     {"test_pvc_PV_119p8_format_normal_2",  test_pvc_PV_119p8_format_normal_2, TestFuncState_enable},
