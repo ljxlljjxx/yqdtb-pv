@@ -153,32 +153,21 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
     format_d:
         if (a->_1 >= 0)
         {
-            fprintf(buffer + cnt, "%lld", a->_1 >> 8);
+            sprintf(buffer + cnt, "%lld", a->_1 >> 8);
             goto format_d_return;
         }
         else
         {
             format_b_b = *a;
             buffer[cnt++] = '-';
-            if (pvc_PV_119p8_neg(&format_b_b))
+            if (pvc_PV_55p8_neg(&format_b_b))
             {
-                strcpy(buffer+cnt, pvc_PV_119p8_max);
-                cnt += 36;
+                strcpy(buffer+cnt, pvc_PV_55p8_max);
+                cnt += 17;
                 goto format_d_return;
             }
-        }
-        format_b_high = format_b_b._1;
-        format_b_low = format_b_b._2 >> 8;
-        while (format_b_low || format_b_high)
-        {
-            format_b_tmp = format_b_high % 10;
-            format_b_temp[format_b_temp_size++] = (6 * format_b_tmp + format_b_low) % 10 | 48;
-            format_b_low = ((format_b_tmp << 56) + format_b_low) / 10;
-            format_b_high /= 10;
-        }
-        while (format_b_temp_size)
-        {
-            buffer[cnt++] = format_b_temp[--format_b_temp_size];
+            sprintf(buffer + cnt, "%lld", format_b_b._1 >> 8);
+            goto format_d_return;
         }
     format_d_return:
         switch (format_d_type)
@@ -187,8 +176,8 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
             goto function_return;
         case 1:
             buffer[cnt++] = '.';
-            strcpy(buffer + cnt, quick_float[format_b_b._2 & 255]);
-            return cnt + quick_float_len[format_b_b._2 & 255];
+            strcpy(buffer + cnt, quick_float[format_b_b._1 & 255]);
+            return cnt + quick_float_len[format_b_b._1 & 255];
         case 2:
         
         case 5:
@@ -198,8 +187,8 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
                 if (precision <= 8)
                 {
                     if (
-                        (precision == 2 && (format_b_b._2 & 255) == 255) ||
-                        (precision == 1 && quick_float_co1[format_b_b._2 & 255])
+                        (precision == 2 && (format_b_b._1 & 255) == 255) ||
+                        (precision == 1 && quick_float_co1[format_b_b._1 & 255])
                     )
                     {
                         buffer[cnt-2]++;
@@ -228,7 +217,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
                             buffer[i-1]++;
                         }
                     }
-                    s2541 = quick_floats[precision][format_b_b._2 & 255];
+                    s2541 = quick_floats[precision][format_b_b._1 & 255];
                     for (int i = 0; i < precision; i++)
                     {
                         buffer[cnt++] = s2541[i];
@@ -238,7 +227,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
                 {
                     for (int i = 0; i < 8; i++)
                     {
-                        buffer[cnt++] = quick_float_8[format_b_b._2 & 255][i];
+                        buffer[cnt++] = quick_float_8[format_b_b._1 & 255][i];
                     }
                     for (int i = 8; i < precision; i++)
                     {
@@ -249,7 +238,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
             }
             else if (precision == 0)
             {
-                if ((format_b_b._2 & 255) > 128 || ((format_b_b._2 & 255) == 128 && (buffer[cnt-1] & 1)))
+                if ((format_b_b._1 & 255) > 128 || ((format_b_b._1 & 255) == 128 && (buffer[cnt-1] & 1)))
                 {
                     buffer[cnt-1]++;
                 }
@@ -276,7 +265,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
                     }
                     else if (buffer[*buffer == '-'] == '5')
                     {
-                        if ((format_b_b._2 & 255) != 0) goto format_f_negp_carry;
+                        if ((format_b_b._1 & 255) != 0) goto format_f_negp_carry;
                         for (int i = (*buffer == '-') + 1; i < (*buffer == '-') - precision; i++)
                         {
                             if (buffer[i] != 48)
@@ -299,7 +288,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
                         buffer[i] = '0';
                     }
                 }
-                if (buffer[cnt+precision] > '5' || (buffer[cnt+precision] == '5' && (flag || buffer[cnt+precision-1] & 1 || format_b_b._2)))
+                if (buffer[cnt+precision] > '5' || (buffer[cnt+precision] == '5' && (flag || buffer[cnt+precision-1] & 1 || format_b_b._1)))
                 {
                     buffer[cnt+precision] = '0';
                     buffer[cnt+precision-1]++;
@@ -349,7 +338,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
         if (a->_1 < 0)
         {
             buffer[cnt++] = '-';
-            if (pvc_PV_119p8_neg(&format_b_b))
+            if (pvc_PV_55p8_neg(&format_b_b))
             {
                 buffer[cnt++] = '6';
                 flag = 35;
@@ -373,41 +362,41 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
                 }
             }
         }
-        format_b_high = format_b_b._1;
-        format_b_low = format_b_b._2 >> 8;
-        while (format_b_low || format_b_high)
-        {
-        _debug printf("format_b_temp_size = %d\n", format_b_temp_size);
-        _debug printf("format_b_temp = %s\n", format_b_temp);
-            format_b_tmp = format_b_high % 10;
-            format_b_temp[format_b_temp_size++] = (6 * format_b_tmp + format_b_low) % 10 | 48;
-            format_b_low = ((format_b_tmp << 56) + format_b_low) / 10;
-            format_b_high /= 10;
-        }
+        // format_b_high = format_b_b._1;
+        // format_b_low = format_b_b._2 >> 8;
+        // while (format_b_low || format_b_high)
+        // {
+        // _debug printf("format_b_temp_size = %d\n", format_b_temp_size);
+        // _debug printf("format_b_temp = %s\n", format_b_temp);
+        //     format_b_tmp = format_b_high % 10;
+        //     format_b_temp[format_b_temp_size++] = (6 * format_b_tmp + format_b_low) % 10 | 48;
+        //     format_b_low = ((format_b_tmp << 56) + format_b_low) / 10;
+        //     format_b_high /= 10;
+        // }
         flag = format_b_temp_size - 1;
         if (flag < 0)
         {
             if (precision >= 8)
             {
-                buffer[cnt++] = *quick_float_8[format_b_b._2 & 255];
+                buffer[cnt++] = *quick_float_8[format_b_b._1 & 255];
                 buffer[cnt++] = '.';
-                buffer[cnt++] = quick_float_8[format_b_b._2 & 255][1];
-                buffer[cnt++] = quick_float_8[format_b_b._2 & 255][2];
-                buffer[cnt++] = quick_float_8[format_b_b._2 & 255][3];
-                buffer[cnt++] = quick_float_8[format_b_b._2 & 255][4];
-                buffer[cnt++] = quick_float_8[format_b_b._2 & 255][5];
-                buffer[cnt++] = quick_float_8[format_b_b._2 & 255][6];
-                buffer[cnt++] = quick_float_8[format_b_b._2 & 255][7];
+                buffer[cnt++] = quick_float_8[format_b_b._1 & 255][1];
+                buffer[cnt++] = quick_float_8[format_b_b._1 & 255][2];
+                buffer[cnt++] = quick_float_8[format_b_b._1 & 255][3];
+                buffer[cnt++] = quick_float_8[format_b_b._1 & 255][4];
+                buffer[cnt++] = quick_float_8[format_b_b._1 & 255][5];
+                buffer[cnt++] = quick_float_8[format_b_b._1 & 255][6];
+                buffer[cnt++] = quick_float_8[format_b_b._1 & 255][7];
                 for (int i = 8; i < precision; i++)
                 {
                     buffer[cnt++] = '0';
                 }
-                flag = quick_float_e[format_b_b._2 & 255];
+                flag = quick_float_e[format_b_b._1 & 255];
                 goto format_e_suf;
             }
             else
             {
-                strcpy(buffer + cnt, quick_float_es[precision][format_b_b._2 & 255]);
+                strcpy(buffer + cnt, quick_float_es[precision][format_b_b._1 & 255]);
                 cnt += precision + 4;
                 goto function_return;
             }
@@ -430,11 +419,11 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
             if (precision - format_b_temp_size <= 8)
             {
                 buffer[cnt++] = '.';
-                strcpy(buffer + cnt, quick_floats[precision - format_b_temp_size][format_b_b._2 & 255]);
+                strcpy(buffer + cnt, quick_floats[precision - format_b_temp_size][format_b_b._1 & 255]);
                 cnt += precision - format_b_temp_size;
                 goto format_e_suf;
             }
-            strcpy(buffer + cnt, quick_float_8[format_b_b._2 & 255]);
+            strcpy(buffer + cnt, quick_float_8[format_b_b._1 & 255]);
             cnt += 8;
             while (precision - format_b_temp_size - 8 >= 0)
             {
@@ -458,7 +447,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
         goto format_e;
     case 'B':
         *format_length = 1;
-        if (a->_2 || a->_1)
+        if (a->_1)
         {
             strcpy(buffer, "true");
             return 4;

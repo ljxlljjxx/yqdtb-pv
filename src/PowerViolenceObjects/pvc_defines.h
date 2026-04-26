@@ -62,5 +62,6 @@ extern const int quick_float_e[];
 extern const char *const *const quick_float_es[];
 
 extern const char *pvc_PV_119p8_max;
+extern const char *pvc_PV_55p8_max;
 
 #endif /* _PVC_DEFINES_H */
