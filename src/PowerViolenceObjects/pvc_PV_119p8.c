@@ -133,10 +133,10 @@ char *pvc_PV_119p8_tostring(pvc_PV_119p8 *a)
     return buffer;
 }
 
-int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_PV_119p8 *restrict a, ...)
-{
-    /*
-    format:
+/**
+ * @brief   use format to write pvc_PV_119p8.
+ * @param   buffer char *restrict. the string will write here.
+ * @param   format a string. Legal format:
         (Achieved) (Tested) hi: high, int64_t
         (Achieved) (Tested) hu: high, uint64_t
         (Achieved) (Tested) hx: high, hexadecimal
@@ -160,8 +160,20 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
         (--------) (------) g:  Automatically select %f or %e based on the value. Use the %e format when the exponent is less than -4 or greater than or equal to the precision.
         (--------) (------)     .{n}g: the precision
         (--------) (------)     .*g: the next parameter specified is the precision
+        (--------) (------) G:  Automatically select %f or %e based on the value. Use the %E format when the exponent is less than -4 or greater than or equal to the precision.
+        (--------) (------)     .{n}G: the precision
+        (--------) (------)     .*G: the next parameter specified is the precision
         (Achieved) (Tested) B:  if a == 0, return "true". else return "false".
-    */
+ * @param   a pvc_PV_119p8 *restrict 
+ * @param   ... if format is .*f/.*e/.*E/.*g/.*G, this will give precision.
+ * @return  int
+ * @retval  the strlen of buffer.
+ * @note    Please make sure buffer is enough for the answer.
+ * @author  ljx
+ * @date    2026-04-26 11:28
+ */
+int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_PV_119p8 *restrict a, ...)
+{
     int cnt = 0;
     static char format_b_temp[40];
     int format_b_temp_size = 0;
