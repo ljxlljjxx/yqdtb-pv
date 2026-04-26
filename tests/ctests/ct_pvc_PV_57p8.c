@@ -13,6 +13,7 @@ gcc pvc_PV_57p8-macos.o ct_pvc_PV_57p8-macos.o pvc_defines-macos.o -o ct_pvc_PV_
 bool test_pvc_PV_57p8_add(void)
 {
     pvc_PV_57p8 a, b, res;
+    bool s;
     bool ans;
     test_start();
 
