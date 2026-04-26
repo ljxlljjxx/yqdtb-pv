@@ -172,7 +172,7 @@ char *pvc_PV_119p8_tostring(pvc_PV_119p8 *a)
  * @author  ljx
  * @date    2026-04-26 11:28
  */
-int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_PV_119p8 *restrict a, ...)
+int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_PV_119p8 *restrict a, int *format_length, ...)
 {
     int cnt = 0;
     static char format_b_temp[40];
@@ -191,14 +191,16 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
     if (a == NULL)
     {
         strcpy(buffer, "(null)");
+        *format_length = 0;
         return -1;
     }
 
-    if (format == NULL) return -1;
+    if (format == NULL) return *format_length = -1;
 
     switch (*format)
     {
     case 'h':
+        *format_length = 2;
         switch (format[1])
         {
         case 'i': return sprintf(buffer, "%lld", a->_1);
@@ -207,6 +209,7 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
         default: goto unknown_format;
         }
     case 'l':
+        *format_length = 2;
         switch (format[1])
         {
         case 'i': return sprintf(buffer, "%lld", a->_2);
@@ -215,13 +218,19 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
         default:  goto unknown_format;
         }
     case 'b':
+        *format_length = 1;
         for (int i = 63; i >= 0; i--) buffer[cnt++] = ((a->_1 >> i) & 1) | 48;
         for (int i = 63; i >= 0; i--) buffer[cnt++] = ((a->_2 >> i) & 1) | 48;
         buffer[cnt] = 0;
         return 128;
-    case 'x': return sprintf(buffer, "%016llx%016llx", a->_1, a->_2);
-    case 'X': return sprintf(buffer, "%016llX%016llX", a->_1, a->_2);
+    case 'x':
+        *format_length = 1;
+        return sprintf(buffer, "%016llx%016llx", a->_1, a->_2);
+    case 'X':
+        *format_length = 1;
+        return sprintf(buffer, "%016llX%016llX", a->_1, a->_2);
     case 'd':
+        *format_length = 1;
         format_d_type = 0;
     format_d:
         format_b_b = *a;
@@ -413,13 +422,22 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
         }
         goto function_return;
     case '+':
-        if (a->_1 >= 0) buffer[cnt++] = '+';
-        format_d_type = 0;
-        goto format_d;
+        *format_length = 2;
+        switch (format[1])
+        {
+        case 'd':
+            if (a->_1 >= 0) buffer[cnt++] = '+';
+            format_d_type = 0;
+            goto format_d;
+        default:
+            goto unknown_format;
+        }
     case 'f':
+        *format_length = 1;
         format_d_type = 1;
         goto format_d;
     case 'e':
+        *format_length = 1;
         precision = 1;
         format_d_type = 2;
     format_e:
@@ -532,10 +550,12 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
         buffer[cnt++] = flag % 10 | 48;
         goto function_return;
     case 'E':
+        *format_length = 1;
         precision = 1;
         format_d_type = 3;
         goto format_e;
     case 'B':
+        *format_length = 1;
         if (a->_2 || a->_1)
         {
             strcpy(buffer, "true");
@@ -547,29 +567,30 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
             return 5;
         }
     case '.':
+        *format_length = 1;
         if (format[1] == '*')
         {
             va_start(argv, a);
             precision = va_arg(argv, int);
-            format_nowp = 2;
+            *format_length = 2;
         }
         else
         {
             flag = 1;
-            while (format[format_nowp] == '+' || format[format_nowp] == '-')
+            while (format[*format_length] == '+' || format[*format_length] == '-')
             {
-                if (format[format_nowp++] == '-')
+                if (format[(*format_length)++] == '-')
                 {
                     flag ^= 1;
                 }
             }
-            while (isdigit(format[format_nowp]))
+            while (isdigit(format[*format_length]))
             {
-                precision = precision * 10 + (format[format_nowp++] & 15);
+                precision = precision * 10 + (format[(*format_length)++] & 15);
             }
             if (!flag) precision = -precision;
         }
-        switch (format[format_nowp])
+        switch (format[*format_length])
         {
             case 'f':
                 format_d_type = 5;
@@ -584,6 +605,7 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
         goto unknown_format;
     }
 unknown_format:
+    *format_length = 0;
     strcpy(buffer, "unknown format");
     return -1;
 carry:
