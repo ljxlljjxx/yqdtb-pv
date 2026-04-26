@@ -911,7 +911,7 @@ bool test_pvc_PV_119p8_format_negf(void)
 
     a._1 = 0, a._2 = 384000;
     ans = pvc_PV_119p8_format(s, "f", &a, &format_length);
-    assert_equal(format_length, 4);
+    assert_equal(format_length, 1);
     assert_string_length_equal(s, ans, "1500.0");
     ans = pvc_PV_119p8_format(s, ".-0f", &a, &format_length);
     assert_equal(format_length, 4);
