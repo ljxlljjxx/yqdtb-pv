@@ -22,9 +22,8 @@
 #else
     static inline bool addi64_overflow(int64_t a, int64_t b, int64_t *res)
     {
+        if ((b > 0 && a > INT64_MAX - b) || (b < 0 && a < INT64_MIN - b)) return true;
         *res = a + b;
-        if (a > 0 && b > 0 && *res < 0)  return true;
-        if (a < 0 && b < 0 && *res >= 0) return true;
         return false;
     }
     static inline bool addu64_overflow(uint64_t a, uint64_t b, uint64_t *res)
