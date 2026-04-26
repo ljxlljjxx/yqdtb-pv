@@ -1,5 +1,5 @@
-#ifndef _PVC_MAIN_H
-#define _PVC_MAIN_H
+#ifndef _PVC_DEFINES_H
+#define _PVC_DEFINES_H
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -63,4 +63,4 @@ extern const char *const *const quick_float_es[];
 
 extern const char *pvc_PV_119p8_max;
 
-#endif /* _PVC_MAIN_H */
+#endif /* _PVC_DEFINES_H */
