@@ -1,6 +1,7 @@
 PV='/Users/ljx/Desktop/P/github/PowerViolence'
 return_val=0
 cd $PV
+rm *-macos
 
 echo 'C Test pvc_add_overflow'
 
@@ -9,8 +10,8 @@ gcc -Wall -Wextra -c tests/ctests/ct_pvc_add_overflow.c -o ct_pvc_add_overflow-m
 gcc ct_pvc_add_overflow-macos.o pvc_defines-macos.o -o ct_pvc_add_overflow-macos
 ./ct_pvc_add_overflow-macos
 
-if [ $? -eq 1 ]; then
-    return_val=1
+if [ $? -eq 1 ];
+    then return_val=1
 fi
 
 
