@@ -1299,12 +1299,8 @@ bool test_pvc_PV_119p8_null(void)
     pvc_PV_119p8 a;
     char s[1000];
     char *s2;
-    int ans;
+    int ans, format_length;
     test_start();
-
-    char *pvc_PV_119p8_tostring(pvc_PV_119p8 *a);
-    int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_PV_119p8 *restrict a, ...);
-    int pvc_PV_119p8_print(pvc_PV_119p8 *a);
 
     s2 = pvc_PV_119p8_tostring(NULL);
     assert_string_equal(s2, "(null)");

@@ -182,7 +182,6 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
 
     int precision = 0;
     va_list argv;
-    int format_nowp = 1;
     int format_d_type;
     const char *s2541;
 
@@ -570,7 +569,7 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
         *format_length = 1;
         if (format[1] == '*')
         {
-            va_start(argv, a);
+            va_start(argv, format_length);
             precision = va_arg(argv, int);
             *format_length = 2;
         }
