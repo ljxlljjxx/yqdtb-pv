@@ -589,7 +589,7 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
             }
             if (!flag) precision = -precision;
         }
-        switch (format[*format_length])
+        switch (format[(*format_length)++])
         {
             case 'f':
                 format_d_type = 5;
