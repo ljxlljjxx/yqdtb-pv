@@ -810,7 +810,7 @@ bool test_pvc_PV_119p8_format_negf(void)
     assert_equal(format_length, 3);
     assert_string_length_equal(s, ans, "0");
     ans = pvc_PV_119p8_format(s, ".-100f", &a, &format_length);
-    assert_equal(format_length, 5);
+    assert_equal(format_length, 6);
     assert_string_length_equal(s, ans, "0");
     ans = pvc_PV_119p8_format(s, ".*f", &a, &format_length, -100);
     assert_equal(format_length, 3);
@@ -827,7 +827,7 @@ bool test_pvc_PV_119p8_format_negf(void)
     assert_equal(format_length, 3);
     assert_string_length_equal(s, ans, "10");
     ans = pvc_PV_119p8_format(s, ".-100f", &a, &format_length);
-    assert_equal(format_length, 5);
+    assert_equal(format_length, 6);
     assert_string_length_equal(s, ans, "0");
     ans = pvc_PV_119p8_format(s, ".*f", &a, &format_length, -100);
     assert_equal(format_length, 3);
@@ -1306,11 +1306,11 @@ bool test_pvc_PV_119p8_null(void)
     assert_string_equal(s2, "(null)");
 
     ans = pvc_PV_119p8_format(s, NULL, &a, &format_length);
-    assert_equal(format_length, 2222);
+    assert_equal(format_length, -1);
     assert_equal(ans, -1);
 
     ans = pvc_PV_119p8_format(s, s2, NULL, &format_length);
-    assert_equal(format_length, 2222);
+    assert_equal(format_length, 0);
     assert_string_equal(s, "(null)");
     assert_equal(ans, -1);
 
