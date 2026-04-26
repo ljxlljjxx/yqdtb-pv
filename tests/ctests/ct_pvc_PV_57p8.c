@@ -14,7 +14,6 @@ bool test_pvc_PV_57p8_add(void)
 {
     pvc_PV_57p8 a, b, res;
     bool s;
-    bool ans;
     test_start();
 
     // 1. 零 + 零
