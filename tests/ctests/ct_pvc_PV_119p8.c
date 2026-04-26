@@ -49,51 +49,6 @@ bool test_pvc_PV_119p8_set(void)
     test_end();
 }
 
-bool test_pvc_PV_119p8_neg(void)
-{
-    pvc_PV_119p8 a;
-    bool ans;
-    test_start();
-
-    a._1 = 0, a._2 = 0;
-    ans = pvc_PV_119p8_neg(&a);
-    assert_equal(a._1, 0);
-    assert_equal(a._2, 0);
-    assert_equal(ans, false);
-
-    a._1 = 0, a._2 = 123456789ULL;
-    ans = pvc_PV_119p8_neg(&a);
-    assert_equal(a._1, -1);
-    assert_equal(a._2, 18446744073586094827ULL);
-    assert_equal(ans, false);
-
-    a._1 = -1, a._2 = 18446744073586094827ULL;
-    ans = pvc_PV_119p8_neg(&a);
-    assert_equal(a._1, 0);
-    assert_equal(a._2, 123456789ULL);
-    assert_equal(ans, false);
-
-    a._1 = INT64_MAX, a._2 = UINT64_MAX;
-    ans = pvc_PV_119p8_neg(&a);
-    assert_equal(a._1, INT64_MIN);
-    assert_equal(a._2, 1);
-    assert_equal(ans, false);
-
-    a._1 = INT64_MIN, a._2 = 0;
-    ans = pvc_PV_119p8_neg(&a);
-    assert_equal(a._1, INT64_MIN);
-    assert_equal(a._2, 0);
-    assert_equal(ans, true);
-
-    a._1 = 123, a._2 = 0;
-    ans = pvc_PV_119p8_neg(&a);
-    assert_equal(a._1, -123);
-    assert_equal(a._2, 0);
-    assert_equal(ans, false);
-
-    test_end();
-}
-
 bool test_pvc_PV_119p8_add(void)
 {
     pvc_PV_119p8 a, b, res;
@@ -195,6 +150,51 @@ bool test_pvc_PV_119p8_add(void)
     assert_equal(res._1, 0);
     assert_equal(res._2, 0);
     assert_equal(s, false);
+
+    test_end();
+}
+
+bool test_pvc_PV_119p8_neg(void)
+{
+    pvc_PV_119p8 a;
+    bool ans;
+    test_start();
+
+    a._1 = 0, a._2 = 0;
+    ans = pvc_PV_119p8_neg(&a);
+    assert_equal(a._1, 0);
+    assert_equal(a._2, 0);
+    assert_equal(ans, false);
+
+    a._1 = 0, a._2 = 123456789ULL;
+    ans = pvc_PV_119p8_neg(&a);
+    assert_equal(a._1, -1);
+    assert_equal(a._2, 18446744073586094827ULL);
+    assert_equal(ans, false);
+
+    a._1 = -1, a._2 = 18446744073586094827ULL;
+    ans = pvc_PV_119p8_neg(&a);
+    assert_equal(a._1, 0);
+    assert_equal(a._2, 123456789ULL);
+    assert_equal(ans, false);
+
+    a._1 = INT64_MAX, a._2 = UINT64_MAX;
+    ans = pvc_PV_119p8_neg(&a);
+    assert_equal(a._1, INT64_MIN);
+    assert_equal(a._2, 1);
+    assert_equal(ans, false);
+
+    a._1 = INT64_MIN, a._2 = 0;
+    ans = pvc_PV_119p8_neg(&a);
+    assert_equal(a._1, INT64_MIN);
+    assert_equal(a._2, 0);
+    assert_equal(ans, true);
+
+    a._1 = 123, a._2 = 0;
+    ans = pvc_PV_119p8_neg(&a);
+    assert_equal(a._1, -123);
+    assert_equal(a._2, 0);
+    assert_equal(ans, false);
 
     test_end();
 }
@@ -1025,8 +1025,8 @@ bool test_pvc_PV_119p8_null(void)
 
 const TestFunc c_PV_119p8_tests[] = {
     {"test_pvc_PV_119p8_set",              test_pvc_PV_119p8_set,             TestFuncState_enable},
-    {"test_pvc_PV_119p8_neg",              test_pvc_PV_119p8_neg,             TestFuncState_enable},
     {"test_pvc_PV_119p8_add",              test_pvc_PV_119p8_add,             TestFuncState_enable},
+    {"test_pvc_PV_119p8_neg",              test_pvc_PV_119p8_neg,             TestFuncState_enable},
     {"test_pvc_PV_119p8_tostring",         test_pvc_PV_119p8_tostring,        TestFuncState_enable},
     {"test_pvc_PV_119p8_format_normal_1",  test_pvc_PV_119p8_format_normal_1, TestFuncState_enable},
     {"test_pvc_PV_119p8_format_normal_2",  test_pvc_PV_119p8_format_normal_2, TestFuncState_enable},
