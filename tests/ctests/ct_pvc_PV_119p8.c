@@ -1309,7 +1309,7 @@ bool test_pvc_PV_119p8_null(void)
     assert_equal(format_length, 2222);
     assert_equal(ans, -1);
 
-    ans = pvc_PV_119p8_format(s, s2, NULL);
+    ans = pvc_PV_119p8_format(s, s2, NULL, &format_length);
     assert_equal(format_length, 2222);
     assert_string_equal(s, "(null)");
     assert_equal(ans, -1);
