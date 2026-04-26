@@ -1,7 +1,7 @@
 #include "pvc_PV_57p8.h"
 
 /**
- * @brief   set res to a + b
+ * @brief   set *res to *a + *b
  * @param   a pvc_PV_57p8 *
  * @param   b pvc_PV_57p8 *
  * @param   res pvc_PV_57p8 *restrict

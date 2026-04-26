@@ -16,7 +16,7 @@ void pvc_PV_119p8_set(pvc_PV_119p8 *res, __int128_t *a)
 }
 
 /**
- * @brief   set res to a + b
+ * @brief   set *res to *a + *b
  * @param   a pvc_PV_119p8 *
  * @param   b 参数pvc_PV_119p8 *
  * @param   res pvc_PV_119p8 *restrict
@@ -40,7 +40,7 @@ bool pvc_PV_119p8_add(pvc_PV_119p8 *a, pvc_PV_119p8 *b, pvc_PV_119p8 *restrict r
 
 /**
  * @brief   let *a becomes -*a.
- * @param   a pvc_PV_119p8
+ * @param   a pvc_PV_119p8 *
  * @return  bool
  * @retval  overflow
  * @warning This function does not check whether the parameter is null.
