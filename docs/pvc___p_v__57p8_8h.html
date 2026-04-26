@@ -98,8 +98,10 @@ Typedefs</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a88b5ba0709b0db769dc15c45469dd15d" id="r_a88b5ba0709b0db769dc15c45469dd15d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pvc___p_v__57p8_8h.html#a88b5ba0709b0db769dc15c45469dd15d">pvc_PV_57p8_add</a> (<a class="el" href="structpvc___p_v__57p8.html">pvc_PV_57p8</a> *a, <a class="el" href="structpvc___p_v__57p8.html">pvc_PV_57p8</a> *b, <a class="el" href="structpvc___p_v__57p8.html">pvc_PV_57p8</a> *restrict res)</td></tr>
+<tr class="memdesc:a88b5ba0709b0db769dc15c45469dd15d"><td class="mdescLeft">&#160;</td><td class="mdescRight">set res to a + b  <br /></td></tr>
 <tr class="separator:a88b5ba0709b0db769dc15c45469dd15d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03f42be9eb4d690bda03c9338610df41" id="r_a03f42be9eb4d690bda03c9338610df41"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pvc___p_v__57p8_8h.html#a03f42be9eb4d690bda03c9338610df41">pvc_PV_57p8_neg</a> (<a class="el" href="structpvc___p_v__57p8.html">pvc_PV_57p8</a> *a)</td></tr>
+<tr class="memdesc:a03f42be9eb4d690bda03c9338610df41"><td class="mdescLeft">&#160;</td><td class="mdescRight">let *a becomes -*a.  <br /></td></tr>
 <tr class="separator:a03f42be9eb4d690bda03c9338610df41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0f25092f5762ae98863033c7d7bea00" id="r_af0f25092f5762ae98863033c7d7bea00"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pvc___p_v__57p8_8h.html#af0f25092f5762ae98863033c7d7bea00">pvc_PV_57p8_tostring</a> (<a class="el" href="structpvc___p_v__57p8.html">pvc_PV_57p8</a> *a)</td></tr>
 <tr class="separator:af0f25092f5762ae98863033c7d7bea00"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,6 +157,26 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>set res to a + b </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td><a class="el" href="structpvc___p_v__57p8.html">pvc_PV_57p8</a> * </td></tr>
+    <tr><td class="paramname">b</td><td><a class="el" href="structpvc___p_v__57p8.html">pvc_PV_57p8</a> * </td></tr>
+    <tr><td class="paramname">res</td><td><a class="el" href="structpvc___p_v__57p8.html">pvc_PV_57p8</a> *restrict </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">overflow</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section warning"><dt>Warning</dt><dd>This function does not check whether the parameter is null. </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>ljx </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2026-04-26 11:20 </dd></dl>
 
 </div>
 </div>
@@ -213,6 +235,24 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>let *a becomes -*a. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td><a class="el" href="structpvc___p_v__57p8.html">pvc_PV_57p8</a> * </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">overflow</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section warning"><dt>Warning</dt><dd>This function does not check whether the parameter is null. </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>ljx </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2026-04-26 11:21 </dd></dl>
 
 </div>
 </div>

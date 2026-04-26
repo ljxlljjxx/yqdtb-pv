@@ -1,5 +1,16 @@
 #include "pvc_PV_57p8.h"
 
+/**
+ * @brief   set res to a + b
+ * @param   a pvc_PV_57p8 *
+ * @param   b pvc_PV_57p8 *
+ * @param   res pvc_PV_57p8 *restrict
+ * @return  bool
+ * @retval  overflow
+ * @warning This function does not check whether the parameter is null.
+ * @author  ljx
+ * @date    2026-04-26 11:20
+ */
 bool pvc_PV_57p8_add(pvc_PV_57p8 *a, pvc_PV_57p8 *b, pvc_PV_57p8 *restrict res)
 {
     res->_1 = a->_1 + b->_1;
@@ -11,6 +22,15 @@ bool pvc_PV_57p8_add(pvc_PV_57p8 *a, pvc_PV_57p8 *b, pvc_PV_57p8 *restrict res)
     return false;
 }
 
+/**
+ * @brief   let *a becomes -*a.
+ * @param   a pvc_PV_57p8 *
+ * @return  bool
+ * @retval  overflow
+ * @warning This function does not check whether the parameter is null.
+ * @author  ljx
+ * @date    2026-04-26 11:21
+ */
 bool pvc_PV_57p8_neg(pvc_PV_57p8 *a)
 {
     if (a->_1 == INT64_MIN)
