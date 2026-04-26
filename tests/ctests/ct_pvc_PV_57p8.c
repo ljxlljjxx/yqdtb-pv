@@ -167,6 +167,7 @@ bool test_pvc_PV_57p8_tostring(void)
 }
 
 const TestFunc c_PV_57p8_tests[] = {
+    {"test_pvc_PV_57p8_add",      test_pvc_PV_57p8_add,      TestFuncState_enable},
     {"test_pvc_PV_57p8_neg",      test_pvc_PV_57p8_neg,      TestFuncState_enable},
     {"test_pvc_PV_57p8_tostring", test_pvc_PV_57p8_tostring, TestFuncState_enable},
     {NULL, NULL, 0}
