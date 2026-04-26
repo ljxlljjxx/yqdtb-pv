@@ -844,7 +844,7 @@ bool test_pvc_PV_119p8_format_negf(void)
     assert_equal(format_length, 3);
     assert_string_length_equal(s, ans, "101307907862338465673935864443609285");
     ans = pvc_PV_119p8_format(s, ".-1f", &a, &format_length);
-    assert_equal(format_length, 5);
+    assert_equal(format_length, 4);
     assert_string_length_equal(s, ans, "101307907862338465673935864443609290");
     ans = pvc_PV_119p8_format(s, ".*f", &a, &format_length, -1);
     assert_equal(format_length, 3);
