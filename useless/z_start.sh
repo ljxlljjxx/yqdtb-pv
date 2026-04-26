@@ -13,7 +13,7 @@ echo '规则文件图片生成完成'
 $PV/useless/z_test.sh
 if [ $? -eq 1 ]; then
     echo '测试未通过';
-    exit(1)
+    exit 1
 fi
 
 echo '测试完成'
