@@ -55,6 +55,15 @@ bool pvc_PV_119p8_neg(pvc_PV_119p8 *a)
     return false;
 }
 
+/**
+ * @brief   print pvc_PV_119p8 int string
+ * @param   a pvc_PV_119p8 *
+ * @return  char *
+ * @retval  return the string
+ * @note    the return value is const.
+ * @author  ljx
+ * @date    2026-04-26 11:22
+ */
 char *pvc_PV_119p8_tostring(pvc_PV_119p8 *a)
 {
     static char buffer[40];
