@@ -1,9 +1,10 @@
 PV='/Users/ljx/Desktop/P/github/PowerViolence'
 
 cd $PV
-source $PV/.venv/bin/activate
 
-if [ $? -eq 1 ]; then
+if [ -f $PV/.venv/bin/activate ]; then
+    source $PV/.venv/bin/activate
+else
     venv
 fi
 

@@ -332,7 +332,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
         precision = 1;
         format_d_type = 2;
     format_e:
-        precision += 1;
+        precision++;
         if (precision <= 0) goto unknown_format;
         format_b_b = *a;
         if (a->_1 < 0)
