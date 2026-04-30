@@ -123,6 +123,10 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
     int format_d_type;
     const char *s2541;
 
+    int exp = 0;
+    uint64_t tN, tD;
+    uint64_t p1, p2;
+
     int flag;
 
     if (a == NULL)
@@ -334,21 +338,61 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
     format_e:
         precision++;
         if (precision <= 0) goto unknown_format;
+
+        if (a->_1 < 0) buffer[cnt++] = '-';
+        if (a->_1 = INT64_MIN) tN = 1ull << 63;
+        else tN = a->_1 > 0 ? a->_1 : -a->_1;
+        p1 = tN >> 8, p2 = tN & 255;
+
+        if (p1 == 0)
+        {
+            if (precision <= 8)
+            {
+                strcpy(buffer + cnt, quick_float_es[precision][p2]);
+                return cnt + precision + 3;
+            }
+            else
+            {
+                strcpy(buffer + cnt, quick_float_e8[p2]);
+                buffer[cnt + precision + 1] = 'e';
+                buffer[cnt + precision + 2] = buffer[cnt + 10];
+                buffer[cnt + precision + 3] = buffer[cnt + 11];
+                for (int i = cnt + 9; i <= cnt + precision; i++) buffer[i] = '0';
+                cnt += precision + 4;
+                goto function_return;
+            }
+        }
+        else while (p1 / tD >= 10) tD *= 10, exp++;
+
+        uint64_t int_part = p1 / tD;
+        uint64_t rem = p1 % tD;
+        for (int i = 0; i < precision; i++)
+        {
+            rem *= 10;
+            buffer[cnt++] = 48 + rem / tD;
+            rem = rem % tD;
+        }
+
+        int round_up = 0;
+        if (rem * 10 / tD >= 5) {
+            round_up = 1;
+        }
+
         format_b_b = *a;
         if (a->_1 < 0)
         {
             buffer[cnt++] = '-';
             if (pvc_PV_55p8_neg(&format_b_b))
             {
-                buffer[cnt++] = '6';
-                flag = 35;
+                buffer[cnt++] = '3'; // 3,6028,7970,1896,3968
+                flag = 16;
                 if (precision > 1) buffer[cnt++] = '.';
                 else goto format_e_suf;
                 if (precision >= 36)
                 {
-                    strcpy(buffer + cnt, pvc_PV_119p8_max + 1);
-                    cnt += 35;
-                    for (int i = 37; i <= precision; i++)
+                    strcpy(buffer + cnt, pvc_PV_55p8_max + 1);
+                    cnt += 16;
+                    for (int i = 18; i <= precision; i++)
                     {
                         buffer[cnt++] = '0';
                     }
@@ -356,7 +400,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
                 }
                 else
                 {
-                    strncpy(buffer + cnt, pvc_PV_119p8_max + 1, precision - 1);
+                    strncpy(buffer + cnt, pvc_PV_55p8_max + 1, precision - 1);
                     cnt += precision - 1;
                     goto format_e_suf;
                 }
