@@ -1785,6 +1785,158 @@ bool test_pvc_PV_55p8_format_starE(void)
     test_end();
 }
 
+bool test_pvc_PV_55p8_format_littlenumber(void)
+{
+    pvc_PV_55p8 a;
+    int ans, format_length;
+    char s[200];
+    test_start();
+
+    a._1 = 1;
+    ans = pvc_PV_55p8_format(s, "f", &a, &format_length);
+    assert_equal(format_length, 1);
+    assert_string_length_equal(s, ans, "0.00390625");
+    ans = pvc_PV_55p8_format(s, ".-1f", &a, &format_length);
+    assert_equal(format_length, 4);
+    assert_string_length_equal(s, ans, "0");
+    ans = pvc_PV_55p8_format(s, ".0f", &a, &format_length);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0");
+    ans = pvc_PV_55p8_format(s, ".1f", &a, &format_length);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0.0");
+    ans = pvc_PV_55p8_format(s, ".2f", &a, &format_length);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0.00");
+    ans = pvc_PV_55p8_format(s, ".3f", &a, &format_length);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0.004");
+    ans = pvc_PV_55p8_format(s, ".4f", &a, &format_length);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0.0039");
+    ans = pvc_PV_55p8_format(s, ".5f", &a, &format_length);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0.00391");
+    ans = pvc_PV_55p8_format(s, ".6f", &a, &format_length);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0.003906");
+    ans = pvc_PV_55p8_format(s, ".7f", &a, &format_length);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0.0039062");
+    ans = pvc_PV_55p8_format(s, ".8f", &a, &format_length);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0.00390625");
+    ans = pvc_PV_55p8_format(s, ".9f", &a, &format_length);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0.003906250");
+    ans = pvc_PV_55p8_format(s, ".*f", &a, &format_length, -1);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0");
+    ans = pvc_PV_55p8_format(s, ".*f", &a, &format_length, 0);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0");
+    ans = pvc_PV_55p8_format(s, ".*f", &a, &format_length, 1);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0.0");
+    ans = pvc_PV_55p8_format(s, ".*f", &a, &format_length, 2);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0.00");
+    ans = pvc_PV_55p8_format(s, ".*f", &a, &format_length, 3);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0.004");
+    ans = pvc_PV_55p8_format(s, ".*f", &a, &format_length, 4);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0.0039");
+    ans = pvc_PV_55p8_format(s, ".*f", &a, &format_length, 5);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0.00391");
+    ans = pvc_PV_55p8_format(s, ".*f", &a, &format_length, 6);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0.003906");
+    ans = pvc_PV_55p8_format(s, ".*f", &a, &format_length, 7);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0.0039062");
+    ans = pvc_PV_55p8_format(s, ".*f", &a, &format_length, 8);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0.00390625");
+    ans = pvc_PV_55p8_format(s, ".*f", &a, &format_length, 9);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0.003906250");
+    ans = pvc_PV_55p8_format(s, "e", &a, &format_length);
+    assert_equal(format_length, 1);
+    assert_string_length_equal(s, ans, "3.9e-3");
+    ans = pvc_PV_55p8_format(s, ".0e", &a, &format_length);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "4e-3");
+    ans = pvc_PV_55p8_format(s, ".1e", &a, &format_length);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "3.9e-3");
+    ans = pvc_PV_55p8_format(s, ".2e", &a, &format_length);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "3.91e-3");
+    ans = pvc_PV_55p8_format(s, ".3e", &a, &format_length);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "3.906e-3");
+    ans = pvc_PV_55p8_format(s, ".4e", &a, &format_length);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "3.9062e-3");
+    ans = pvc_PV_55p8_format(s, ".5e", &a, &format_length);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "3.90625e-3");
+    ans = pvc_PV_55p8_format(s, ".6e", &a, &format_length);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "3.906250e-3");
+    ans = pvc_PV_55p8_format(s, ".*e", &a, &format_length, 0);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "4e-3");
+    ans = pvc_PV_55p8_format(s, ".*e", &a, &format_length, 1);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "3.9e-3");
+    ans = pvc_PV_55p8_format(s, ".*e", &a, &format_length, 2);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "3.91e-3");
+    ans = pvc_PV_55p8_format(s, ".*e", &a, &format_length, 3);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "3.906e-3");
+    ans = pvc_PV_55p8_format(s, ".*e", &a, &format_length, 4);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "3.9062e-3");
+    ans = pvc_PV_55p8_format(s, ".*e", &a, &format_length, 5);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "3.90625e-3");
+    ans = pvc_PV_55p8_format(s, ".*e", &a, &format_length, 6);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "3.906250e-3");
+
+    test_end();
+}
+
+bool test_pvc_PV_55p8_null(void)
+{
+    pvc_PV_55p8 a;
+    char s[1000];
+    char *s2;
+    int ans, format_length;
+    test_start();
+
+    s2 = pvc_PV_55p8_tostring(NULL);
+    assert_string_equal(s2, "(null)");
+
+    ans = pvc_PV_55p8_format(s, NULL, &a, &format_length);
+    assert_equal(format_length, -1);
+    assert_equal(ans, -1);
+
+    ans = pvc_PV_55p8_format(s, s2, NULL, &format_length);
+    assert_equal(format_length, 0);
+    assert_string_equal(s, "(null)");
+    assert_equal(ans, -1);
+
+    // CAPTURE_STROUT(s, ans = pvc_PV_55p8_print(NULL));
+    // assert_string_length_equal(s, ans, "(null)");
+
+    test_end();
+}
+
 const TestFunc c_PV_55p8_tests[] = {
     {"test_pvc_PV_55p8_add",             test_pvc_PV_55p8_add,             TestFuncState_enable},
     {"test_pvc_PV_55p8_neg",             test_pvc_PV_55p8_neg,             TestFuncState_enable},
@@ -1798,6 +1950,8 @@ const TestFunc c_PV_55p8_tests[] = {
     {"test_pvc_PV_55p8_format_stare",    test_pvc_PV_55p8_format_stare,    TestFuncState_enable},
     {"test_pvc_PV_55p8_format_pointE",   test_pvc_PV_55p8_format_pointE,   TestFuncState_enable},
     {"test_pvc_PV_55p8_format_starE",    test_pvc_PV_55p8_format_starE,    TestFuncState_enable},
+    {"test_pvc_PV_55p8_format_littlenumber", test_pvc_PV_55p8_format_littlenumber, TestFuncState_enable},
+    {"test_pvc_PV_55p8_null",            test_pvc_PV_55p8_null,            TestFuncState_enable},
     {NULL, NULL, 0}
 };
 

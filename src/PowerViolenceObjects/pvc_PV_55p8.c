@@ -126,7 +126,6 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
     uint64_t p1, p2;
 
     int flag;
-    _debug memset(buffer, 0, 100);
 
     if (a == NULL)
     {
@@ -349,7 +348,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
             {
                 strcpy(buffer + cnt, quick_float_es[precision][p2]);
                 if (format_d_type != 2) buffer[cnt + precision + 1] = 'E';
-                return cnt + precision + 4;
+                return cnt + precision + 4 - (precision == 1);
             }
             else
             {
