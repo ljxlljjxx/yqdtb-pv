@@ -82,27 +82,27 @@ char *pvc_PV_55p8_tostring(pvc_PV_55p8 *a)
  * @brief   use format to write pvc_PV_119p8.
  * @param   buffer char *restrict. the string will write here.
  * @param   format a string. Legal format:
-        (Achieved) (Tested) b:  binary
-        (Achieved) (Tested) x:  hexadecimal
-        (Achieved) (Tested) X:  hexadecimal
-        (Achieved) (Tested) d:  integer part
-        (Achieved) (Tested)     +d: display the sign bit
-        (Achieved) (Tested) f:  floating-point number.
-        (Achieved) (Tested)     .{n}f: the precision
-        (Achieved) (Tested)     .*f: the next parameter specified is the precision
-        (Achieved) (------) e:  scientific notation. the default precision is 1.
-        (Achieved) (------)     .{n}e: the precision
-        (Achieved) (------)     .*e: the next parameter specified is the precision
-        (Achieved) (------) E:  scientific notation. the default precision is 1.
-        (Achieved) (------)     .{n}E: the precision
-        (Achieved) (------)     .*E: the next parameter specified is the precision
-        (--------) (------) g:  Automatically select %f or %e based on the value. Use the %e format when the exponent is less than -4 or greater than or equal to the precision.
-        (--------) (------)     .{n}g: the precision
-        (--------) (------)     .*g: the next parameter specified is the precision
-        (--------) (------) G:  Automatically select %f or %e based on the value. Use the %E format when the exponent is less than -4 or greater than or equal to the precision.
-        (--------) (------)     .{n}G: the precision
-        (--------) (------)     .*G: the next parameter specified is the precision
-        (Achieved) (Tested) B:  if a == 0, return "true". else return "false".
+        b:  binary
+        x:  hexadecimal
+        X:  hexadecimal
+        d:  integer part
+            +d: display the sign bit
+        f:  floating-point number.
+            .{n}f: the precision
+            .*f: the next parameter specified is the precision
+        e:  scientific notation. the default precision is 1.
+            .{n}e: the precision
+            .*e: the next parameter specified is the precision
+        E:  scientific notation. the default precision is 1.
+            .{n}E: the precision
+            .*E: the next parameter specified is the precision
+        g:  Automatically select %f or %e based on the value. Use the %e format when the exponent greater than or equal to the precision.
+            .{n}g: the precision
+            .*g: the next parameter specified is the precision
+        G:  Automatically select %f or %e based on the value. Use the %E format when the exponent greater than or equal to the precision.
+            .{n}G: the precision
+            .*G: the next parameter specified is the precision
+        B:  if a == 0, return "true". else return "false".
  * @param   a pvc_PV_119p8 *restrict 
  * @param   ... if format is .*f/.*e/.*E/.*g/.*G, this will give precision.
  * @return  int
@@ -114,14 +114,16 @@ char *pvc_PV_55p8_tostring(pvc_PV_55p8 *a)
 int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_PV_55p8 *restrict a, int *format_length, ...)
 {
     int cnt = 0;
-    static char format_b_temp[40];
-    int format_b_temp_size = 0;
     pvc_PV_55p8 format_b_b;
 
     int precision = 0;
     va_list argv;
-    int format_d_type;
+    int format_d_type = -1;
     const char *s2541;
+
+    int exp = 0;
+    uint64_t tN, tD;
+    uint64_t p1, p2;
 
     int flag;
 
@@ -151,14 +153,14 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
         *format_length = 1;
         format_d_type = 0;
     format_d:
-        if (a->_1 >= 0)
+        format_b_b = *a;
+        if (format_b_b._1 >= 0)
         {
-            sprintf(buffer + cnt, "%lld", a->_1 >> 8);
+            cnt += sprintf(buffer + cnt, "%lld", a->_1 >> 8);
             goto format_d_return;
         }
         else
         {
-            format_b_b = *a;
             buffer[cnt++] = '-';
             if (pvc_PV_55p8_neg(&format_b_b))
             {
@@ -166,7 +168,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
                 cnt += 17;
                 goto format_d_return;
             }
-            sprintf(buffer + cnt, "%lld", format_b_b._1 >> 8);
+            cnt += sprintf(buffer + cnt, "%lld", format_b_b._1 >> 8);
             goto format_d_return;
         }
     format_d_return:
@@ -332,119 +334,170 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
         precision = 1;
         format_d_type = 2;
     format_e:
-        precision += 1;
+        precision++;
         if (precision <= 0) goto unknown_format;
-        format_b_b = *a;
-        if (a->_1 < 0)
+
+        if (a->_1 < 0) buffer[cnt++] = '-';
+        if (a->_1 == INT64_MIN) tN = 1ull << 63;
+        else tN = a->_1 > 0 ? a->_1 : -a->_1;
+        p1 = tN >> 8, p2 = tN & 255;
+        tD = 1;
+        if (p1 == 0)
         {
-            buffer[cnt++] = '-';
-            if (pvc_PV_55p8_neg(&format_b_b))
+            if (precision <= 8)
             {
-                buffer[cnt++] = '6';
-                flag = 35;
-                if (precision > 1) buffer[cnt++] = '.';
-                else goto format_e_suf;
-                if (precision >= 36)
-                {
-                    strcpy(buffer + cnt, pvc_PV_119p8_max + 1);
-                    cnt += 35;
-                    for (int i = 37; i <= precision; i++)
-                    {
-                        buffer[cnt++] = '0';
-                    }
-                    goto format_e_suf;
-                }
-                else
-                {
-                    strncpy(buffer + cnt, pvc_PV_119p8_max + 1, precision - 1);
-                    cnt += precision - 1;
-                    goto format_e_suf;
-                }
-            }
-        }
-        // format_b_high = format_b_b._1;
-        // format_b_low = format_b_b._2 >> 8;
-        // while (format_b_low || format_b_high)
-        // {
-        // _debug printf("format_b_temp_size = %d\n", format_b_temp_size);
-        // _debug printf("format_b_temp = %s\n", format_b_temp);
-        //     format_b_tmp = format_b_high % 10;
-        //     format_b_temp[format_b_temp_size++] = (6 * format_b_tmp + format_b_low) % 10 | 48;
-        //     format_b_low = ((format_b_tmp << 56) + format_b_low) / 10;
-        //     format_b_high /= 10;
-        // }
-        flag = format_b_temp_size - 1;
-        if (flag < 0)
-        {
-            if (precision >= 8)
-            {
-                buffer[cnt++] = *quick_float_8[format_b_b._1 & 255];
-                buffer[cnt++] = '.';
-                buffer[cnt++] = quick_float_8[format_b_b._1 & 255][1];
-                buffer[cnt++] = quick_float_8[format_b_b._1 & 255][2];
-                buffer[cnt++] = quick_float_8[format_b_b._1 & 255][3];
-                buffer[cnt++] = quick_float_8[format_b_b._1 & 255][4];
-                buffer[cnt++] = quick_float_8[format_b_b._1 & 255][5];
-                buffer[cnt++] = quick_float_8[format_b_b._1 & 255][6];
-                buffer[cnt++] = quick_float_8[format_b_b._1 & 255][7];
-                for (int i = 8; i < precision; i++)
-                {
-                    buffer[cnt++] = '0';
-                }
-                flag = quick_float_e[format_b_b._1 & 255];
-                goto format_e_suf;
+                strcpy(buffer + cnt, quick_float_es[precision][p2]);
+                if (format_d_type != 2) buffer[cnt + precision + (precision != 1)] = 'E';
+                return cnt + precision + 4 - (precision == 1);
             }
             else
             {
-                strcpy(buffer + cnt, quick_float_es[precision][format_b_b._1 & 255]);
+                strcpy(buffer + cnt, quick_float_e8[p2]);
+                buffer[cnt + precision + 1] = (format_d_type == 2 ? 'e': 'E');
+                buffer[cnt + precision + 2] = buffer[cnt + 10];
+                buffer[cnt + precision + 3] = buffer[cnt + 11];
+                for (int i = cnt + 9; i <= cnt + precision; i++) buffer[i] = '0';
                 cnt += precision + 4;
                 goto function_return;
             }
         }
-        _debug printf("precision = %d\n", precision);
-        _debug printf("format_b_temp_size = %d\n", format_b_temp_size);
-        _debug printf("flag = %d\n", flag);
-        _debug printf("format_b_temp = %s\n", format_b_temp);
-        if (precision >= format_b_temp_size)
+        else while (p1 / tD >= 10) tD *= 10, exp++;
+
+        uint64_t int_part = p1 / tD;
+        uint64_t rem = p1 % tD;
+        buffer[cnt++] = int_part + 48;
+        if (precision == 1)
         {
-            for (int i = flag; i >= 0; i--)
+            if (exp == 0)
             {
-                buffer[cnt++] = format_b_temp[i];
-        _debug printf("buffer = %s\n", buffer);
-            }
-            if (precision - format_b_temp_size == 0)
-            {
+                if (p2 > 128 || (p2 == 128 && (buffer[cnt-1] & 1))) goto format_e_carry;
                 goto format_e_suf;
             }
-            if (precision - format_b_temp_size <= 8)
-            {
-                buffer[cnt++] = '.';
-                strcpy(buffer + cnt, quick_floats[precision - format_b_temp_size][format_b_b._1 & 255]);
-                cnt += precision - format_b_temp_size;
-                goto format_e_suf;
-            }
-            strcpy(buffer + cnt, quick_float_8[format_b_b._1 & 255]);
-            cnt += 8;
-            while (precision - format_b_temp_size - 8 >= 0)
-            {
-                buffer[cnt++] = '0';
-                precision--;
-            }
+            if (rem * 2 > tD || (rem * 2 == tD && (buffer[cnt-1] & 1))) goto format_e_carry;
             goto format_e_suf;
         }
+        buffer[cnt++] = '.';
+        if (precision <= exp)
+        {
+            for (int i = 1; i < precision; i++)
+            {
+                rem *= 10;
+                buffer[cnt++] = 48 + rem / tD;
+                rem %= tD;
+            }
+            if (precision == exp)
+            {
+                if (p2 < 128) goto format_e_suf;
+                if (p2 > 128) goto format_e_carry;
+                if (p1 & 1) goto format_e_carry;
+                goto format_e_suf;
+            }
+            else
+            {
+                if (rem * 10 < 5 * tD) goto format_e_suf;
+                if (rem * 10 > 5 * tD) goto format_e_carry;
+                if (p2) goto format_e_carry;
+                if (buffer[cnt-1] & 1) goto format_e_carry;
+                goto format_e_suf;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < exp; i++)
+            {
+                rem *= 10;
+                buffer[cnt++] = 48 + rem / tD;
+                rem %= tD;
+            }
+            if (precision - exp <= 8)
+            {
+                if ((precision == 3 && (p2 & 255) == 255) ||
+                    (precision == 2 && quick_float_co1[p2 & 255]))
+                {
+                    flag = *buffer == '-';
+                    buffer[cnt-1]++;
+                    for (int i = cnt-1; i > flag; i--)
+                    {
+                        if (buffer[i] == 58) buffer[i] = 48, buffer[i-1]++;
+                        else if (buffer[i] == 47) buffer[i]--, buffer[i-1]++; /* '.' + 1 = 47 */
+                        else goto format_e_next1;
+                    }
+                    if (buffer[flag] == 58)
+                    {
+                        buffer[flag] = '1';
+                        buffer[cnt++] = '0';
+                        exp++;
+                    }
+                }
+            format_e_next1:
+                for (int i = 0; i < precision - exp - 1; i++)
+                {
+                    buffer[cnt++] = quick_floats[precision-1][p2][i];
+                }
+            }
+            else
+            {
+                for (int i = 0; i < 8; i++) buffer[cnt++] = quick_float_8[p2][i];
+                for (int i = 0; i < precision - 9 - exp; i++) buffer[cnt++] = '0';
+            }
+        }
+        goto format_e_suf;
+    format_e_carry:
+        flag = *buffer == '-';
+        buffer[cnt-1]++;
+        for (int i = cnt-1; i > flag; i--)
+        {
+            if (buffer[i] == 58) buffer[i] = 48, buffer[i-1]++;
+            else if (buffer[i] == 47) buffer[i]--, buffer[i-1]++; /* '.' + 1 = 47 */
+            else goto format_e_suf;
+        }
+        if (buffer[flag] == 58)
+        {
+            buffer[flag] = '1';
+            exp++;
+        }
+        goto format_e_suf;
     format_e_suf:
         if (format_d_type == 2) buffer[cnt++] = 'e';
         else buffer[cnt++] = 'E';
-        if (flag >= 0) buffer[cnt++] = '+';
-        else buffer[cnt++] = '-', flag = -flag;
-        if (flag > 10) buffer[cnt++] = flag / 10 | 48;
-        buffer[cnt++] = flag % 10 | 48;
+        if (exp >= 0) buffer[cnt++] = '+';
+        else buffer[cnt++] = '-', exp = -exp;
+        if (exp > 10) buffer[cnt++] = exp / 10 | 48;
+        buffer[cnt++] = exp % 10 | 48;
         goto function_return;
     case 'E':
         *format_length = 1;
         precision = 1;
         format_d_type = 3;
         goto format_e;
+    case 'g':
+        *format_length = 1;
+        precision = 1;
+    format_g:
+        if (log10(fabs(a->_1 / 256.0)) >= precision)
+        {
+            format_d_type = 2;
+            goto format_e;
+        }
+        else
+        {
+            if (format_d_type == -1) format_d_type = 1;
+            goto format_d;
+        }
+    case 'G':
+        *format_length = 1;
+        precision = 1;
+    format_G:
+        if (log10(fabs(a->_1 / 256.0)) >= precision)
+        {
+            format_d_type = 3;
+            goto format_e;
+        }
+        else
+        {
+            if (format_d_type == -1) format_d_type = 1;
+            goto format_d;
+        }
     case 'B':
         *format_length = 1;
         if (a->_1)
@@ -492,6 +545,12 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
             case 'E':
                 format_d_type = 3;
                 goto format_e;
+            case 'g':
+                format_d_type = 5;
+                goto format_g;
+            case 'G':
+                format_d_type = 5;
+                goto format_G;
         }
         goto unknown_format;
     }
@@ -553,4 +612,21 @@ function_return:
     return cnt;
 }
 
-int pvc_PV_55p8_print(pvc_PV_55p8 *a);
+int pvc_PV_55p8_print(pvc_PV_55p8 *a)
+{
+    size_t cnt = 0;
+    pvc_PV_55p8 b;
+    if (a == NULL) return printf("(null)");
+    b = *a;
+    if (a->_1 < 0)
+    {
+        putchar('-'); cnt++;
+        if (pvc_PV_55p8_neg(&b))
+        {
+            return 1 + printf("%s", pvc_PV_55p8_max);
+        }
+    }
+    cnt += printf("%lld", b._1 >> 8);
+    if (b._1 & 255) return cnt + printf(".%s", quick_float[b._1 & 255]);
+    return cnt;
+}

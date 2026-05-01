@@ -35,6 +35,7 @@ var menudata={children:[
 {text:"File Members",url:"globals.html",children:[
 {text:"All",url:"globals.html",children:[
 {text:"_",url:"globals.html#index__5F"},
+{text:"d",url:"globals.html#index_d"},
 {text:"h",url:"globals.html#index_h"},
 {text:"p",url:"globals.html#index_p"},
 {text:"q",url:"globals.html#index_q"}]},
