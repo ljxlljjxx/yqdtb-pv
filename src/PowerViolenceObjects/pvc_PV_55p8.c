@@ -82,27 +82,27 @@ char *pvc_PV_55p8_tostring(pvc_PV_55p8 *a)
  * @brief   use format to write pvc_PV_119p8.
  * @param   buffer char *restrict. the string will write here.
  * @param   format a string. Legal format:
-        (Achieved) (Tested) b:  binary
-        (Achieved) (Tested) x:  hexadecimal
-        (Achieved) (Tested) X:  hexadecimal
-        (Achieved) (Tested) d:  integer part
-        (Achieved) (Tested)     +d: display the sign bit
-        (Achieved) (Tested) f:  floating-point number.
-        (Achieved) (Tested)     .{n}f: the precision
-        (Achieved) (Tested)     .*f: the next parameter specified is the precision
-        (Achieved) (Tested) e:  scientific notation. the default precision is 1.
-        (Achieved) (Tested)     .{n}e: the precision
-        (Achieved) (Tested)     .*e: the next parameter specified is the precision
-        (Achieved) (Tested) E:  scientific notation. the default precision is 1.
-        (Achieved) (Tested)     .{n}E: the precision
-        (Achieved) (Tested)     .*E: the next parameter specified is the precision
-        (Achieved) (------) g:  Automatically select %f or %e based on the value. Use the %e format when the exponent greater than or equal to the precision.
-        (Achieved) (------)     .{n}g: the precision
-        (Achieved) (------)     .*g: the next parameter specified is the precision
-        (Achieved) (------) G:  Automatically select %f or %e based on the value. Use the %E format when the exponent greater than or equal to the precision.
-        (Achieved) (------)     .{n}G: the precision
-        (Achieved) (------)     .*G: the next parameter specified is the precision
-        (Achieved) (Tested) B:  if a == 0, return "true". else return "false".
+        b:  binary
+        x:  hexadecimal
+        X:  hexadecimal
+        d:  integer part
+            +d: display the sign bit
+        f:  floating-point number.
+            .{n}f: the precision
+            .*f: the next parameter specified is the precision
+        e:  scientific notation. the default precision is 1.
+            .{n}e: the precision
+            .*e: the next parameter specified is the precision
+        E:  scientific notation. the default precision is 1.
+            .{n}E: the precision
+            .*E: the next parameter specified is the precision
+        g:  Automatically select %f or %e based on the value. Use the %e format when the exponent greater than or equal to the precision.
+            .{n}g: the precision
+            .*g: the next parameter specified is the precision
+        G:  Automatically select %f or %e based on the value. Use the %E format when the exponent greater than or equal to the precision.
+            .{n}G: the precision
+            .*G: the next parameter specified is the precision
+        B:  if a == 0, return "true". else return "false".
  * @param   a pvc_PV_119p8 *restrict 
  * @param   ... if format is .*f/.*e/.*E/.*g/.*G, this will give precision.
  * @return  int
