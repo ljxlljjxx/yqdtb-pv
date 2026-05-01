@@ -455,7 +455,7 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
                 else goto format_e_suf;
                 if (precision >= 36)
                 {
-                    strcpy(buffer + cnt, pvc_PV_119p8_max + 1);
+                    strcpy(buffer + cnt, &pvc_PV_119p8_max[1]);
                     cnt += 35;
                     for (int i = 37; i <= precision; i++)
                     {
@@ -465,7 +465,7 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
                 }
                 else
                 {
-                    strncpy(buffer + cnt, pvc_PV_119p8_max + 1, precision - 1);
+                    strncpy(buffer + cnt, &pvc_PV_119p8_max[1], precision - 1);
                     cnt += precision - 1;
                     goto format_e_suf;
                 }
