@@ -12,7 +12,7 @@ if [ $? -eq 1 ]; then
     return_val=1;
 else
     ./ct_pvc_add_overflow-macos
-    if [ $? -g 0 ]; then
+    if [[ $? > 0 ]]; then
         return_val=1;
     fi
 fi
@@ -28,7 +28,7 @@ if [ $? -eq 1 ]; then
     return_val=1;
 else
     ./ct_pvc_PV_119p8-macos
-    if [ $? -g 0 ]; then
+    if [[ $? > 0 ]]; then
         return_val=1;
     fi
 fi
@@ -44,7 +44,7 @@ if [ $? -eq 1 ]; then
     return_val=1;
 else
     ./ct_pvc_PV_55p8-macos
-    if [ $? -g 0 ]; then
+    if [[ $? > 0 ]]; then
         return_val=1;
     fi
 fi
