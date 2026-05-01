@@ -155,14 +155,14 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
         *format_length = 1;
         format_d_type = 0;
     format_d:
-        if (a->_1 >= 0)
+        format_b_b = *a;
+        if (format_b_b._1 >= 0)
         {
-            sprintf(buffer + cnt, "%lld", a->_1 >> 8);
+            cnt += sprintf(buffer + cnt, "%lld", a->_1 >> 8);
             goto format_d_return;
         }
         else
         {
-            format_b_b = *a;
             buffer[cnt++] = '-';
             if (pvc_PV_55p8_neg(&format_b_b))
             {
@@ -170,7 +170,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
                 cnt += 17;
                 goto format_d_return;
             }
-            sprintf(buffer + cnt, "%lld", format_b_b._1 >> 8);
+            cnt += sprintf(buffer + cnt, "%lld", format_b_b._1 >> 8);
             goto format_d_return;
         }
     format_d_return:
@@ -340,7 +340,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
         if (precision <= 0) goto unknown_format;
 
         if (a->_1 < 0) buffer[cnt++] = '-';
-        if (a->_1 = INT64_MIN) tN = 1ull << 63;
+        if (a->_1 == INT64_MIN) tN = 1ull << 63;
         else tN = a->_1 > 0 ? a->_1 : -a->_1;
         p1 = tN >> 8, p2 = tN & 255;
         tD = 1;
@@ -367,6 +367,9 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
 
         uint64_t int_part = p1 / tD;
         uint64_t rem = p1 % tD;
+        buffer[cnt++] = int_part + 48;
+        if (precision == 0) goto format_e_suf;
+        buffer[cnt++] = '.';
         if (precision <= exp)
         {
             for (int i = 0; i < precision; i++)

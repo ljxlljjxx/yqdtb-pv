@@ -2,14 +2,17 @@ PV='/Users/ljx/Desktop/P/github/PowerViolence'
 
 cd $PV
 
-if [ -f $PV/.venv/bin/activate ]; then
-    source $PV/.venv/bin/activate
+if [[ $1 == "-T" ]]; then
+    echo '跳过规则文件图片生成'
 else
-    venv
+    if [ -f $PV/.venv/bin/activate ]; then
+        source $PV/.venv/bin/activate
+    else
+        venv
+    fi
+    python3 /Users/ljx/Desktop/P/github/PdfToImg/MyPdfToImg.py
+    echo '规则文件图片生成完成'
 fi
-
-python3 /Users/ljx/Desktop/P/github/PdfToImg/MyPdfToImg.py
-echo '规则文件图片生成完成'
 
 $PV/useless/z_test.sh
 if [ $? -eq 1 ]; then
