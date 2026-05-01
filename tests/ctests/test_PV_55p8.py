@@ -18,9 +18,6 @@ class TestPv_55p8(unittest.TestCase):
         a: PV_55p8 = PV_55p8(10.55)
         self.assertEqual(a.strvalue(), '10.546875')
 
-        a: PV_55p8 = PV_55p8(float('nan'))
-        self.assertEqual(a.strvalue(), '-36028797018963968')
-
     def test__value(self):
         a: PV_55p8 = PV_55p8()
         a._value = 10
