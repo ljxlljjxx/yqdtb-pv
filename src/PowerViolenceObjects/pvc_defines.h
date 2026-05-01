@@ -10,9 +10,11 @@
 #include <math.h>
 #include "pvc_debug.h"
 
-#if (defined(__GNUC__) && __GNUC__ >= 5) || \
-    (defined(__clang__) && __has_builtin(__builtin_add_overflow)) || \
-    (defined(__INTEL_COMPILER) && __INTEL_COMPILER >= 1900)
+#if defined(__GNUC__) && __GNUC__ >= 5
+    #define HAS_BUILTIN_ADD_OVERFLOW 1
+#elif defined(__clang__) && __has_builtin(__builtin_add_overflow)
+    #define HAS_BUILTIN_ADD_OVERFLOW 1
+#elif defined(__INTEL_COMPILER) && __INTEL_COMPILER >= 1900
     #define HAS_BUILTIN_ADD_OVERFLOW 1
 #else
     #define HAS_BUILTIN_ADD_OVERFLOW 0
@@ -34,8 +36,6 @@
         return *res < a;
     }
 #endif
-
-#include "pvc_defines.h"
 
 extern const char *quick_float[];
 extern const int quick_float_len[];
@@ -61,7 +61,7 @@ extern const char *quick_float_e8[];
 extern const int quick_float_e[];
 extern const char *const *const quick_float_es[];
 
-extern const char *pvc_PV_119p8_max;
-extern const char *pvc_PV_55p8_max;
+#define pvc_PV_119p8_max "664613997892457936451903530140172288"
+#define pvc_PV_55p8_max "36028797018963968"
 
 #endif /* _PVC_DEFINES_H */

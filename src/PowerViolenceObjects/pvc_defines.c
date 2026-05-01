@@ -27,6 +27,3 @@ const char *quick_float_e8[] = {"0.0000000e+0", "3.9062500e-3", "7.8125000e-3", 
 
 const char *const *const quick_floats[] = {NULL, quick_float_1, quick_float_2, quick_float_3, quick_float_4, quick_float_5, quick_float_6, quick_float_7, quick_float_8};
 const char *const *const quick_float_es[] = {NULL, quick_float_e1, quick_float_e2, quick_float_e3, quick_float_e4, quick_float_e5, quick_float_e6, quick_float_e7, quick_float_e8};
-
-const char *pvc_PV_119p8_max = "664613997892457936451903530140172288";
-const char *pvc_PV_55p8_max = "36028797018963968";

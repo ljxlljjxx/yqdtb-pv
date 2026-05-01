@@ -1,10 +1,12 @@
 *.html
 PV_rule.png
-.DS_Store
-.venv/
+.*
 *.o
 *-macos
 __pycache__
 !.gitignore
 !docs/*
 !rule/
+build
+*.egg-info
+!.github
