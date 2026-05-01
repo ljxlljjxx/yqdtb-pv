@@ -5,6 +5,7 @@ rm *-macos
 
 echo 'C Test pvc_add_overflow'
 
+echo $return_val
 gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_defines.c -o pvc_defines-macos.o
 gcc -Wall -Wextra -c tests/ctests/ct_pvc_add_overflow.c -o ct_pvc_add_overflow-macos.o -Isrc/PowerViolenceObjects
 gcc ct_pvc_add_overflow-macos.o pvc_defines-macos.o -o ct_pvc_add_overflow-macos
@@ -17,6 +18,7 @@ else
     fi
 fi
 
+echo $return_val
 
 echo 'C Test pvc_PV_119p8.c'
 
@@ -33,6 +35,7 @@ else
     fi
 fi
 
+echo $return_val
 
 echo 'C Test pvc_PV_55p8.c'
 
@@ -49,7 +52,7 @@ else
     fi
 fi
 
-
+echo $return_val
 
 if [ $return_val -eq 1 ]; then
     exit 1

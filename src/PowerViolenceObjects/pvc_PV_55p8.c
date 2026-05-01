@@ -126,6 +126,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
     uint64_t p1, p2;
 
     int flag;
+    _debug memset(buffer, 0, 100);
 
     if (a == NULL)
     {
@@ -378,7 +379,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
         buffer[cnt++] = '.';
         if (precision <= exp)
         {
-            for (int i = 0; i < precision; i++)
+            for (int i = 1; i < precision; i++)
             {
                 rem *= 10;
                 buffer[cnt++] = 48 + rem / tD;
@@ -406,12 +407,12 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
             {
                 rem *= 10;
                 buffer[cnt++] = 48 + rem / tD;
-                rem = rem % tD;
+                rem %= tD;
             }
             if (precision - exp <= 8)
             {
-                if ((precision == 2 && (p2 & 255) == 255) ||
-                    (precision == 1 && quick_float_co1[p2 & 255]))
+                if ((precision == 3 && (p2 & 255) == 255) ||
+                    (precision == 2 && quick_float_co1[p2 & 255]))
                 {
                     flag = *buffer == '-';
                     buffer[cnt-1]++;
@@ -431,13 +432,13 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
             format_e_next1:
                 for (int i = 0; i < precision - exp - 1; i++)
                 {
-                    buffer[cnt++] = quick_floats[precision][p2][i];
+                    buffer[cnt++] = quick_floats[precision-1][p2][i];
                 }
             }
             else
             {
                 for (int i = 0; i < 8; i++) buffer[cnt++] = quick_float_8[p2][i];
-                for (int i = 0; i < precision - 9; i++) buffer[cnt++] = '0';
+                for (int i = 0; i < precision - 9 - exp; i++) buffer[cnt++] = '0';
             }
         }
         goto format_e_suf;
@@ -448,7 +449,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
         {
             if (buffer[i] == 58) buffer[i] = 48, buffer[i-1]++;
             else if (buffer[i] == 47) buffer[i]--, buffer[i-1]++; /* '.' + 1 = 47 */
-            goto format_e_suf;
+            else goto format_e_suf;
         }
         if (buffer[flag] == 58)
         {
