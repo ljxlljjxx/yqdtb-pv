@@ -10,9 +10,9 @@
 #include <math.h>
 #include "pvc_debug.h"
 
-#if (defined(__GNUC__) && __GNUC__ >= 5) || \
-    (defined(__clang__) && __has_builtin(__builtin_add_overflow)) || \
-    (defined(__INTEL_COMPILER) && __INTEL_COMPILER >= 1900)
+#if defined(__GNUC__) && __GNUC__ >= 5 || \
+    defined(__clang__) && __has_builtin(__builtin_add_overflow) || \
+    defined(__INTEL_COMPILER) && __INTEL_COMPILER >= 1900
     #define HAS_BUILTIN_ADD_OVERFLOW 1
 #else
     #define HAS_BUILTIN_ADD_OVERFLOW 0
@@ -34,8 +34,6 @@
         return *res < a;
     }
 #endif
-
-#include "pvc_defines.h"
 
 extern const char *quick_float[];
 extern const int quick_float_len[];
