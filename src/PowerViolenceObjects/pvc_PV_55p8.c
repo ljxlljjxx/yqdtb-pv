@@ -90,12 +90,12 @@ char *pvc_PV_55p8_tostring(pvc_PV_55p8 *a)
         (Achieved) (Tested) f:  floating-point number.
         (Achieved) (Tested)     .{n}f: the precision
         (Achieved) (Tested)     .*f: the next parameter specified is the precision
-        (Achieved) (------) e:  scientific notation. the default precision is 1.
-        (Achieved) (------)     .{n}e: the precision
-        (Achieved) (------)     .*e: the next parameter specified is the precision
-        (Achieved) (------) E:  scientific notation. the default precision is 1.
-        (Achieved) (------)     .{n}E: the precision
-        (Achieved) (------)     .*E: the next parameter specified is the precision
+        (Achieved) (Tested) e:  scientific notation. the default precision is 1.
+        (Achieved) (Tested)     .{n}e: the precision
+        (Achieved) (Tested)     .*e: the next parameter specified is the precision
+        (Achieved) (Tested) E:  scientific notation. the default precision is 1.
+        (Achieved) (Tested)     .{n}E: the precision
+        (Achieved) (Tested)     .*E: the next parameter specified is the precision
         (--------) (------) g:  Automatically select %f or %e based on the value. Use the %e format when the exponent is less than -4 or greater than or equal to the precision.
         (--------) (------)     .{n}g: the precision
         (--------) (------)     .*g: the next parameter specified is the precision
