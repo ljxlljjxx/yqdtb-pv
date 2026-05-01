@@ -1,0 +1,11 @@
+MANIFEST.in
+README.md
+setup.py
+src/PowerViolenceObjects/PV_55p8.pyi
+src/PowerViolenceObjects/pvc_PV_55p8.c
+src/PowerViolenceObjects/pvc_defines.c
+src/PowerViolenceObjects/py_PV_55p8.c
+src/PowerViolenceObjects.egg-info/PKG-INFO
+src/PowerViolenceObjects.egg-info/SOURCES.txt
+src/PowerViolenceObjects.egg-info/dependency_links.txt
+src/PowerViolenceObjects.egg-info/top_level.txt
