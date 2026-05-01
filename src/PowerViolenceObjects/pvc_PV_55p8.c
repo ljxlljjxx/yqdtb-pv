@@ -327,7 +327,6 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
         }
     case 'f':
         *format_length = 1;
-    format_f:
         format_d_type = 1;
         goto format_d;
     case 'e':
@@ -475,29 +474,29 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
         *format_length = 1;
         precision = 1;
     format_g:
-        if (log10(a->_1 / 256.0) >= precision)
+        if (log10(fabs(a->_1 / 256.0)) >= precision)
         {
             format_d_type = 2;
             goto format_e;
         }
         else
         {
-            if (format_d_type == -1) format_d_type = 2;
-            goto format_f;
+            if (format_d_type == -1) format_d_type = 1;
+            goto format_d;
         }
     case 'G':
         *format_length = 1;
         precision = 1;
     format_G:
-        if (log10(a->_1 / 256.0) >= precision)
+        if (log10(fabs(a->_1 / 256.0)) >= precision)
         {
             format_d_type = 3;
             goto format_e;
         }
         else
         {
-            if (format_d_type == -1) format_d_type = 2;
-            goto format_f;
+            if (format_d_type == -1) format_d_type = 1;
+            goto format_d;
         }
     case 'B':
         *format_length = 1;
@@ -547,8 +546,10 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
                 format_d_type = 3;
                 goto format_e;
             case 'g':
+                format_d_type = 5;
                 goto format_g;
             case 'G':
+                format_d_type = 5;
                 goto format_G;
         }
         goto unknown_format;

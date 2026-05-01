@@ -2272,6 +2272,94 @@ bool test_pvc_PV_55p8_format_littlenumber(void)
     test_end();
 }
 
+bool test_pvc_PV_55p8_format_g(void)
+{
+    pvc_PV_55p8 a;
+    int ans, format_length;
+    char s[200];
+    test_start();
+
+    a._1 = 0;
+    ans = pvc_PV_55p8_format(s, "g", &a, &format_length);
+    assert_equal(format_length, 1);
+    assert_string_length_equal(s, ans, "0.0");
+    ans = pvc_PV_55p8_format(s, "G", &a, &format_length);
+    assert_equal(format_length, 1);
+    assert_string_length_equal(s, ans, "0.0");
+    ans = pvc_PV_55p8_format(s, ".0g", &a, &format_length);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0");
+    ans = pvc_PV_55p8_format(s, ".0G", &a, &format_length);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0");
+    ans = pvc_PV_55p8_format(s, ".10g", &a, &format_length);
+    assert_equal(format_length, 4);
+    assert_string_length_equal(s, ans, "0.0000000000");
+    ans = pvc_PV_55p8_format(s, ".10G", &a, &format_length);
+    assert_equal(format_length, 4);
+    assert_string_length_equal(s, ans, "0.0000000000");
+    ans = pvc_PV_55p8_format(s, ".*g", &a, &format_length, 10);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0.0000000000");
+    ans = pvc_PV_55p8_format(s, ".*G", &a, &format_length, 10);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "0.0000000000");
+
+    a._1 = 3521354143234324ll;
+    ans = pvc_PV_55p8_format(s, "g", &a, &format_length);
+    assert_equal(format_length, 1);
+    assert_string_length_equal(s, ans, "1.4e+13");
+    ans = pvc_PV_55p8_format(s, "G", &a, &format_length);
+    assert_equal(format_length, 1);
+    assert_string_length_equal(s, ans, "1.4E+13");
+    ans = pvc_PV_55p8_format(s, ".0g", &a, &format_length);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "1e+13");
+    ans = pvc_PV_55p8_format(s, ".0G", &a, &format_length);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "1E+13");
+    ans = pvc_PV_55p8_format(s, ".10g", &a, &format_length);
+    assert_equal(format_length, 4);
+    assert_string_length_equal(s, ans, "1.3755289622e+13");
+    ans = pvc_PV_55p8_format(s, ".10G", &a, &format_length);
+    assert_equal(format_length, 4);
+    assert_string_length_equal(s, ans, "1.3755289622E+13");
+    ans = pvc_PV_55p8_format(s, ".*g", &a, &format_length, 10);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "1.3755289622e+13");
+    ans = pvc_PV_55p8_format(s, ".*G", &a, &format_length, 10);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "1.3755289622E+13");
+
+    a._1 = -3521354143234324ll;
+    ans = pvc_PV_55p8_format(s, "g", &a, &format_length);
+    assert_equal(format_length, 1);
+    assert_string_length_equal(s, ans, "-1.4e+13");
+    ans = pvc_PV_55p8_format(s, "G", &a, &format_length);
+    assert_equal(format_length, 1);
+    assert_string_length_equal(s, ans, "-1.4E+13");
+    ans = pvc_PV_55p8_format(s, ".0g", &a, &format_length);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "-1e+13");
+    ans = pvc_PV_55p8_format(s, ".0G", &a, &format_length);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "-1E+13");
+    ans = pvc_PV_55p8_format(s, ".10g", &a, &format_length);
+    assert_equal(format_length, 4);
+    assert_string_length_equal(s, ans, "-1.3755289622e+13");
+    ans = pvc_PV_55p8_format(s, ".10G", &a, &format_length);
+    assert_equal(format_length, 4);
+    assert_string_length_equal(s, ans, "-1.3755289622E+13");
+    ans = pvc_PV_55p8_format(s, ".*g", &a, &format_length, 10);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "-1.3755289622e+13");
+    ans = pvc_PV_55p8_format(s, ".*G", &a, &format_length, 10);
+    assert_equal(format_length, 3);
+    assert_string_length_equal(s, ans, "-1.3755289622E+13");
+
+    test_end();
+}
+
 bool test_pvc_PV_55p8_null(void)
 {
     pvc_PV_55p8 a;
@@ -2299,20 +2387,21 @@ bool test_pvc_PV_55p8_null(void)
 }
 
 const TestFunc c_PV_55p8_tests[] = {
-    {"test_pvc_PV_55p8_add",             test_pvc_PV_55p8_add,             TestFuncState_enable},
-    {"test_pvc_PV_55p8_neg",             test_pvc_PV_55p8_neg,             TestFuncState_enable},
-    {"test_pvc_PV_55p8_tostring",        test_pvc_PV_55p8_tostring,        TestFuncState_enable},
-    {"test_pvc_PV_55p8_format_normal_1", test_pvc_PV_55p8_format_normal_1, TestFuncState_enable},
-    {"test_pvc_PV_55p8_format_normal_2", test_pvc_PV_55p8_format_normal_2, TestFuncState_enable},
-    {"test_pvc_PV_55p8_format_pointf",   test_pvc_PV_55p8_format_pointf,   TestFuncState_enable},
-    {"test_pvc_PV_55p8_format_starf",    test_pvc_PV_55p8_format_starf,    TestFuncState_enable},
-    {"test_pvc_PV_55p8_format_negf",     test_pvc_PV_55p8_format_negf,     TestFuncState_enable},
-    {"test_pvc_PV_55p8_format_pointe",   test_pvc_PV_55p8_format_pointe,   TestFuncState_enable},
-    {"test_pvc_PV_55p8_format_stare",    test_pvc_PV_55p8_format_stare,    TestFuncState_enable},
-    {"test_pvc_PV_55p8_format_pointE",   test_pvc_PV_55p8_format_pointE,   TestFuncState_enable},
-    {"test_pvc_PV_55p8_format_starE",    test_pvc_PV_55p8_format_starE,    TestFuncState_enable},
+    {"test_pvc_PV_55p8_add",                 test_pvc_PV_55p8_add,                 TestFuncState_enable},
+    {"test_pvc_PV_55p8_neg",                 test_pvc_PV_55p8_neg,                 TestFuncState_enable},
+    {"test_pvc_PV_55p8_tostring",            test_pvc_PV_55p8_tostring,            TestFuncState_enable},
+    {"test_pvc_PV_55p8_format_normal_1",     test_pvc_PV_55p8_format_normal_1,     TestFuncState_enable},
+    {"test_pvc_PV_55p8_format_normal_2",     test_pvc_PV_55p8_format_normal_2,     TestFuncState_enable},
+    {"test_pvc_PV_55p8_format_pointf",       test_pvc_PV_55p8_format_pointf,       TestFuncState_enable},
+    {"test_pvc_PV_55p8_format_starf",        test_pvc_PV_55p8_format_starf,        TestFuncState_enable},
+    {"test_pvc_PV_55p8_format_negf",         test_pvc_PV_55p8_format_negf,         TestFuncState_enable},
+    {"test_pvc_PV_55p8_format_pointe",       test_pvc_PV_55p8_format_pointe,       TestFuncState_enable},
+    {"test_pvc_PV_55p8_format_stare",        test_pvc_PV_55p8_format_stare,        TestFuncState_enable},
+    {"test_pvc_PV_55p8_format_pointE",       test_pvc_PV_55p8_format_pointE,       TestFuncState_enable},
+    {"test_pvc_PV_55p8_format_starE",        test_pvc_PV_55p8_format_starE,        TestFuncState_enable},
     {"test_pvc_PV_55p8_format_littlenumber", test_pvc_PV_55p8_format_littlenumber, TestFuncState_enable},
-    {"test_pvc_PV_55p8_null",            test_pvc_PV_55p8_null,            TestFuncState_enable},
+    {"test_pvc_PV_55p8_format_g",            test_pvc_PV_55p8_format_g,            TestFuncState_enable},
+    {"test_pvc_PV_55p8_null",                test_pvc_PV_55p8_null,                TestFuncState_enable},
     {NULL, NULL, 0}
 };
 
