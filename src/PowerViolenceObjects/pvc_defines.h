@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <ctype.h>
+#include <math.h>
+#include "pvc_debug.h"
 
 #if (defined(__GNUC__) && __GNUC__ >= 5) || \
     (defined(__clang__) && __has_builtin(__builtin_add_overflow)) || \
@@ -32,8 +34,6 @@
         return *res < a;
     }
 #endif
-
-#define _debug
 
 #include "pvc_defines.h"
 

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['edition_0',['Power Violence Edition',['../index.html#autotoc_md0',1,'']]]
+  ['deprint_0',['deprint',['../pvc__debug_8h.html#af88cb5c209cb3084d87722ee66b4b59e',1,'pvc_debug.h']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['yqdtb_20pv_0',['yqdtb-pv',['../index.html',1,'']]]
+  ['violence_20edition_0',['Power Violence Edition',['../index.html#autotoc_md0',1,'']]]
 ];

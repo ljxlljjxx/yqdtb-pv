@@ -28,7 +28,7 @@ jobs:
       - name: Compile to *.o
         run: gcc -Wall -Wextra -c tests/ctests/ct_pvc_PV_55p8.c -o ct_pvc_PV_55p8-ubuntu.o -Isrc/PowerViolenceObjects
       - name: link
-        run: gcc pvc_PV_55p8-ubuntu.o ct_pvc_PV_55p8-ubuntu.o pvc_defines-ubuntu.o -o ct_pvc_PV_55p8-ubuntu
+        run: gcc pvc_PV_55p8-ubuntu.o ct_pvc_PV_55p8-ubuntu.o pvc_defines-ubuntu.o -o ct_pvc_PV_55p8-ubuntu -lm
       - name: Run
         run: ./ct_pvc_PV_55p8-ubuntu
 
