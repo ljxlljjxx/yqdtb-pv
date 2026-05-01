@@ -1002,7 +1002,7 @@ bool test_pvc_PV_55p8_format_pointe(void)
     a._1 = 2559;
     ans = pvc_PV_55p8_format(s, "e", &a, &format_length);
     assert_equal(format_length, 1);
-    assert_string_length_equal(s, ans, "9.99609375e+0");
+    assert_string_length_equal(s, ans, "1.0e+1");
     ans = pvc_PV_55p8_format(s, ".0e", &a, &format_length);
     assert_equal(format_length, 3);
     assert_string_length_equal(s, ans, "1e+1");

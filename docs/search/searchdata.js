@@ -1,12 +1,12 @@
 var indexSectionsWithContent =
 {
-  0: "_ehiopqstvy",
+  0: "_dehiopqstvy",
   1: "p",
   2: "ip",
   3: "p",
   4: "_pq",
   5: "p",
-  6: "_h",
+  6: "_dh",
   7: "py"
 };
 
