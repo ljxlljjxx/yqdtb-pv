@@ -62,7 +62,7 @@ jobs:
       - name: Compile to *.o
         run: gcc -Wall -Wextra -c tests/ctests/ct_pvc_PV_55p8.c -o ct_pvc_PV_55p8-windows.o -Isrc/PowerViolenceObjects
       - name: link
-        run: gcc pvc_PV_55p8-windows.o ct_pvc_PV_55p8-windows.o pvc_defines-windows.o -o ct_pvc_PV_55p8-windows
+        run: gcc pvc_PV_55p8-windows.o ct_pvc_PV_55p8-windows.o pvc_defines-windows.o -o ct_pvc_PV_55p8-windows -lm
       - name: Run
         run: ./ct_pvc_PV_55p8-windows
         
