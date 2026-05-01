@@ -15,8 +15,7 @@ on:
   schedule:
     - cron: "17 2 * * *"
 jobs:
-  compile-source-ubuntu:
-    name: compile source to *.o
+  run-tests-ubuntu:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -30,8 +29,7 @@ jobs:
       - name: Run
         run: ./ct_pvc_add_overflow-ubuntu
 
-  compile-source-macos:
-    name: compile source to *.o
+  run-tests-macos:
     runs-on: macos-latest
     steps:
       - name: Checkout code
@@ -45,8 +43,7 @@ jobs:
       - name: Run
         run: ./ct_pvc_add_overflow-macos
 
-  compile-source-windows:
-    name: compile source to *.o
+  run-tests-windows:
     runs-on: windows-latest
     steps:
       - name: Checkout code
