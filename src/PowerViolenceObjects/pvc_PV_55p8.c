@@ -96,10 +96,10 @@ char *pvc_PV_55p8_tostring(pvc_PV_55p8 *a)
         (Achieved) (Tested) E:  scientific notation. the default precision is 1.
         (Achieved) (Tested)     .{n}E: the precision
         (Achieved) (Tested)     .*E: the next parameter specified is the precision
-        (--------) (------) g:  Automatically select %f or %e based on the value. Use the %e format when the exponent is less than -4 or greater than or equal to the precision.
+        (--------) (------) g:  Automatically select %f or %e based on the value. Use the %e format when the exponent greater than or equal to the precision.
         (--------) (------)     .{n}g: the precision
         (--------) (------)     .*g: the next parameter specified is the precision
-        (--------) (------) G:  Automatically select %f or %e based on the value. Use the %E format when the exponent is less than -4 or greater than or equal to the precision.
+        (--------) (------) G:  Automatically select %f or %e based on the value. Use the %E format when the exponent greater than or equal to the precision.
         (--------) (------)     .{n}G: the precision
         (--------) (------)     .*G: the next parameter specified is the precision
         (Achieved) (Tested) B:  if a == 0, return "true". else return "false".
@@ -470,6 +470,8 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
         precision = 1;
         format_d_type = 3;
         goto format_e;
+    case 'g':
+
     case 'B':
         *format_length = 1;
         if (a->_1)
