@@ -29,7 +29,7 @@ class TestPv_55p8(unittest.TestCase):
         with self.assertRaises(TypeError):
             del a._value
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             a._value = 10.0
 
         with self.assertRaises(TypeError):

@@ -1,5 +1,5 @@
 name: Python test PV_55p8
-run-name: Python test PV_55p8triggered bt ${{ github.actor }}
+run-name: Python test PV_55p8 triggered bt ${{ github.actor }}
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 on:
