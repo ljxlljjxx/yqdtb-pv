@@ -96,12 +96,12 @@ char *pvc_PV_55p8_tostring(pvc_PV_55p8 *a)
         (Achieved) (Tested) E:  scientific notation. the default precision is 1.
         (Achieved) (Tested)     .{n}E: the precision
         (Achieved) (Tested)     .*E: the next parameter specified is the precision
-        (--------) (------) g:  Automatically select %f or %e based on the value. Use the %e format when the exponent greater than or equal to the precision.
-        (--------) (------)     .{n}g: the precision
-        (--------) (------)     .*g: the next parameter specified is the precision
-        (--------) (------) G:  Automatically select %f or %e based on the value. Use the %E format when the exponent greater than or equal to the precision.
-        (--------) (------)     .{n}G: the precision
-        (--------) (------)     .*G: the next parameter specified is the precision
+        (Achieved) (------) g:  Automatically select %f or %e based on the value. Use the %e format when the exponent greater than or equal to the precision.
+        (Achieved) (------)     .{n}g: the precision
+        (Achieved) (------)     .*g: the next parameter specified is the precision
+        (Achieved) (------) G:  Automatically select %f or %e based on the value. Use the %E format when the exponent greater than or equal to the precision.
+        (Achieved) (------)     .{n}G: the precision
+        (Achieved) (------)     .*G: the next parameter specified is the precision
         (Achieved) (Tested) B:  if a == 0, return "true". else return "false".
  * @param   a pvc_PV_119p8 *restrict 
  * @param   ... if format is .*f/.*e/.*E/.*g/.*G, this will give precision.
@@ -118,7 +118,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
 
     int precision = 0;
     va_list argv;
-    int format_d_type;
+    int format_d_type = -1;
     const char *s2541;
 
     int exp = 0;
@@ -327,6 +327,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
         }
     case 'f':
         *format_length = 1;
+    format_f:
         format_d_type = 1;
         goto format_d;
     case 'e':
@@ -471,7 +472,33 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
         format_d_type = 3;
         goto format_e;
     case 'g':
-
+        *format_length = 1;
+        precision = 1;
+    format_g:
+        if (log10(a->_1 / 256.0) >= precision)
+        {
+            format_d_type = 2;
+            goto format_e;
+        }
+        else
+        {
+            if (format_d_type == -1) format_d_type = 2;
+            goto format_f;
+        }
+    case 'G':
+        *format_length = 1;
+        precision = 1;
+    format_G:
+        if (log10(a->_1 / 256.0) >= precision)
+        {
+            format_d_type = 3;
+            goto format_e;
+        }
+        else
+        {
+            if (format_d_type == -1) format_d_type = 2;
+            goto format_f;
+        }
     case 'B':
         *format_length = 1;
         if (a->_1)
@@ -519,6 +546,10 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
             case 'E':
                 format_d_type = 3;
                 goto format_e;
+            case 'g':
+                goto format_g;
+            case 'G':
+                goto format_G;
         }
         goto unknown_format;
     }
