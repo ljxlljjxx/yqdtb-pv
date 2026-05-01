@@ -343,6 +343,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
         if (a->_1 = INT64_MIN) tN = 1ull << 63;
         else tN = a->_1 > 0 ? a->_1 : -a->_1;
         p1 = tN >> 8, p2 = tN & 255;
+        tD = 1;
 
         if (p1 == 0)
         {
@@ -366,13 +367,64 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
 
         uint64_t int_part = p1 / tD;
         uint64_t rem = p1 % tD;
-        for (int i = 0; i < precision; i++)
+        if (precision <= exp)
         {
-            rem *= 10;
-            buffer[cnt++] = 48 + rem / tD;
-            rem = rem % tD;
+            for (int i = 0; i < precision; i++)
+            {
+                rem *= 10;
+                buffer[cnt++] = 48 + rem / tD;
+                rem %= tD;
+            }
+            if (precision == exp)
+            {
+                if (p2 < 128) goto format_e_suf;
+                if (p2 > 128) goto format_e_carry;
+                if (p1 & 1) goto format_e_carry;
+                goto format_e_suf;
+            }
+            else
+            {
+                if (rem * 10 < 5 * tD) goto format_e_suf;
+                if (rem * 10 > 5 * tD) goto format_e_carry;
+                if (p2) goto format_e_carry;
+                if (buffer[cnt-1] & 1) goto format_e_carry;
+                goto format_e_suf;
+            }
         }
-
+        else
+        {
+            for (int i = 0; i < exp; i++)
+            {
+                rem *= 10;
+                buffer[cnt++] = 48 + rem / tD;
+                rem = rem % tD;
+            }
+            if (precision - exp < 8) for (int i = 0; i < precision - exp; i++)
+            {
+                buffer[cnt++] = quick_float_8[p2][i];
+            }
+            else
+            {
+                for (int i = 0; i < 8; i++) buffer[cnt++] = quick_float_8[p2][i];
+                for (int i = 0; i < precision - exp - 8; i++) buffer[cnt++] = '0';
+            }
+        }
+        goto format_e_suf;
+    format_e_carry:
+        flag = *buffer == '-';
+        buffer[cnt-1]++;
+        for (int i = cnt-1; i > flag; i--)
+        {
+            if (buffer[i] == 58) buffer[i] = 48, buffer[i-1]++;
+            else if (buffer[i] == 47) buffer[i]--, buffer[i-1]++; /* '.' + 1 = 47 */
+            goto format_e_suf;
+        }
+        if (buffer[flag] == 58)
+        {
+            buffer[flag] = '1';
+            exp++;
+        }
+        goto format_e_suf;
         int round_up = 0;
         if (rem * 10 / tD >= 5) {
             round_up = 1;
@@ -385,7 +437,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
             if (pvc_PV_55p8_neg(&format_b_b))
             {
                 buffer[cnt++] = '3'; // 3,6028,7970,1896,3968
-                flag = 16;
+                exp = 16;
                 if (precision > 1) buffer[cnt++] = '.';
                 else goto format_e_suf;
                 if (precision >= 36)
@@ -417,8 +469,8 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
         //     format_b_low = ((format_b_tmp << 56) + format_b_low) / 10;
         //     format_b_high /= 10;
         // }
-        flag = format_b_temp_size - 1;
-        if (flag < 0)
+        exp = format_b_temp_size - 1;
+        if (exp < 0)
         {
             if (precision >= 8)
             {
@@ -435,7 +487,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
                 {
                     buffer[cnt++] = '0';
                 }
-                flag = quick_float_e[format_b_b._1 & 255];
+                exp = quick_float_e[format_b_b._1 & 255];
                 goto format_e_suf;
             }
             else
@@ -447,11 +499,11 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
         }
         _debug printf("precision = %d\n", precision);
         _debug printf("format_b_temp_size = %d\n", format_b_temp_size);
-        _debug printf("flag = %d\n", flag);
+        _debug printf("exp = %d\n", exp);
         _debug printf("format_b_temp = %s\n", format_b_temp);
         if (precision >= format_b_temp_size)
         {
-            for (int i = flag; i >= 0; i--)
+            for (int i = exp; i >= 0; i--)
             {
                 buffer[cnt++] = format_b_temp[i];
         _debug printf("buffer = %s\n", buffer);
@@ -479,10 +531,10 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
     format_e_suf:
         if (format_d_type == 2) buffer[cnt++] = 'e';
         else buffer[cnt++] = 'E';
-        if (flag >= 0) buffer[cnt++] = '+';
-        else buffer[cnt++] = '-', flag = -flag;
-        if (flag > 10) buffer[cnt++] = flag / 10 | 48;
-        buffer[cnt++] = flag % 10 | 48;
+        if (exp >= 0) buffer[cnt++] = '+';
+        else buffer[cnt++] = '-', exp = -exp;
+        if (exp > 10) buffer[cnt++] = exp / 10 | 48;
+        buffer[cnt++] = exp % 10 | 48;
         goto function_return;
     case 'E':
         *format_length = 1;
