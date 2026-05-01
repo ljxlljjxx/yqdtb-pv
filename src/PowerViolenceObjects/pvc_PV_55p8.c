@@ -612,4 +612,21 @@ function_return:
     return cnt;
 }
 
-int pvc_PV_55p8_print(pvc_PV_55p8 *a);
+int pvc_PV_55p8_print(pvc_PV_55p8 *a)
+{
+    size_t cnt = 0;
+    pvc_PV_55p8 b;
+    if (a == NULL) return printf("(null)");
+    b = *a;
+    if (a->_1 < 0)
+    {
+        putchar('-'); cnt++;
+        if (pvc_PV_55p8_neg(&b))
+        {
+            return 1 + printf("%s", pvc_PV_55p8_max);
+        }
+    }
+    cnt += printf("%lld", b._1 >> 8);
+    if (b._1 & 255) return cnt + printf(".%s", quick_float[b._1 & 255]);
+    return cnt;
+}

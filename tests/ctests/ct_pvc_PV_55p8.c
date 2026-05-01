@@ -2360,6 +2360,36 @@ bool test_pvc_PV_55p8_format_g(void)
     test_end();
 }
 
+bool test_pvc_PV_55p8_print(void)
+{
+    pvc_PV_55p8 a;
+    char s[1000];
+    int ans;
+    test_start();
+
+    a._1 = 0;
+    CAPTURE_STROUT(s, ans = pvc_PV_55p8_print(&a));
+    assert_string_length_equal(s, ans, "0");
+
+    a._1 = 123456789ULL;
+    CAPTURE_STROUT(s, ans = pvc_PV_55p8_print(&a));
+    assert_string_length_equal(s, ans, "482253.08203125");
+
+    a._1 = -123456789ULL;
+    CAPTURE_STROUT(s, ans = pvc_PV_55p8_print(&a));
+    assert_string_length_equal(s, ans, "-482253.08203125");
+
+    a._1 = INT64_MAX;
+    CAPTURE_STROUT(s, ans = pvc_PV_55p8_print(&a));
+    assert_string_length_equal(s, ans, "36028797018963967.99609375");
+
+    a._1 = INT64_MIN;
+    CAPTURE_STROUT(s, ans = pvc_PV_55p8_print(&a));
+    assert_string_length_equal(s, ans, "-36028797018963968");
+
+    test_end();
+}
+
 bool test_pvc_PV_55p8_null(void)
 {
     pvc_PV_55p8 a;
@@ -2380,8 +2410,8 @@ bool test_pvc_PV_55p8_null(void)
     assert_string_equal(s, "(null)");
     assert_equal(ans, -1);
 
-    // CAPTURE_STROUT(s, ans = pvc_PV_55p8_print(NULL));
-    // assert_string_length_equal(s, ans, "(null)");
+    CAPTURE_STROUT(s, ans = pvc_PV_55p8_print(NULL));
+    assert_string_length_equal(s, ans, "(null)");
 
     test_end();
 }
@@ -2401,6 +2431,7 @@ const TestFunc c_PV_55p8_tests[] = {
     {"test_pvc_PV_55p8_format_starE",        test_pvc_PV_55p8_format_starE,        TestFuncState_enable},
     {"test_pvc_PV_55p8_format_littlenumber", test_pvc_PV_55p8_format_littlenumber, TestFuncState_enable},
     {"test_pvc_PV_55p8_format_g",            test_pvc_PV_55p8_format_g,            TestFuncState_enable},
+    {"test_pvc_PV_55p8_print",               test_pvc_PV_55p8_print,               TestFuncState_enable},
     {"test_pvc_PV_55p8_null",                test_pvc_PV_55p8_null,                TestFuncState_enable},
     {NULL, NULL, 0}
 };
