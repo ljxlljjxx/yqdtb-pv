@@ -347,7 +347,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
             if (precision <= 8)
             {
                 strcpy(buffer + cnt, quick_float_es[precision][p2]);
-                if (format_d_type != 2) buffer[cnt + precision + 1] = 'E';
+                if (format_d_type != 2) buffer[cnt + precision + (precision != 1)] = 'E';
                 return cnt + precision + 4 - (precision == 1);
             }
             else
