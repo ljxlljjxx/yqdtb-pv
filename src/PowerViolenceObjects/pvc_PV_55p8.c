@@ -348,12 +348,13 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_P
             if (precision <= 8)
             {
                 strcpy(buffer + cnt, quick_float_es[precision][p2]);
+                if (format_d_type != 2) buffer[cnt + precision + 1] = 'E';
                 return cnt + precision + 4;
             }
             else
             {
                 strcpy(buffer + cnt, quick_float_e8[p2]);
-                buffer[cnt + precision + 1] = 'e';
+                buffer[cnt + precision + 1] = (format_d_type == 2 ? 'e': 'E');
                 buffer[cnt + precision + 2] = buffer[cnt + 10];
                 buffer[cnt + precision + 3] = buffer[cnt + 11];
                 for (int i = cnt + 9; i <= cnt + precision; i++) buffer[i] = '0';
