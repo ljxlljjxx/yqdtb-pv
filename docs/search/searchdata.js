@@ -4,9 +4,9 @@ var indexSectionsWithContent =
   1: "p",
   2: "ip",
   3: "p",
-  4: "_pq",
+  4: "_qv",
   5: "p",
-  6: "_dh",
+  6: "_dhp",
   7: "py"
 };
 

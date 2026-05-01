@@ -65,7 +65,8 @@ char *pvc_PV_55p8_tostring(pvc_PV_55p8 *a)
     {
         if (pvc_PV_55p8_neg(a))
         {
-            strcpy(buffer, "-36028797018963968");
+            *buffer = '-';
+            strcpy(buffer + 1, pvc_PV_55p8_max);
             return buffer;
         }
         else
