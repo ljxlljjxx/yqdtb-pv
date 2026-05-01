@@ -50,6 +50,19 @@ else
 fi
 
 
+echo 'Python test PV_55p8'
+
+pip install .
+if [ $? -eq 1 ]; then
+    return_val=1;
+else
+    python -m unittest tests/ctests/test_PV_55p8.py
+    if [[ $? > 0 ]]; then
+        return_val=1;
+    fi
+fi
+
+
 if [ $return_val -eq 1 ]; then
     exit 1
 fi
