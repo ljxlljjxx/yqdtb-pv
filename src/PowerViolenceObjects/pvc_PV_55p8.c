@@ -11,7 +11,7 @@
  * @author  ljx
  * @date    2026-04-26 11:20
  */
-bool pvc_PV_55p8_add(pvc_PV_55p8 *a, pvc_PV_55p8 *b, pvc_PV_55p8 *restrict res)
+bool pvc_PV_55p8_add(const pvc_PV_55p8 *a, const pvc_PV_55p8 *b, pvc_PV_55p8 *restrict res)
 {
     res->_1 = a->_1 + b->_1;
     if (addi64_overflow(a->_1, b->_1, &res->_1))
@@ -51,31 +51,26 @@ bool pvc_PV_55p8_neg(pvc_PV_55p8 *a)
  * @author  ljx
  * @date    2026-04-26 11:24
  */
-char *pvc_PV_55p8_tostring(pvc_PV_55p8 *a)
+char *pvc_PV_55p8_tostring(const pvc_PV_55p8 *a)
 {
     static char buffer[40];
+    pvc_PV_55p8 b;
+    int cnt = 0;
     if (a == NULL) return strcpy(buffer, "(null)");
-    if (!a->_1)
-    {
-        *buffer = '0';
-        buffer[1] = 0;
-        return buffer;
-    }
+    b = *a;
     if (a->_1 & INT64_MIN)
     {
-        if (pvc_PV_55p8_neg(a))
+        buffer[cnt++] = '-';
+        if (pvc_PV_55p8_neg(&b))
         {
-            *buffer = '-';
             strcpy(buffer + 1, pvc_PV_55p8_max);
             return buffer;
         }
-        else
-        {
-            sprintf(buffer, "-%lld.%s", a->_1 >> 8, quick_float[a->_1 & 255]);
-            return buffer;
-        }
     }
-    sprintf(buffer, "%lld.%s", a->_1 >> 8, quick_float[a->_1 & 255]);
+    if (b._1 & 255)
+        sprintf(buffer + cnt, "%lld.%s", b._1 >> 8, quick_float[b._1 & 255]);
+    else
+        sprintf(buffer + cnt, "%lld", b._1 >> 8);
     return buffer;
 }
 
@@ -112,7 +107,7 @@ char *pvc_PV_55p8_tostring(pvc_PV_55p8 *a)
  * @author  ljx
  * @date    2026-04-26 15:34
  */
-int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, pvc_PV_55p8 *restrict a, int *format_length, ...)
+int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const pvc_PV_55p8 *restrict a, int *format_length, ...)
 {
     int cnt = 0;
     pvc_PV_55p8 format_b_b;
@@ -613,7 +608,7 @@ function_return:
     return cnt;
 }
 
-int pvc_PV_55p8_print(pvc_PV_55p8 *a)
+int pvc_PV_55p8_print(const pvc_PV_55p8 *a)
 {
     size_t cnt = 0;
     pvc_PV_55p8 b;
