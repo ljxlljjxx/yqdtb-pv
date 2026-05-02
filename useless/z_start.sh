@@ -16,11 +16,14 @@ fi
 
 $PV/useless/z_test.sh
 if [ $? -eq 1 ]; then
+    $PV/useless/z_clean.sh
+    echo '清理'
+
     echo '测试未通过';
     exit 1
+else
+    $PV/useless/z_clean.sh
+    echo '清理'
 fi
 
 echo '测试完成'
-
-$PV/useless/z_clean.sh
-echo '清理'
