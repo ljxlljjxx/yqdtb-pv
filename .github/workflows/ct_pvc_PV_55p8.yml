@@ -21,11 +21,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Compile PVOs/pvc_defines.c
-        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_defines.c -o pvc_defines-ubuntu.o
+        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/PV_num/PV_fixed/pvc_defines.c -o pvc_defines-ubuntu.o
       - name: Compile PVOs/pvc_PV_55p8.c
-        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_PV_55p8.c -o pvc_PV_55p8-ubuntu.o
+        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/PV_num/PV_fixed/pvc_PV_55p8.c -o pvc_PV_55p8-ubuntu.o
       - name: Compile to *.o
-        run: gcc -Wall -Wextra -c tests/ctests/ct_pvc_PV_55p8.c -o ct_pvc_PV_55p8-ubuntu.o -Isrc/PowerViolenceObjects
+        run: gcc -Wall -Wextra -c tests/ctests/ct_pvc_PV_55p8.c -o ct_pvc_PV_55p8-ubuntu.o -Isrc/PowerViolenceObjects/PV_num/PV_fixed
       - name: link
         run: gcc pvc_PV_55p8-ubuntu.o ct_pvc_PV_55p8-ubuntu.o pvc_defines-ubuntu.o -o ct_pvc_PV_55p8-ubuntu -lm
       - name: Run
@@ -37,11 +37,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Compile PVOs/pvc_defines.c
-        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_defines.c -o pvc_defines-macos.o
+        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/PV_num/PV_fixed/pvc_defines.c -o pvc_defines-macos.o
       - name: Compile PVOs/pvc_PV_55p8.c
-        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_PV_55p8.c -o pvc_PV_55p8-macos.o
+        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/PV_num/PV_fixed/pvc_PV_55p8.c -o pvc_PV_55p8-macos.o
       - name: Compile to *.o
-        run: gcc -Wall -Wextra -c tests/ctests/ct_pvc_PV_55p8.c -o ct_pvc_PV_55p8-macos.o -Isrc/PowerViolenceObjects
+        run: gcc -Wall -Wextra -c tests/ctests/ct_pvc_PV_55p8.c -o ct_pvc_PV_55p8-macos.o -Isrc/PowerViolenceObjects/PV_num/PV_fixed
       - name: link
         run: gcc pvc_PV_55p8-macos.o ct_pvc_PV_55p8-macos.o pvc_defines-macos.o -o ct_pvc_PV_55p8-macos
       - name: Run
@@ -53,11 +53,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Compile PVOs/pvc_defines.c
-        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_defines.c -o pvc_defines-windows.o
+        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/PV_num/PV_fixed/pvc_defines.c -o pvc_defines-windows.o
       - name: Compile PVOs/pvc_PV_55p8.c
-        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_PV_55p8.c -o pvc_PV_55p8-windows.o
+        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/PV_num/PV_fixed/pvc_PV_55p8.c -o pvc_PV_55p8-windows.o
       - name: Compile to *.o
-        run: gcc -Wall -Wextra -c tests/ctests/ct_pvc_PV_55p8.c -o ct_pvc_PV_55p8-windows.o -Isrc/PowerViolenceObjects
+        run: gcc -Wall -Wextra -c tests/ctests/ct_pvc_PV_55p8.c -o ct_pvc_PV_55p8-windows.o -Isrc/PowerViolenceObjects/PV_num/PV_fixed
       - name: link
         run: gcc pvc_PV_55p8-windows.o ct_pvc_PV_55p8-windows.o pvc_defines-windows.o -o ct_pvc_PV_55p8-windows
       - name: Run
