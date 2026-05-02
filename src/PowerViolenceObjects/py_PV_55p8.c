@@ -52,6 +52,13 @@ static PyObject *PV_55p8_richcmp(PyObject *lhs, PyObject *rhs, int op)
     return Py_NewRef(result);
 }
 
+static Py_hash_t PV_55p8_hash(PyObject *op)
+{
+    Py_hash_t result = ((PV_55p8_Object *)op)->value._1;
+    if (result == -1) return -2;
+    return result;
+}
+
 static PyObject *PV_55p8_Object_strvalue(PV_55p8_Object *self, PyObject *Py_UNUSED(unused))
 {
     return PyUnicode_FromFormat("%s", pvc_PV_55p8_tostring(&self->value));
@@ -98,7 +105,8 @@ static PyTypeObject PV_55p8_Type = {
     .tp_itemsize = 0,
     .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
     .tp_richcompare = (richcmpfunc)PV_55p8_richcmp,
-    .tp_new = PV_55p8_new,
+    .tp_hash = (hashfunc)PV_55p8_hash,
+    .tp_new = (newfunc)PV_55p8_new,
     .tp_init = (initproc)PV_55p8_init,
     .tp_dealloc = (destructor)PV_55p8_dealloc,
     .tp_methods = PV_55p8_methods,

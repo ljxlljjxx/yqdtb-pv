@@ -1,4 +1,5 @@
 import unittest
+from random import randint
 from PowerViolenceObjects.PV_55p8 import PV_55p8
 
 class TestPv_55p8(unittest.TestCase):
@@ -74,6 +75,13 @@ class TestPv_55p8(unittest.TestCase):
         self.assertFalse(a != b)
         self.assertTrue(a <= b)
         self.assertTrue(a >= b)
+
+    def test_hash(self):
+        a = PV_55p8()
+        
+        for i in range(1000):
+            a._value = randint(-2**63, 2**63-1)
+            self.assertEqual(hash(a), a._value if a._value != -1 else -2)
 
 
 if __name__ == '__main__':
