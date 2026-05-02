@@ -21,7 +21,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Compile PVOs/pvc_defines.c
-        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/PV_num/PV_fixed/pvc_defines.c -o pvc_defines-ubuntu.o
+        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_defines.c -o pvc_defines-ubuntu.o
       - name: Compile PVOs/pvc_add_overflow.c
         run: gcc -Wall -Wextra -c tests/ctests/ct_pvc_add_overflow.c -o ct_pvc_add_overflow-ubuntu.o -Isrc/PowerViolenceObjects/PV_num/PV_fixed
       - name: link
@@ -35,7 +35,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Compile PVOs/pvc_defines.c
-        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/PV_num/PV_fixed/pvc_defines.c -o pvc_defines-macos.o
+        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_defines.c -o pvc_defines-macos.o
       - name: Compile PVOs/pvc_add_overflow.c
         run: gcc -Wall -Wextra -c tests/ctests/ct_pvc_add_overflow.c -o ct_pvc_add_overflow-macos.o -Isrc/PowerViolenceObjects/PV_num/PV_fixed
       - name: link
@@ -49,7 +49,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Compile PVOs/pvc_defines.c
-        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/PV_num/PV_fixed/pvc_defines.c -o pvc_defines-windows.o
+        run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_defines.c -o pvc_defines-windows.o
       - name: Compile PVOs/pvc_add_overflow.c
         run: gcc -Wall -Wextra -c tests/ctests/ct_pvc_add_overflow.c -o ct_pvc_add_overflow-windows.o -Isrc/PowerViolenceObjects/PV_num/PV_fixed
       - name: link
