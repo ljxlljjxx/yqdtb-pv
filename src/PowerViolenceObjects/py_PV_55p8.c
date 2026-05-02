@@ -34,6 +34,24 @@ static int PV_55p8_init(PV_55p8_Object *self, PyObject *args, PyObject *kwds)
     return 0;
 }
 
+static PyObject *PV_55p8_richcmp(PyObject *lhs, PyObject *rhs, int op)
+{
+    int64_t a = ((PV_55p8_Object *)lhs)->value._1, b = ((PV_55p8_Object *)rhs)->value._1;
+    int c;
+    PyObject *result;
+    switch (op)
+    {
+    case Py_LT: c = a < b; break;
+    case Py_LE: c = a <= b; break;
+    case Py_EQ: c = a == b; break;
+    case Py_NE: c = a != b; break;
+    case Py_GE: c = a >= b; break;
+    case Py_GT: c = a > b; break;
+    }
+    result = c ? Py_True : Py_False;
+    return Py_NewRef(result);
+}
+
 static PyObject *PV_55p8_Object_strvalue(PV_55p8_Object *self, PyObject *Py_UNUSED(unused))
 {
     return PyUnicode_FromFormat("%s", pvc_PV_55p8_tostring(&self->value));
@@ -74,11 +92,12 @@ static PyGetSetDef PV_55p8_getsetters[] = {
 
 static PyTypeObject PV_55p8_Type = {
     .ob_base = PyVarObject_HEAD_INIT(NULL, 0)
-    .tp_name = "py_PV_55p8.PV_55p8",
+    .tp_name = "PV_55p8.PV_55p8",
     .tp_doc = PyDoc_STR("PV_55p8 Objects"),
     .tp_basicsize = sizeof(PV_55p8_Object),
     .tp_itemsize = 0,
     .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
+    .tp_richcompare = (richcmpfunc)PV_55p8_richcmp,
     .tp_new = PV_55p8_new,
     .tp_init = (initproc)PV_55p8_init,
     .tp_dealloc = (destructor)PV_55p8_dealloc,
