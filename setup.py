@@ -1,7 +1,7 @@
 import setuptools
 
 setuptools.setup(
-    packages=setuptools.find_namespace_packages('src'),
+    packages=['PowerViolenceObjects'],
     package_dir={'': 'src'},
     ext_modules=[
         setuptools.Extension(
@@ -15,9 +15,9 @@ setuptools.setup(
             sources=[
                 'src/PowerViolenceObjects/py_PV_55p8.c',
                 'src/PowerViolenceObjects/pvc_PV_55p8.c',
-                'src/PowerViolenceObjects/pvc_defines.c'
+                'src/PowerViolenceObjects/pvc_defines.c',
             ],
         ),
     ],
-    version='2.2.2'
+    version='2.2.3'
 )
