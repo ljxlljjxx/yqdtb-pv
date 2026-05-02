@@ -1,6 +1,6 @@
 import unittest
 from random import randint
-from PowerViolenceObjects.PV_55p8 import PV_55p8
+from PowerViolenceObjects import PV_55p8
 
 class TestPv_55p8(unittest.TestCase):
     def test_init(self):

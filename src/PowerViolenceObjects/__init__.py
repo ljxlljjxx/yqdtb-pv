@@ -34,3 +34,6 @@ PowerViolenceObjects:
 |   |_  PV_state
 |   |_  PV_range
 """
+
+from .PV_55p8 import PV_55p8
+from .PV_num import PV_num
