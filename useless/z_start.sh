@@ -14,6 +14,9 @@ else
     echo '规则文件图片生成完成'
 fi
 
+$PV/useless/z_clean.sh
+echo '清理'
+
 $PV/useless/z_test.sh
 if [ $? -eq 1 ]; then
     echo '测试未通过';
@@ -21,6 +24,3 @@ if [ $? -eq 1 ]; then
 fi
 
 echo '测试完成'
-
-$PV/useless/z_clean.sh
-echo '清理'
