@@ -61,6 +61,10 @@ else
     if [[ $? > 0 ]]; then
         return_val=1;
     fi
+    python -m unittest tests/ctests/test_PV_num.py
+    if [[ $? > 0 ]]; then
+        return_val=1;
+    fi
 fi
 
 
