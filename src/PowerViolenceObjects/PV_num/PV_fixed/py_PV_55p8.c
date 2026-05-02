@@ -3,6 +3,8 @@
 #include <stddef.h>
 #include "pvc_PV_55p8.h"
 
+static PyTypeObject PV_55p8_Type;
+
 typedef struct {
     PyObject_HEAD
     pvc_PV_55p8 value;
@@ -39,6 +41,10 @@ static PyObject *PV_55p8_richcmp(PyObject *lhs, PyObject *rhs, int op)
     int64_t a = ((PV_55p8_Object *)lhs)->value._1, b = ((PV_55p8_Object *)rhs)->value._1;
     int c;
     PyObject *result;
+    if (!PyObject_TypeCheck(lhs, &PV_55p8_Type) || !PyObject_TypeCheck(rhs, &PV_55p8_Type))
+    {
+        Py_RETURN_NOTIMPLEMENTED;
+    }
     switch (op)
     {
     case Py_LT: c = a < b; break;

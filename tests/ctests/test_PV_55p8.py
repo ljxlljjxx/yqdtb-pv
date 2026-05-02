@@ -1,6 +1,6 @@
 import unittest
 from random import randint
-from PowerViolenceObjects.PV_55p8 import PV_55p8
+from PowerViolenceObjects.PV_num.PV_fixed.PV_55p8 import PV_55p8
 
 class TestPv_55p8(unittest.TestCase):
     def test_init(self):
@@ -75,6 +75,9 @@ class TestPv_55p8(unittest.TestCase):
         self.assertFalse(a != b)
         self.assertTrue(a <= b)
         self.assertTrue(a >= b)
+
+        with self.assertRaises(TypeError):
+            a < '1'
 
     def test_hash(self):
         a = PV_55p8()
