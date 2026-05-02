@@ -1,4 +1,3 @@
-MANIFEST.in
 README.md
 setup.py
 src/PowerViolenceObjects/PV_55p8.pyi
