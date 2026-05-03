@@ -10,7 +10,7 @@ class PV_num:
     def __neg__(self):              return NotImplemented
     def __pos__(self):              return NotImplemented
     def __abs__(self):              return NotImplemented
-    def __bool__(self):             return NotImplemented
+    def __bool__(self):             pass
     def __abs__(self):              return NotImplemented
     def __invert__(self):           return NotImplemented
     def __int__(self):              return NotImplemented

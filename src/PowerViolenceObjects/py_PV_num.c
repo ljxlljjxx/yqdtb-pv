@@ -23,7 +23,7 @@ static PyObject *PV_num_floordiv(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEM
 static PyObject *PV_num_neg(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_pos(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_abs(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
-int PV_num_bool(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+int PV_num_bool(PyObject *a) { return (a != 0); }
 static PyObject *PV_num_invert(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_int(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_float(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
