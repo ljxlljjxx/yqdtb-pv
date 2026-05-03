@@ -57,11 +57,7 @@ if [ $? -eq 1 ]; then
     return_val=1;
 else
     echo 'Python test PV_55p8'
-    python -m unittest tests/ctests/test_PV_55p8.py
-    if [[ $? > 0 ]]; then
-        return_val=1;
-    fi
-    python -m unittest tests/ctests/test_PV_num.py
+    python -m unittest discover tests
     if [[ $? > 0 ]]; then
         return_val=1;
     fi

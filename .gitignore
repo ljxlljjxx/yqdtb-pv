@@ -8,6 +8,6 @@ __pycache__
 !docs/*
 !rule/
 build
-*.egg-info
+*.egg-info/
 !.github
 *.so
