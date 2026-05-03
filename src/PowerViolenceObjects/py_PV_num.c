@@ -55,7 +55,7 @@ static PyNumberMethods PV_num_as_number = {
     .nb_multiply = (binaryfunc)PV_num_mul,
     .nb_remainder = (binaryfunc)PV_num_mod,
     .nb_divmod = (binaryfunc)PV_num_divmod,
-    .nb_power = (binaryfunc)PV_num_pow,
+    .nb_power = (ternaryfunc)PV_num_pow,
     .nb_negative = (unaryfunc)PV_num_neg,
     .nb_positive = (unaryfunc)PV_num_pos,
     .nb_absolute = (unaryfunc)PV_num_abs,
@@ -68,6 +68,7 @@ static PyNumberMethods PV_num_as_number = {
     .nb_and = (binaryfunc)PV_num_and,
     .nb_xor = (binaryfunc)PV_num_xor,
     .nb_or = (binaryfunc)PV_num_or,
+
     .nb_inplace_add = (binaryfunc)PV_num_iadd,
     .nb_inplace_subtract = (binaryfunc)PV_num_isub,
     .nb_inplace_multiply = (binaryfunc)PV_num_imul,
