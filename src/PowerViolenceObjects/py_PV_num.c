@@ -117,7 +117,7 @@ static PyModuleDef PV_num_module = {
     .m_name = "PV_num",
     .m_doc = "A module defines PV_num.",
     .m_size = 0,
-    .m_slots = (binaryfunc)PV_num_module_slots
+    .m_slots = PV_num_module_slots
 };
 
 PyMODINIT_FUNC PyInit_PV_num(void)
