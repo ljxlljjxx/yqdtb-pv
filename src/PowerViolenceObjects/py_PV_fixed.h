@@ -6,7 +6,7 @@
 #include <stddef.h>
 #include "py_PV_num.h"
 
-extern PyTypeObject PV_fixed_Type;
+static PyTypeObject PV_fixed_Type;
 
 typedef struct {
     PV_num_Object base;

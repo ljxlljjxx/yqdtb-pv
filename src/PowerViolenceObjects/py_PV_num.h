@@ -5,7 +5,7 @@
 #include <Python.h>
 #include <stddef.h>
 
-extern PyTypeObject PV_num_Type;
+static PyTypeObject PV_num_Type;
 
 typedef struct {
     PyObject_HEAD

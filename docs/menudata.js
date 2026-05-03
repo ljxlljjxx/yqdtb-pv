@@ -43,7 +43,6 @@ var menudata={children:[
 {text:"q",url:"globals.html#index_q"}]},
 {text:"Functions",url:"globals_func.html"},
 {text:"Variables",url:"globals_vars.html",children:[
-{text:"p",url:"globals_vars.html#index_p"},
 {text:"q",url:"globals_vars.html#index_q"}]},
 {text:"Typedefs",url:"globals_type.html"},
 {text:"Macros",url:"globals_defs.html"}]}]}]}
