@@ -11,4 +11,3 @@ build
 *.egg-info/
 !.github
 *.so
-src/PowerViolenceObjects.egg-info
