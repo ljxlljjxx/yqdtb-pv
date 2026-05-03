@@ -93,6 +93,13 @@ class TestPv_55p8(unittest.TestCase):
             a._value = randint(-2**63, 2**63-1)
             self.assertEqual(a.strvalue(), str(a))
 
+    def test_issubclass(self):
+        from PowerViolenceObjects import PV_num
+        from PowerViolenceObjects import PV_fixed
+        self.assertTrue(issubclass(PV_fixed, PV_num))
+        self.assertTrue(issubclass(PV_55p8, PV_fixed))
+        self.assertTrue(issubclass(PV_55p8, PV_num))
+
 
 if __name__ == '__main__':
     unittest.main()
