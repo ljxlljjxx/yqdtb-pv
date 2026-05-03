@@ -1,5 +1,10 @@
 import setuptools
-from src.PowerViolenceObjects import __vertion__
+
+version = '2.2.4'
+
+with open('src/PowerViolenceObjects/__init__.py', 'r') as f:
+    contect: list[str] = [i if not i.startswith('__vertion__') else f'__vertion__ = {version}' for i in f]
+
 
 setuptools.setup(
     packages=['PowerViolenceObjects'],
@@ -20,5 +25,5 @@ setuptools.setup(
             ],
         ),
     ],
-    version=__vertion__
+    version=version
 )
