@@ -3,7 +3,7 @@ class PV_num:
     def __sub__(self, other):       return NotImplemented
     def __mul__(self, other):       return NotImplemented
     def __mod__(self, other):       return NotImplemented
-    def __pow__(self, other):       return NotImplemented
+    def __pow__(self, n, p):        return NotImplemented
     def __divmod__(self, other):    return NotImplemented
     def __truediv__(self, other):   return NotImplemented
     def __floordiv__(self, other):  return NotImplemented
@@ -25,7 +25,7 @@ class PV_num:
     def __isub__(self, other):      return NotImplemented
     def __imul__(self, other):      return NotImplemented
     def __imod__(self, other):      return NotImplemented
-    def __ipow__(self, other):      return NotImplemented
+    def __ipow__(self, n, p):       return NotImplemented
     def __idivmod__(self, other):   return NotImplemented
     def __itruediv__(self, other):  return NotImplemented
     def __ifloordiv__(self, other): return NotImplemented

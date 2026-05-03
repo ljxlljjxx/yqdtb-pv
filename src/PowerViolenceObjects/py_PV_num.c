@@ -16,14 +16,14 @@ static PyObject *PV_num_add(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED
 static PyObject *PV_num_sub(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_mul(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_mod(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
-static PyObject *PV_num_pow(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_num_pow(PyObject *a, PyObject *b, PyObject *c) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_divmod(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_truediv(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_floordiv(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_neg(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_pos(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_abs(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
-static PyObject *PV_num_bool(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+int PV_num_bool(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_invert(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_int(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_float(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
@@ -37,7 +37,7 @@ static PyObject *PV_num_iadd(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTE
 static PyObject *PV_num_isub(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_imul(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_imod(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
-static PyObject *PV_num_ipow(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_num_ipow(PyObject *a, PyObject *b, PyObject *c) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_idivmod(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_itruediv(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_ifloordiv(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
@@ -59,7 +59,7 @@ static PyNumberMethods PV_num_as_number = {
     .nb_negative = (unaryfunc)PV_num_neg,
     .nb_positive = (unaryfunc)PV_num_pos,
     .nb_absolute = (unaryfunc)PV_num_abs,
-    .nb_bool = (unaryfunc)PV_num_bool,
+    .nb_bool = (inquiry)PV_num_bool,
     .nb_invert = (unaryfunc)PV_num_invert,
     .nb_int = (unaryfunc)PV_num_int,
     .nb_float = (unaryfunc)PV_num_float,
@@ -68,16 +68,16 @@ static PyNumberMethods PV_num_as_number = {
     .nb_and = (binaryfunc)PV_num_and,
     .nb_xor = (binaryfunc)PV_num_xor,
     .nb_or = (binaryfunc)PV_num_or,
-    .nb_inplace_add = PV_num_iadd,
-    .nb_inplace_subtract = PV_num_isub,
-    .nb_inplace_multiply = PV_num_imul,
-    .nb_inplace_remainder = PV_num_imod,
-    .nb_inplace_power = PV_num_ipow,
-    .nb_inplace_lshift = PV_num_ilshift,
-    .nb_inplace_rshift = PV_num_irshift,
-    .nb_inplace_and = PV_num_iand,
-    .nb_inplace_xor = PV_num_ixor,
-    .nb_inplace_or = PV_num_ior,
+    .nb_inplace_add = (binaryfunc)PV_num_iadd,
+    .nb_inplace_subtract = (binaryfunc)PV_num_isub,
+    .nb_inplace_multiply = (binaryfunc)PV_num_imul,
+    .nb_inplace_remainder = (binaryfunc)PV_num_imod,
+    .nb_inplace_power = (ternaryfunc)PV_num_ipow,
+    .nb_inplace_lshift = (binaryfunc)PV_num_ilshift,
+    .nb_inplace_rshift = (binaryfunc)PV_num_irshift,
+    .nb_inplace_and = (binaryfunc)PV_num_iand,
+    .nb_inplace_xor = (binaryfunc)PV_num_ixor,
+    .nb_inplace_or = (binaryfunc)PV_num_ior,
 
     .nb_true_divide = (binaryfunc)PV_num_truediv,
     .nb_floor_divide = (binaryfunc)PV_num_floordiv,
@@ -117,7 +117,7 @@ static PyModuleDef PV_num_module = {
     .m_name = "PV_num",
     .m_doc = "A module defines PV_num.",
     .m_size = 0,
-    .m_slots = PV_num_module_slots
+    .m_slots = (binaryfunc)PV_num_module_slots
 };
 
 PyMODINIT_FUNC PyInit_PV_num(void)
