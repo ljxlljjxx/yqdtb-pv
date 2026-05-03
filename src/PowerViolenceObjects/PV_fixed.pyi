@@ -1,4 +1,6 @@
-class PV_num:
+from PV_num import PV_num
+
+class PV_fixed(PV_num):
     def __add__(self, other):       return NotImplemented
     def __sub__(self, other):       return NotImplemented
     def __mul__(self, other):       return NotImplemented

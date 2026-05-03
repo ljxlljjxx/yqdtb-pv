@@ -112,21 +112,13 @@ static PyTypeObject PV_55p8_Type = {
     .tp_init = (initproc)PV_55p8_init,
     .tp_dealloc = (destructor)PV_55p8_dealloc,
     .tp_methods = PV_55p8_methods,
-    .tp_getset = PV_55p8_getsetters
+    .tp_getset = PV_55p8_getsetters,
 };
 
 static int PV_55p8_module_exec(PyObject *m)
 {
-    if (PyType_Ready(&PV_55p8_Type) < 0)
-    {
-        return -1;
-    }
-
-    if (PyModule_AddObjectRef(m, "PV_55p8", (PyObject *)&PV_55p8_Type) < 0)
-    {
-        return -1;
-    }
-
+    if (PyType_Ready(&PV_55p8_Type) < 0) return -1;
+    if (PyModule_AddObjectRef(m, "PV_55p8", (PyObject *)&PV_55p8_Type) < 0) return -1;
     return 0;
 }
 
@@ -137,7 +129,7 @@ static PyModuleDef_Slot PV_55p8_module_slots[] = {
 };
 
 static PyModuleDef PV_55p8_module = {
-    .m_base = PyModuleDef_HEAD_INIT,
+    PyModuleDef_HEAD_INIT,
     .m_name = "PV_55p8",
     .m_doc = "A module defines PV_55p8.",
     .m_size = 0,
@@ -146,5 +138,17 @@ static PyModuleDef PV_55p8_module = {
 
 PyMODINIT_FUNC PyInit_PV_55p8(void)
 {
+    PyObject *base_module = PyImport_ImportModule("PowerViolenceObjects.PV_fixed");
+    if (!base_module) return NULL;
+    PyObject *base_type = PyObject_GetAttrString(base_module, "PV_fixed");
+    Py_DECREF(base_module);
+    if (!base_type) return NULL;
+    
+    ((PyTypeObject*)&PV_55p8_Type)->tp_base = (PyTypeObject*)base_type;
+    if (PyType_Ready(&PV_55p8_Type) < 0) {
+        Py_DECREF(base_type);
+        return NULL;
+    }
+    Py_DECREF(base_type);
     return PyModuleDef_Init(&PV_55p8_module);
 }
