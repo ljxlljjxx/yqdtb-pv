@@ -20,6 +20,7 @@ setuptools.setup(
             'PowerViolenceObjects.PV_fixed',
             sources=[
                 'src/PowerViolenceObjects/py_PV_fixed.c',
+                'src/PowerViolenceObjects/py_PV_num.c',
             ],
         ),
         setuptools.Extension(
@@ -28,6 +29,8 @@ setuptools.setup(
                 'src/PowerViolenceObjects/py_PV_55p8.c',
                 'src/PowerViolenceObjects/pvc_PV_55p8.c',
                 'src/PowerViolenceObjects/pvc_defines.c',
+                'src/PowerViolenceObjects/py_PV_fixed.c',
+                'src/PowerViolenceObjects/py_PV_num.c',
             ],
         ),
     ],
