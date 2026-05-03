@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>yqdtb-pv: src/PowerViolenceObjects/py_PV_55p8.h Source File</title>
+<title>yqdtb-pv: src/PowerViolenceObjects/py_PV_fixed.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -79,33 +79,30 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 </div><!-- top -->
 <div class="header">
-  <div class="headertitle"><div class="title">py_PV_55p8.h</div></div>
+  <div class="headertitle"><div class="title">py_PV_fixed.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="py___p_v__55p8_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef _PY_PV_55p8_H</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define _PY_PV_55p8_H</span></div>
+<a href="py___p_v__fixed_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef _PY_PV_fixed_H</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define _PY_PV_fixed_H</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno"><a class="line" href="py___p_v__55p8_8h.html#ac9efdaac9411d0868b715edccca3269d">    4</a></span><span class="preprocessor">#define PY_SSIZE_T_CLEAN</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno"><a class="line" href="py___p_v__fixed_8h.html#ac9efdaac9411d0868b715edccca3269d">    4</a></span><span class="preprocessor">#define PY_SSIZE_T_CLEAN</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;Python.h&gt;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;stddef.h&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="py___p_v__fixed_8h.html">py_PV_fixed.h</a>&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="pvc___p_v__55p8_8h.html">pvc_PV_55p8.h</a>&quot;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">static</span> PyTypeObject PV_55p8_Type;</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="foldopen" id="foldopen00012" data-start="{" data-end="};">
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="struct_p_v__55p8___object.html">   12</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    PyObject_HEAD</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="struct_p_v__55p8___object.html#ad9b9b6c945bfbd0fcec0e18c67ba6d3b">   14</a></span>    <a class="code hl_struct" href="structpvc___p_v__55p8.html">pvc_PV_55p8</a> <a class="code hl_variable" href="struct_p_v__55p8___object.html#ad9b9b6c945bfbd0fcec0e18c67ba6d3b">value</a>;</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>} <a class="code hl_struct" href="struct_p_v__55p8___object.html">PV_55p8_Object</a>;</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="py___p_v__num_8h.html">py_PV_num.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">extern</span> PyTypeObject <a class="code hl_variable" href="py___p_v__fixed_8h.html#a2a2e19550166a01e55c76b77e6aea8ae">PV_fixed_Type</a>;</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="foldopen" id="foldopen00011" data-start="{" data-end="};">
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="struct_p_v__fixed___object.html">   11</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <a class="code hl_struct" href="struct_p_v__num___object.html">PV_num_Object</a> base</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>} <a class="code hl_struct" href="struct_p_v__fixed___object.html">PV_fixed_Object</a>;</div>
 </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#endif </span><span class="comment">/* _PY_PV_55p8_H */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="apvc___p_v__55p8_8h_html"><div class="ttname"><a href="pvc___p_v__55p8_8h.html">pvc_PV_55p8.h</a></div></div>
-<div class="ttc" id="apy___p_v__fixed_8h_html"><div class="ttname"><a href="py___p_v__fixed_8h.html">py_PV_fixed.h</a></div></div>
-<div class="ttc" id="astruct_p_v__55p8___object_html"><div class="ttname"><a href="struct_p_v__55p8___object.html">PV_55p8_Object</a></div><div class="ttdef"><b>Definition</b> py_PV_55p8.h:12</div></div>
-<div class="ttc" id="astruct_p_v__55p8___object_html_ad9b9b6c945bfbd0fcec0e18c67ba6d3b"><div class="ttname"><a href="struct_p_v__55p8___object.html#ad9b9b6c945bfbd0fcec0e18c67ba6d3b">PV_55p8_Object::value</a></div><div class="ttdeci">PyObject_HEAD pvc_PV_55p8 value</div><div class="ttdef"><b>Definition</b> py_PV_55p8.h:14</div></div>
-<div class="ttc" id="astructpvc___p_v__55p8_html"><div class="ttname"><a href="structpvc___p_v__55p8.html">pvc_PV_55p8</a></div><div class="ttdef"><b>Definition</b> pvc_PV_55p8.h:7</div></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#endif </span><span class="comment">/* _PY_PV_fixed_H */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="apy___p_v__fixed_8h_html_a2a2e19550166a01e55c76b77e6aea8ae"><div class="ttname"><a href="py___p_v__fixed_8h.html#a2a2e19550166a01e55c76b77e6aea8ae">PV_fixed_Type</a></div><div class="ttdeci">PyTypeObject PV_fixed_Type</div><div class="ttdef"><b>Definition</b> py_PV_fixed.c:15</div></div>
+<div class="ttc" id="apy___p_v__num_8h_html"><div class="ttname"><a href="py___p_v__num_8h.html">py_PV_num.h</a></div></div>
+<div class="ttc" id="astruct_p_v__fixed___object_html"><div class="ttname"><a href="struct_p_v__fixed___object.html">PV_fixed_Object</a></div><div class="ttdef"><b>Definition</b> py_PV_fixed.h:11</div></div>
+<div class="ttc" id="astruct_p_v__num___object_html"><div class="ttname"><a href="struct_p_v__num___object.html">PV_num_Object</a></div><div class="ttdef"><b>Definition</b> py_PV_num.h:10</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

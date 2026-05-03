@@ -1,6 +1,6 @@
 import setuptools
 
-version = '2.2.4'
+version = '2.3.0'
 
 with open('src/PowerViolenceObjects/__init__.py', 'r') as f:
     contect: list[str] = [i if not i.startswith('__vertion__') else f'__vertion__ = {version}' for i in f]
@@ -14,6 +14,12 @@ setuptools.setup(
             'PowerViolenceObjects.PV_num',
             sources=[
                 'src/PowerViolenceObjects/py_PV_num.c',
+            ],
+        ),
+        setuptools.Extension(
+            'PowerViolenceObjects.PV_fixed',
+            sources=[
+                'src/PowerViolenceObjects/py_PV_fixed.c',
             ],
         ),
         setuptools.Extension(

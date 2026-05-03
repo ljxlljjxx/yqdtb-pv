@@ -82,18 +82,24 @@ $(document).ready(function() { init_codefold(0); });
   <div class="headertitle"><div class="title">py_PV_num.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="py___p_v__num_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="py___p_v__num_8h.html#ac9efdaac9411d0868b715edccca3269d">    1</a></span><span class="preprocessor">#define PY_SSIZE_T_CLEAN</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;Python.h&gt;</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;stddef.h&gt;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">static</span> PyTypeObject PV_num_Type;</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="foldopen" id="foldopen00007" data-start="{" data-end="};">
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="struct_p_v__num___object.html">    7</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    PyObject_HEAD</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>} <a class="code hl_struct" href="struct_p_v__num___object.html">PV_num_Object</a>;</div>
+<a href="py___p_v__num_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef _PY_PV_num_H</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define _PY_PV_num_H</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno"><a class="line" href="py___p_v__num_8h.html#ac9efdaac9411d0868b715edccca3269d">    4</a></span><span class="preprocessor">#define PY_SSIZE_T_CLEAN</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;Python.h&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;stddef.h&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">extern</span> PyTypeObject <a class="code hl_variable" href="py___p_v__num_8h.html#a7b180f2c6f0db9f9d9cc9a825f2a20df">PV_num_Type</a>;</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="foldopen" id="foldopen00010" data-start="{" data-end="};">
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="struct_p_v__num___object.html">   10</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    PyObject_HEAD</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>} <a class="code hl_struct" href="struct_p_v__num___object.html">PV_num_Object</a>;</div>
 </div>
-<div class="ttc" id="astruct_p_v__num___object_html"><div class="ttname"><a href="struct_p_v__num___object.html">PV_num_Object</a></div><div class="ttdef"><b>Definition</b> py_PV_num.h:7</div></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#endif </span><span class="comment">/* _PY_PV_num_H */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="apy___p_v__num_8h_html_a7b180f2c6f0db9f9d9cc9a825f2a20df"><div class="ttname"><a href="py___p_v__num_8h.html#a7b180f2c6f0db9f9d9cc9a825f2a20df">PV_num_Type</a></div><div class="ttdeci">PyTypeObject PV_num_Type</div><div class="ttdef"><b>Definition</b> py_PV_num.c:91</div></div>
+<div class="ttc" id="astruct_p_v__num___object_html"><div class="ttname"><a href="struct_p_v__num___object.html">PV_num_Object</a></div><div class="ttdef"><b>Definition</b> py_PV_num.h:10</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
