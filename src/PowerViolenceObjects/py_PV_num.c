@@ -88,7 +88,7 @@ static PyNumberMethods PV_num_as_number = {
     .nb_index = (unaryfunc)PV_num_index,
 };
 
-PyTypeObject PV_num_Type = {
+static PyTypeObject PV_num_Type = {
     PyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "PV_num.PV_num",
     .tp_doc = PyDoc_STR("PV_num Objects"),
