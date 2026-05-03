@@ -9,7 +9,7 @@
 extern PyTypeObject PV_fixed_Type;
 
 typedef struct {
-    PV_num_Object base
+    PV_num_Object base;
 } PV_fixed_Object;
 
 #endif /* _PY_PV_fixed_H */
