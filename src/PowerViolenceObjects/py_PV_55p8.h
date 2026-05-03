@@ -10,7 +10,7 @@
 static PyTypeObject PV_55p8_Type;
 
 typedef struct {
-    PyObject_HEAD
+    PV_fixed_Object base;
     pvc_PV_55p8 value;
 } PV_55p8_Object;
 
