@@ -37,3 +37,7 @@ PowerViolenceObjects:
 
 from .PV_55p8 import PV_55p8
 from .PV_num import PV_num
+
+__all__ = ['PV_55p8', 'PV_num']
+
+__vertion__ = '2.3.0'

@@ -1,4 +1,5 @@
 import setuptools
+from src.PowerViolenceObjects import __vertion__
 
 setuptools.setup(
     packages=['PowerViolenceObjects'],
@@ -19,5 +20,5 @@ setuptools.setup(
             ],
         ),
     ],
-    version='2.2.3'
+    version=__vertion__
 )
