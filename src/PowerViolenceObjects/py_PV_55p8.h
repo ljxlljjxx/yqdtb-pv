@@ -8,6 +8,8 @@
 #include "pvc_PV_55p8.h"
 
 static PyTypeObject PV_55p8_Type;
+static PyTypeObject *PV_fixed_Type_p;
+static PyTypeObject *PV_num_Type_p;
 
 typedef struct {
     PV_fixed_Object base;
