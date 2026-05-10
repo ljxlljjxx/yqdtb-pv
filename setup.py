@@ -1,6 +1,6 @@
 import setuptools
 
-version = '2.3.0'
+version = '2.4.0'
 
 setuptools.setup(
     packages=['PowerViolenceObjects'],
@@ -10,12 +10,6 @@ setuptools.setup(
             'PowerViolenceObjects.PV_num',
             sources=[
                 'src/PowerViolenceObjects/py_PV_num.c',
-            ],
-        ),
-        setuptools.Extension(
-            'PowerViolenceObjects.PV_fixed',
-            sources=[
-                'src/PowerViolenceObjects/py_PV_fixed.c',
             ],
         ),
         setuptools.Extension(

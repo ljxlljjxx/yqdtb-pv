@@ -213,11 +213,6 @@ static PyModuleDef_Slot PV_55p8_module_slots[] = {
 
 void PV_55p8_module_free(void *Py_UNUSED(module))
 {
-    if (PV_fixed_Type_p)
-    {
-        Py_DECREF(PV_fixed_Type_p);
-        PV_fixed_Type_p = NULL;
-    }
     if (PV_num_Type_p)
     {
         Py_DECREF(PV_num_Type_p);
@@ -236,23 +231,16 @@ static PyModuleDef PV_55p8_module = {
 
 PyMODINIT_FUNC PyInit_PV_55p8(void)
 {
-    PyObject *base0_module = PyImport_ImportModule("PowerViolenceObjects.PV_num");
-    if (!base0_module) return NULL;
-    PV_num_Type_p = (PyTypeObject *)PyObject_GetAttrString(base0_module, "PV_num");
-    Py_DECREF(base0_module);
+    PyObject *base_module = PyImport_ImportModule("PowerViolenceObjects.PV_num");
+    if (!base_module) return NULL;
+    PV_num_Type_p = (PyTypeObject *)PyObject_GetAttrString(base_module, "PV_num");
+    Py_DECREF(base_module);
     if (!PV_num_Type_p) return NULL;
-
-    PyObject *base1_module = PyImport_ImportModule("PowerViolenceObjects.PV_fixed");
-    if (!base1_module) return NULL;
-    PV_fixed_Type_p = (PyTypeObject *)PyObject_GetAttrString(base1_module, "PV_fixed");
-    Py_DECREF(base1_module);
-    if (!PV_fixed_Type_p) return NULL;
     
-    (&PV_55p8_Type)->tp_base = PV_fixed_Type_p;
+    (&PV_55p8_Type)->tp_base = PV_num_Type_p;
     if (PyType_Ready(&PV_55p8_Type) < 0)
     {
         Py_DECREF(PV_num_Type_p);
-        Py_DECREF(PV_fixed_Type_p);
         return NULL;
     }
     return PyModuleDef_Init(&PV_55p8_module);

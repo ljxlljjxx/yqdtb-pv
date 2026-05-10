@@ -95,9 +95,6 @@ class TestPv_55p8(unittest.TestCase):
 
     def test_issubclass(self):
         from PowerViolenceObjects import PV_num
-        from PowerViolenceObjects import PV_fixed
-        self.assertTrue(issubclass(PV_fixed, PV_num))
-        self.assertTrue(issubclass(PV_55p8, PV_fixed))
         self.assertTrue(issubclass(PV_55p8, PV_num))
 
 
