@@ -52,7 +52,8 @@ fi
 
 echo 'Python tests'
 
-pip install .
+python setup.py clean --all
+pip install --no-cache-dir .
 if [ $? -eq 1 ]; then
     return_val=1;
 else
