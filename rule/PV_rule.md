@@ -7,15 +7,15 @@ Rules for the Power Violence Edition
 <img src="tools/Icon.png"></center>
 
 <font size="5"><div style="text-align: right;">
-规则版本: 0.0.19<br>
-Rule version: 0.0.19<br>
+规则版本: 0.0.20<br>
+Rule version: 0.0.20<br>
 <br>
-规则撰写日期: 2026年4月26日<br>
-Date of rule writing: April 26, 2026<br>
+规则撰写日期: 2026年5月10日<br>
+Date of rule writing: May 10, 2026<br>
 </div></font>
 
 <font size="3"><div style="text-align: right;">
-文件大小: 83 KB
+文件大小: 84 KB
 </div></font>
 
 <div style="page-break-after: always;"></div>
@@ -45,6 +45,7 @@ Date of rule writing: April 26, 2026<br>
    3. 玩家-玩家储存器 Player-Player Storage
    4. 打腿版数据类型 Data Type
    5. 关于计算的详细说明 Detailed explanation of the calculation
+   6. 关于与其他版本的兼容问题 Regarding compatibility with other editions
 4. 更新公告 Annoucements
    1.  元气打腿版 0.0.0  更新公告  Power Violence Edition 0.0.0  annoucement
    2.  元气打腿版 0.0.1  更新公告  Power Violence Edition 0.0.1  annoucement
@@ -66,6 +67,7 @@ Date of rule writing: April 26, 2026<br>
    18. 元气打腿版 0.0.17 更新公告  Power Violence Edition 0.0.17 annoucement
    19. 元气打腿版 0.0.18 更新公告  Power Violence Edition 0.0.18 annoucement
    20. 元气打腿版 0.0.19 更新公告  Power Violence Edition 0.0.19 annoucement
+   21. 元气打腿版 0.0.20 更新公告  Power Violence Edition 0.0.20 annoucement
 5. 关于本规则的意见和建议 Comment section
 
 <div style="page-break-after: always;"></div>
@@ -226,12 +228,14 @@ Date of rule writing: April 26, 2026<br>
     | 4             | State of Reality   | 本体状态      |
 定义:
 1. 初始状态:
-   * 指第0回合玩家的正常状态, 一般为零元气, 两条命, 命数上限10, 无特殊状态。
+   * 指第0回合玩家的正常状态, 一般为元气数=0, 命数=2, 命数上限=10, 无特殊状态。
 2. 死亡状态:
    1. 若玩家命数 $\leq 0$, 则进入该状态。
    2. 在进入该状态时会丢失之前的所有状态。
    3. 在该状态下无法使用技能。在改装下自身的数据不能被进行任何修改(除非增加新的玩家)。
    4. 地板将永远保持该状态。
+3. 召唤物状态:
+   1. 如果玩家的一人信息储存方式中player的常用变量优化的召唤物编号非0, 则为召唤物状态。
 4. 本体状态:
    1. 若玩家不处于召唤物状态, 则处于本体状态。
 ---
@@ -243,30 +247,23 @@ Date of rule writing: April 26, 2026<br>
 * 底层实现: 本体为0号召唤物。
 ---
 ---
-基本说明:
-* 指可以实现把本体的元气数、命数、命数上限等封存, 使用召唤物的储存。召唤物解除之后, 启用原来的元气数、命数、命数上限等。
-* 对于召唤物而言, 元气数指召唤物1位储存的数, 命数指召唤物2位储存的数, 命数上限指召唤物3位储存的数。
-* 每个召唤物有一个编号, 为$(0,2^{13})$内的正整数。若玩家不处于召唤物状态, 则处于本体状态。
-* 底层实现: 本体为0号召唤物。
----
----
 ### 限制 Limits
-1. 元气(*power number*)实数部分范围: $[-2^{119},2^{119})$, 精度: $2^{-8}$, 虚数部分同理。
+1. 元气数(*power number*)实数部分范围: $[-2^{119},2^{119})$, 精度: $2^{-8}$, 虚数部分同理。
 2. 命数(*lives number*)实数部分范围: $[-2^{59},2^{59})$, 精度: $2^{-4}$, 虚数部分同理。
 3. 命数实际上限(*(actual) upper limit of lives*)范围同命数范围。
 4. 伤害(*harm*)范围与命数范围相同, 但通常包含额外信息, 如造成方, 被造成方, 特殊性质等。
 5. 对于召唤物(scapegoat)而言:
    * 所有召唤物拥有6个位置储存:
-      1. **召唤物1位**对应元气, 范围同元气。
-      2. **召唤物2位**对应命数, 范围同命数。
-      3. **召唤物3位**对应命数实际上限, 范围同命数实际上限。
+      1. **召唤物1位**对应元气数, 类型为PV_power。
+      2. **召唤物2位**对应命数, 类型为PV_lives。
+      3. **召唤物3位**对应命数上限, 类型为PV_lives。
       4. **召唤物4位**和**召唤物5位**自行安排, 占空间大小为32B。
       5. **召唤物6位**也被称为**巨大整数存储位置**, 自行安排, 占空间大小为64B。
    * 召唤物拥有状态有64B的空间储存。
 6. 名称不得大于等于128字节。
 7. 技能数范围: $(0,2^{13})$
-8. 玩家数 $\{0,1,2,3,\cdots,255\}$
-9.  技能数 $\{1,2,3,\cdots,2^{13}\}$
+8. 玩家数 $\in\{0,1,2,3,\cdots,255\}$
+9.  技能数 $\in\{1,2,3,\cdots,2^{13}\}$
 10. 名称字节数 $\in\N^*$
 11. 状态数 $\in\N$
 12. 回合数默认会小于最多玩家数的平方, 即 $回合数<(2^8-1)^2=65025$。
@@ -320,10 +317,10 @@ Date of rule writing: April 26, 2026<br>
 ### 技能定义 Skills
 1. 打断双腿
    * 动作: 双手握实心拳,分别向指向目标的大腿中部快速反复做锤击动作。若对方没有大腿, 也可以向指向目标的其他部位快速反复做锤击动作。做该动作时, 双手手肘均不能位于肩膀上方。Make a fist with both hands and quickly repeat the hammering motion towards the middle of the target's thigh. If the opponent doesn't have a thigh, you can also perform the hammering motion towards other parts of the target quickly and repeatedly. During this action, the elbows of both hands must not be above the shoulders.
-   * 效果: 当回合被执行人命数减$\max(\frac{被执行者命数}{2}, 1)$, 元气乘二。若1回合被打断n次腿则减$\max(\frac{2^n-1}{2^n}被执行者命数, n)$, 元气乘$2^n$。若执行者非对自己且被执行者对自己使用打断双腿, 则执行者被打断双腿, 被执行者不被打断双腿。 When the number of the executing party decreases by $\max\left(\frac{\text{lives}}{2}, 1\right)$ in a round, the power doubles. If the execution is interrupted n times in one round, then the number of executing party is reduced by $\max\left(\frac{2^n - 1}{2^n}\text{lives}, n\right)$, and the power is multiplied by $2^n$. If the executing party is not against itself and the executed party is against itself in the case of interrupting the legs, then the executing party is interrupted in the legs, but the executed party is not.
+   * 效果: 当回合被执行人命数减$\max(\frac{被执行者命数}{2}, 1)$, 元气数乘二。若1回合被打断n次腿则减$\max(\frac{2^n-1}{2^n}被执行者命数, n)$, 元气数乘$2^n$。若执行者非对自己且被执行者对自己使用打断双腿, 则执行者被打断双腿, 被执行者不被打断双腿。 When the number of the executing party decreases by $\max\left(\frac{\text{lives}}{2}, 1\right)$ in a round, the power doubles. If the execution is interrupted n times in one round, then the number of executing party is reduced by $\max\left(\frac{2^n - 1}{2^n}\text{lives}, n\right)$, and the power is multiplied by $2^n$. If the executing party is not against itself and the executed party is against itself in the case of interrupting the legs, then the executing party is interrupted in the legs, but the executed party is not.
 2. 元气
    * 动作: 双手置于身前, 一手手背朝上, 一手手背朝下。双手五指并拢, 食指、中指、无名指和小拇指弯曲。手背朝上的手的重心位于手背朝下的手的重心上方。双手手指内侧应分别接触(大拇指除外)。双手手臂内侧与手掌的夹角不得小于90°且不得大于270°(取主值), 手指背面(大拇指除外)与另一手的手掌内侧相接处。 Place both hands in front of your body, with one hand palm facing upwards and the other palm facing downwards. Keep all fingers of both hands together, with the index finger, middle finger, ring finger and little finger bent. The center of gravity of the hand with the palm facing upwards should be above the center of gravity of the hand with the palm facing downwards. The inner sides of the fingers of both hands should touch (except for the thumb). The angle between the inner sides of the arms and the palms should not be less than 90° and not more than 270° (taking the value between 0° and 360°), and the back of the fingers (except for the thumb) should be connected to the inner side of the palm of the other hand. 
-   * 效果: 使自己元气+1 Boost your power by 1 point.
+   * 效果: 使自己元气数+1 Boost your power by 1 point.
 ---
 ---
 ### 预备技能定义 Preparatory Skills
@@ -342,14 +339,14 @@ Date of rule writing: April 26, 2026<br>
       3. 出错判定
    2. 计算状态加入:
    3. 主要计算:
-      1. 计算增加元气
+      1. 计算增加元气数
          1. 出元气者, 元气数+1
       2. 计算攻击技能
          1. 计算打腿
    4. 防御技能抵命:
    5. 结束计算
       1. 通过伤害计算每位玩家命数
-      2. 命数 $\leq$ 0者进入死亡状态; 扣命>1者元气清零
+      2. 命数 $\leq$ 0者进入死亡状态; 扣命>1者元气数清零
       3. 若场上仅有 $\leq 1$ 名玩家命数 $\not\leq 0$, 游戏结束
 * 在游戏结束后判断谁是获胜者。
 ---
@@ -379,6 +376,7 @@ Date of rule writing: April 26, 2026<br>
       1. 在默认情况下, 每位玩家的组别为自己的编号。
       2. 地板的组别为0。
       3. 玩家组别为小于256的正整数。组别相同的玩家在同一个组里。组的编号不得超过玩家数量。
+   4. “命数”“元气数”“命数上限”等视为玩家的属性。命数和命数上限类型为PV_lives, 元气数类型为PV_power。
 3. 技能:
    1. 每个技能:
       | 名称               | 字节数 | 存储形式 | 说明 |
@@ -386,9 +384,9 @@ Date of rule writing: April 26, 2026<br>
       | 编号 Serial Number |     2 | 一般编号类型 | 必须为小于8192的自然数 |
       | 名称 Name          |   512 | 复合类型(名称字符串 * 4) | 英文名(English name), 缩写(Abbreviation), 中文名(Chinese name), 别称(Alias) |
       | 动作 Movement      |  4096 | 复合类型(其它字符串2048B * 2) | 中文和其英文翻译 |
-      | 条件 Precondition  |  1024 | 二进制数据类型 | 未定义具体储存方式 |
+      | 条件 Precondition  |  1024 | 二进制数据类型 | 以打腿版程序实现为准 |
       | 效果 Effect        | 10240 | 复合类型(其它字符串5120B * 2) | 中文和其英文翻译 |
-      | 性质 Type          |   128 | 二进制数据类型 | 未定义具体储存方式 |
+      | 性质 Type          |   128 | 二进制数据类型 | 以打腿版程序实现为准 |
       | 空格 Spaces        |   382 | 其它字符串382B | 空字符串 |
       | 总计 Total         | 16002 | 复合类型 |  |
    2. 使用技能:
@@ -469,45 +467,41 @@ Date of rule writing: April 26, 2026<br>
       * 可以存储占用空间B数以内B的信息, 以0字符为结束标志。
       * 可以用作技能动作、效果等字符表述等的地方。
 * 数字类型(Numeric type): ***PV_num***
-   * 整数类型: ***PV_integer***
-      1. 玩家编号类型(Player ID Type): ***PV_pID***
-         * 占用空间: 1B。范围: $[0,2^8)$。
-      2. 一般编号类型(Normal ID Type): ***PV_sID***
-         * 占用空间: 2B。范围: $[0,2^{16})$。
-      3. 普通回合数类型(Normal Rounds' Number Type): ***PV_nRounds***
-         * 占用空间: 4B。范围: $[-2^{31},2^{31})$。
-      4. 长回合数类型(Longer Rounds' Number Type): ***PV_lRounds***
-         * 占用空间: 8B。范围: $[-2^{63},2^{63})$。
-   * 定点数类型: ***PV_fixed***
-      1. 11+4定点数类型(11+4 Fixed-Point Number Type): ***PV_11p4***
-         * 占用空间: 2B。范围: $[-2^{11},2^{11})$; 精度: $2^{-4}$。
-      2. 27+4定点数类型(27+4 Fixed-Point Number Type): ***PV_27p4***
-         * 占用空间: 4B。范围: $[-2^{27},2^{27})$; 精度: $2^{-4}$。
-      3. 55+8定点数类型(55+8 Fixed-Point Number Type): ***PV_55p8***
-         * 占用空间: 8B。范围: $[-2^{55},2^{55})$; 精度: $2^{-8}$。
-      4. 119+8定点数类型(119+8 Fixed-Point Number Type): ***PV_119p8***
-         * 占用空间: 16B。范围: $[-2^{119},2^{119})$; 精度: $2^{-8}$。
-   * 复数类型: ***PV_complex***
-      1. 元气类型(Power Type): ***PV_power***; ***PV_com256***
-         * 占用空间: 32B。实部: 119+8定点数类型; 虚部: 119+8定点数类型。
-      2. 命数类型(Lives Type): ***PV_lives***; ***PV_com128***
-         * 占用空间: 16B。实部: 55+8定点数类型; 虚部: 55+8定点数类型。
-      3. 8B复数类型(64-bit complex type): ***PV_com64***
-         * 占用空间: 8B。实部: 27+4定点数类型; 虚部: 27+4定点数类型。
+   * 玩家编号类型(Player ID Type): ***PV_pID***
+      * 占用空间: 1B。范围: $[0,2^8)$。
+   * 一般编号类型(Normal ID Type): ***PV_sID***
+      * 占用空间: 2B。范围: $[0,2^{16})$。
+   * 普通回合数类型(Normal Rounds' Number Type): ***PV_nRounds***
+      * 占用空间: 4B。范围: $[-2^{31},2^{31})$。
+   * 长回合数类型(Longer Rounds' Number Type): ***PV_lRounds***
+      * 占用空间: 8B。范围: $[-2^{63},2^{63})$。
+   * 11+4定点数类型(11+4 Fixed-Point Number Type): ***PV_11p4***
+      * 占用空间: 2B。范围: $[-2^{11},2^{11})$; 精度: $2^{-4}$。
+   * 27+4定点数类型(27+4 Fixed-Point Number Type): ***PV_27p4***
+      * 占用空间: 4B。范围: $[-2^{27},2^{27})$; 精度: $2^{-4}$。
+   * 55+8定点数类型(55+8 Fixed-Point Number Type): ***PV_55p8***
+      * 占用空间: 8B。范围: $[-2^{55},2^{55})$; 精度: $2^{-8}$。
+   * 119+8定点数类型(119+8 Fixed-Point Number Type): ***PV_119p8***
+      * 占用空间: 16B。范围: $[-2^{119},2^{119})$; 精度: $2^{-8}$。
+   * 元气类型(Power Type): ***PV_power***; ***PV_com256***
+      * 占用空间: 32B。实部: 119+8定点数类型; 虚部: 119+8定点数类型。
+   * 命数类型(Lives Type): ***PV_lives***; ***PV_com128***
+      * 占用空间: 16B。实部: 55+8定点数类型; 虚部: 55+8定点数类型。
+   * 8B复数类型(64-bit complex type): ***PV_com64***
+      * 占用空间: 8B。实部: 27+4定点数类型; 虚部: 27+4定点数类型。
    * 布尔类型: ***PV_bool***
-      * 占用空间: 1位。
-   * 激进的类型: ***PV_onum***
-      1. 四元数类型(Quaternion type): ***PV_quaternion***
-         * 占用空间: 64B。
-         * 119+8定点数类型 * 4。
-      2. 短四元数类型(Short Quaternion type): ***PV_s_quaternion***
-         * 占用空间: 32B。
-         * 55+8定点数类型 * 4。
-      3. 八元数类型(Octonion type): ***PV_octonion***
-         * 占用空间: 64B。
-         * 55+8定点数类型 * 8。
-      4. 巨大定点数类型(Giant fixed-point number type): ***PV_447p64***
-         * 占用空间: 64B。范围: $[-2^{447},2^{447})$; 精度: $2^{-64}$。
+      * 占用空间: 1b。
+   * 四元数类型(Quaternion type): ***PV_quaternion***
+      * 占用空间: 64B。
+      * 119+8定点数类型 * 4。
+   * 短四元数类型(Short Quaternion type): ***PV_s_quaternion***
+      * 占用空间: 32B。
+      * 55+8定点数类型 * 4。
+   * 八元数类型(Octonion type): ***PV_octonion***
+      * 占用空间: 64B。
+      * 55+8定点数类型 * 8。
+   * 巨大定点数类型(Giant fixed-point number type): ***PV_447p64***
+      * 占用空间: 64B。范围: $[-2^{447},2^{447})$; 精度: $2^{-64}$。
    * 完美类型: ***PV_perfect***
       * 占用空间: 512B。
       * 范围: 巨大定点数类型 * 8。
@@ -571,6 +565,11 @@ Date of rule writing: April 26, 2026<br>
 10. 对于复杂的运算, 打腿版不保证精度.
 11. 在以上计算结束后, 进行超限判断.
 12. 具体结果请以打腿版实现为准.
+---
+---
+### 关于与其他版本的兼容问题 Regarding compatibility with other editions
+* 若有*元气娱乐版*(*Power Entertainment*)参与, 与*元气娱乐版*为准; 此外, 若有*元气抢先版*(*Power Anticipate*)参与, 与*元气抢先版*为准; 此外兼容规则自定。
+* 由于对方版本的严谨性大概率低于*元气打腿版*, 因此结合后规则严谨程度会有所下降, 属正常现象。
 
 <!-- ######################################################################################################## -->
 <div style="page-break-after: always;"></div>
@@ -1440,13 +1439,28 @@ Feb. 4^{th}, 2026
 $$
 ---
 ---
+### 元气打腿版 0.0.20 更新公告 Power Violence Edition 0.0.20 annoucement
+
+1. 不区分PV_integer、PV_fixed、PV_complex、PV_onum, 其所有子类视为直接继承PV_num。
+2. 技能的条件和性质的具体储存方式视为黑箱, 不且无需给玩家和规则设计者透露。
+3. 修改规则中关于元气数和元气混淆不清的地方。
+4. “命数”“元气数”“命数上限”等视为玩家的属性。命数和命数上限类型为PV_lives, 元气数类型为PV_power。
+5. 如果玩家的一人信息储存方式中player的常用变量优化的召唤物编号非0, 则为召唤物状态。
+6. 与其他版本如何兼容:
+   * 若有*元气娱乐版*(*Power Entertainment*)参与, 与*元气娱乐版*为准; 此外, 若有*元气抢先版*(*Power Anticipate*)参与, 与*元气抢先版*为准; 此外兼容规则自定。
+   * 由于对方版本的严谨性大概率低于*元气打腿版*, 因此结合后规则严谨程度会有所下降, 属正常现象。
+---
+| 6        | 31       | result   |
+|:--------:|:--------:|:--------:|
+| Approved | ________ | ________ |
+---
+$$
+2026年5月9日
+May\, 9^{th}, 2026
+$$
+---
+---
 <!-- ######################################################################################################## -->
 <div style="page-break-after: always;"></div>
 
 ## 关于本规则的意见和建议 Comment section
-
-1. 没有规定技能的条件和性质应该如何存储。
-2.  没有区分“元气”和“元气数”。
-3.  没有定义“命数”“元气数”“命数上限”等。
-4.  与其他版本如何兼容没有规定。
-5.  没有定义召唤物状态。
