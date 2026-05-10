@@ -100,7 +100,7 @@ static PyGetSetDef PV_55p8_getsetters[] = {
 
 static PyObject *PV_55p8_add(PyObject *a, PyObject *b)
 {
-    if (!PyObject_TypeCheck(a, PV_num_Type_p) || !PyObject_TypeCheck(b, PV_num_Type_p))
+    if (!PyObject_TypeCheck(a, g_PV_num_Type) || !PyObject_TypeCheck(b, g_PV_num_Type))
     {
         Py_RETURN_NOTIMPLEMENTED;
     }
@@ -200,7 +200,6 @@ static PyTypeObject PV_55p8_Type = {
 
 static int PV_55p8_module_exec(PyObject *m)
 {
-    if (PyType_Ready(&PV_55p8_Type) < 0) return -1;
     if (PyModule_AddObjectRef(m, "PV_55p8", (PyObject *)&PV_55p8_Type) < 0) return -1;
     return 0;
 }
@@ -213,10 +212,10 @@ static PyModuleDef_Slot PV_55p8_module_slots[] = {
 
 void PV_55p8_module_free(void *Py_UNUSED(module))
 {
-    if (PV_num_Type_p)
+    if (g_PV_num_Type)
     {
-        Py_DECREF(PV_num_Type_p);
-        PV_num_Type_p = NULL;
+        Py_DECREF(g_PV_num_Type);
+        g_PV_num_Type = NULL;
     }
 }
 
@@ -233,15 +232,25 @@ PyMODINIT_FUNC PyInit_PV_55p8(void)
 {
     PyObject *base_module = PyImport_ImportModule("PowerViolenceObjects.PV_num");
     if (!base_module) return NULL;
-    PV_num_Type_p = (PyTypeObject *)PyObject_GetAttrString(base_module, "PV_num");
+    g_PV_num_Type = (PyTypeObject *)PyObject_GetAttrString(base_module, "PV_num");
+    PyObject *register_func = PyObject_GetAttrString(base_module, "register_type");
     Py_DECREF(base_module);
-    if (!PV_num_Type_p) return NULL;
-    
-    (&PV_55p8_Type)->tp_base = PV_num_Type_p;
+    if (!g_PV_num_Type || !register_func) return NULL;
+
+    (&PV_55p8_Type)->tp_base = g_PV_num_Type;
     if (PyType_Ready(&PV_55p8_Type) < 0)
     {
-        Py_DECREF(PV_num_Type_p);
+        Py_DECREF(g_PV_num_Type);
         return NULL;
     }
+
+    PyObject *args = Py_BuildValue("(iO)", PVF_55P, &PV_55p8_Type);
+    PyObject *res = PyObject_CallObject(register_func, args);
+    Py_DECREF(args);
+    Py_DECREF(register_func);
+
+    if (!res) return NULL;
+    Py_DECREF(res);
+
     return PyModuleDef_Init(&PV_55p8_module);
 }

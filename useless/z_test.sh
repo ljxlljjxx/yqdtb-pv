@@ -57,7 +57,7 @@ pip install --no-cache-dir .
 if [ $? -eq 1 ]; then
     return_val=1;
 else
-    echo 'Python test PV_55p8'
+    echo 'Python test'
     python -m unittest discover tests
     if [[ $? > 0 ]]; then
         return_val=1;

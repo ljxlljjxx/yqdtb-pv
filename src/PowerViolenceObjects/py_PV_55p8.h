@@ -8,7 +8,7 @@
 #include "pvc_PV_55p8.h"
 
 static PyTypeObject PV_55p8_Type;
-static PyTypeObject *PV_num_Type_p;
+static PyTypeObject *g_PV_num_Type;
 
 typedef struct {
     PV_num_Object base;
