@@ -100,6 +100,7 @@ char *pvc_PV_55p8_tostring(const pvc_PV_55p8 *a)
             .*G: the next parameter specified is the precision
         B:  if a == 0, return "true". else return "false".
  * @param   a pvc_PV_119p8 *restrict 
+ * @param   format_length int *restrict: return how many bytes in format are used.
  * @param   ... if format is .*f/.*e/.*E/.*g/.*G, this will give precision.
  * @return  int
  * @retval  the strlen of buffer.
@@ -107,7 +108,7 @@ char *pvc_PV_55p8_tostring(const pvc_PV_55p8 *a)
  * @author  ljx
  * @date    2026-04-26 15:34
  */
-int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const pvc_PV_55p8 *restrict a, int *format_length, ...)
+int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const pvc_PV_55p8 *restrict a, int *restrict format_length, ...)
 {
     int cnt = 0;
     pvc_PV_55p8 format_b_b;

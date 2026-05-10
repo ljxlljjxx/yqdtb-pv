@@ -106,9 +106,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ab0bd6a24b6b41d59befb4e207e232b1f" id="r_ab0bd6a24b6b41d59befb4e207e232b1f"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pvc___p_v__55p8_8h.html#ab0bd6a24b6b41d59befb4e207e232b1f">pvc_PV_55p8_tostring</a> (const <a class="el" href="structpvc___p_v__55p8.html">pvc_PV_55p8</a> *a)</td></tr>
 <tr class="memdesc:ab0bd6a24b6b41d59befb4e207e232b1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">print <a class="el" href="structpvc___p_v__55p8.html">pvc_PV_55p8</a> int string  <br /></td></tr>
 <tr class="separator:ab0bd6a24b6b41d59befb4e207e232b1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a789e8e60ed5ababc0ada1cda81e09b8e" id="r_a789e8e60ed5ababc0ada1cda81e09b8e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pvc___p_v__55p8_8h.html#a789e8e60ed5ababc0ada1cda81e09b8e">pvc_PV_55p8_format</a> (char *restrict buffer, const char *restrict format, const <a class="el" href="structpvc___p_v__55p8.html">pvc_PV_55p8</a> *restrict a, int *format_length,...)</td></tr>
-<tr class="memdesc:a789e8e60ed5ababc0ada1cda81e09b8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">use format to write <a class="el" href="structpvc___p_v__119p8.html">pvc_PV_119p8</a>.  <br /></td></tr>
-<tr class="separator:a789e8e60ed5ababc0ada1cda81e09b8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67dd595dfcf7250f16b320b917a114ea" id="r_a67dd595dfcf7250f16b320b917a114ea"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pvc___p_v__55p8_8h.html#a67dd595dfcf7250f16b320b917a114ea">pvc_PV_55p8_format</a> (char *restrict buffer, const char *restrict format, const <a class="el" href="structpvc___p_v__55p8.html">pvc_PV_55p8</a> *restrict a, int *restrict format_length,...)</td></tr>
+<tr class="memdesc:a67dd595dfcf7250f16b320b917a114ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">use format to write <a class="el" href="structpvc___p_v__119p8.html">pvc_PV_119p8</a>.  <br /></td></tr>
+<tr class="separator:a67dd595dfcf7250f16b320b917a114ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4142aa7ebc4a97a399372c46efa23efa" id="r_a4142aa7ebc4a97a399372c46efa23efa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pvc___p_v__55p8_8h.html#a4142aa7ebc4a97a399372c46efa23efa">pvc_PV_55p8_print</a> (const <a class="el" href="structpvc___p_v__55p8.html">pvc_PV_55p8</a> *a)</td></tr>
 <tr class="separator:a4142aa7ebc4a97a399372c46efa23efa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -182,8 +182,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a789e8e60ed5ababc0ada1cda81e09b8e" name="a789e8e60ed5ababc0ada1cda81e09b8e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a789e8e60ed5ababc0ada1cda81e09b8e">&#9670;&#160;</a></span>pvc_PV_55p8_format()</h2>
+<a id="a67dd595dfcf7250f16b320b917a114ea" name="a67dd595dfcf7250f16b320b917a114ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67dd595dfcf7250f16b320b917a114ea">&#9670;&#160;</a></span>pvc_PV_55p8_format()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -209,7 +209,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int *&#160;</td>
+          <td class="paramtype">int *restrict&#160;</td>
           <td class="paramname"><em>format_length</em>, </td>
         </tr>
         <tr>
@@ -232,6 +232,7 @@ Functions</h2></td></tr>
     <tr><td class="paramname">buffer</td><td>char *restrict. the string will write here. </td></tr>
     <tr><td class="paramname">format</td><td>a string. Legal format: b: binary x: hexadecimal X: hexadecimal d: integer part +d: display the sign bit f: floating-point number. .{n}f: the precision .*f: the next parameter specified is the precision e: scientific notation. the default precision is 1. .{n}e: the precision .*e: the next parameter specified is the precision E: scientific notation. the default precision is 1. .{n}E: the precision .*E: the next parameter specified is the precision g: Automatically select f or e based on the value. Use the e format when the exponent greater than or equal to the precision. .{n}g: the precision .*g: the next parameter specified is the precision G: Automatically select f or e based on the value. Use the E format when the exponent greater than or equal to the precision. .{n}G: the precision .*G: the next parameter specified is the precision B: if a == 0, return "true". else return "false". </td></tr>
     <tr><td class="paramname">a</td><td><a class="el" href="structpvc___p_v__119p8.html">pvc_PV_119p8</a> *restrict </td></tr>
+    <tr><td class="paramname">format_length</td><td>int *restrict: return how many bytes in format are used. </td></tr>
     <tr><td class="paramname">...</td><td>if format is .*f/.*e/.*E/.*g/.*G, this will give precision. </td></tr>
   </table>
   </dd>
