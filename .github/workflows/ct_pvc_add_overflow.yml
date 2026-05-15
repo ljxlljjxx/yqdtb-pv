@@ -44,7 +44,10 @@ jobs:
         run: ./ct_pvc_add_overflow-macos
 
   run-tests-windows:
-    runs-on: windows-latest
+    strategy:
+      matrix:
+        os: [windows-2025-vs2026, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
