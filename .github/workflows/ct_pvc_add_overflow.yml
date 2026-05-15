@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Compile PVOs/pvc_defines.c
         run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_defines.c -o pvc_defines-ubuntu.o
       - name: Compile PVOs/pvc_add_overflow.c
@@ -33,7 +33,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Compile PVOs/pvc_defines.c
         run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_defines.c -o pvc_defines-macos.o
       - name: Compile PVOs/pvc_add_overflow.c
@@ -50,7 +50,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Compile PVOs/pvc_defines.c
         run: gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_defines.c -o pvc_defines-windows.o
       - name: Compile PVOs/pvc_add_overflow.c
