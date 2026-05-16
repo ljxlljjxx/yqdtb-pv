@@ -12,8 +12,8 @@
 void pvc_PV_119p8_set(pvc_PV_119p8 *res, __int128_t *a)
 {
     const __int128_t pos = (__int128_t)1 << 64;
-    res->_2 = *a % pos;
-    res->_1 = *a / pos;
+    res->_2 = (uint64_t)(*a % pos);
+    res->_1 = (int64_t)(*a / pos);
 }
 
 /**
@@ -109,7 +109,7 @@ char *pvc_PV_119p8_tostring(pvc_PV_119p8 *a)
             return buffer;
         }
     }
-    high = b._1;
+    high = (uint64_t)b._1;
     low = b._2 >> 8;
     while (low || high)
     {
@@ -266,7 +266,7 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
                 goto format_d_return;
             }
         }
-        format_b_high = format_b_b._1;
+        format_b_high = (uint64_t)format_b_b._1;
         format_b_low = format_b_b._2 >> 8;
         while (format_b_low || format_b_high)
         {
@@ -472,7 +472,7 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
                 }
             }
         }
-        format_b_high = format_b_b._1;
+        format_b_high = (uint64_t)format_b_b._1;
         format_b_low = format_b_b._2 >> 8;
         while (format_b_low || format_b_high)
         {
@@ -547,7 +547,7 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
         else buffer[cnt++] = 'E';
         if (flag >= 0) buffer[cnt++] = '+';
         else buffer[cnt++] = '-', flag = -flag;
-        if (flag > 10) buffer[cnt++] = flag / 10 | 48;
+        if (flag > 10) buffer[cnt++] = (char)(flag / 10 | 48);
         buffer[cnt++] = flag % 10 | 48;
         goto function_return;
     case 'E':
@@ -666,7 +666,7 @@ function_return:
 int pvc_PV_119p8_print(pvc_PV_119p8 *a)
 {
     static char temp[40];
-    size_t temp_size = 0, cnt = 0;
+    int temp_size = 0, cnt = 0;
     uint64_t high, low, tmp;
     pvc_PV_119p8 b;
     if (a == NULL) return printf("(null)");
@@ -695,7 +695,7 @@ int pvc_PV_119p8_print(pvc_PV_119p8 *a)
         putchar('-');
         if (pvc_PV_119p8_neg(&b)) return 1 + printf("%s", pvc_PV_119p8_max);
     }
-    high = b._1;
+    high = (uint64_t)b._1;
     low = b._2 >> 8;
     while (low || high)
     {

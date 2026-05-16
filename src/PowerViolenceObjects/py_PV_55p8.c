@@ -22,7 +22,7 @@ static int PV_55p8_init(PV_55p8_Object *self, PyObject *args, PyObject *kwds)
     double tmp;
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "|d", kwlist, &tmp))
         return -1;
-    self->value._1 = tmp * 256;
+    self->value._1 = (int64_t)(tmp * 256);
     return 0;
 }
 
@@ -94,8 +94,8 @@ static PyObject *PV_55p8_get__value(PyObject *op, void *closure)
 }
 
 static PyGetSetDef PV_55p8_getsetters[] = {
-    {"_value", PV_55p8_get__value, PV_55p8_set__value, NULL},
-    {NULL, NULL, NULL, NULL}
+    {"_value", PV_55p8_get__value, PV_55p8_set__value, "the precise value", NULL},
+    {NULL, NULL, NULL, NULL, NULL}
 };
 
 static PyTypeObject PV_55p8_Type = {

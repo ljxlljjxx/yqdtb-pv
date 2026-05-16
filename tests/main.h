@@ -175,7 +175,7 @@ int test_runner(const Test *now)
         fseek(temp, 0, SEEK_END); \
         long size = ftell(temp); \
         rewind(temp); \
-        size_t read_size = fread(buffer, 1, size, temp); \
+        size_t read_size = fread(buffer, 1, (size_t)size, temp); \
         buffer[read_size] = '\0'; \
         fclose(temp);  \
     } while (0);

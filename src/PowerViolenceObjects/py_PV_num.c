@@ -151,7 +151,7 @@ static PyObject *PV_num_typename(PyObject *self, PyObject *Py_UNUSED(args))
 static PyMethodDef PV_num_methods[] = {
     {"typename_int", PV_num_typename_int, METH_NOARGS, "return the typename by int. You can use pv_num.get_type() to get the type"},
     {"typename", PV_num_typename, METH_NOARGS, "return the typename by str.  You can use pv_num.get_type() to get the type"},
-    {NULL}
+    {NULL, NULL, 0, NULL}
 };
 
 static PyTypeObject PV_num_Type = {
@@ -349,7 +349,7 @@ static PyMethodDef pv_num_method[] = {
     {"type_str", (PyCFunction)pv_num_type_str, METH_O, "change the type to str"},
     {"get_type", (PyCFunction)pv_num_get_type, METH_O, "return the type"},
     {"typetype_type", (PyCFunction)pv_num_typetype_type, METH_FASTCALL, "return the result of type promotion"},
-    {NULL}
+    {NULL, NULL, 0, NULL}
 };
 
 static PyModuleDef pv_num_module = {

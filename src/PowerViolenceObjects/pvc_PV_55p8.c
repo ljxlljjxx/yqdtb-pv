@@ -336,7 +336,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const
 
         if (a->_1 < 0) buffer[cnt++] = '-';
         if (a->_1 == INT64_MIN) tN = 1ull << 63;
-        else tN = a->_1 > 0 ? a->_1 : -a->_1;
+        else tN = a->_1 > 0 ? (uint64_t)a->_1 : (uint64_t)-a->_1;
         p1 = tN >> 8, p2 = tN & 255;
         tD = 1;
         if (p1 == 0)
@@ -362,7 +362,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const
 
         uint64_t int_part = p1 / tD;
         uint64_t rem = p1 % tD;
-        buffer[cnt++] = int_part + 48;
+        buffer[cnt++] = (char)(int_part + 48);
         if (precision == 1)
         {
             if (exp == 0)
@@ -379,7 +379,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const
             for (int i = 1; i < precision; i++)
             {
                 rem *= 10;
-                buffer[cnt++] = 48 + rem / tD;
+                buffer[cnt++] = (char)(48 + rem / tD);
                 rem %= tD;
             }
             if (precision == exp)
@@ -403,7 +403,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const
             for (int i = 0; i < exp; i++)
             {
                 rem *= 10;
-                buffer[cnt++] = 48 + rem / tD;
+                buffer[cnt++] = (char)(48 + rem / tD);
                 rem %= tD;
             }
             if (precision - exp <= 8)
@@ -459,7 +459,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const
         else buffer[cnt++] = 'E';
         if (exp >= 0) buffer[cnt++] = '+';
         else buffer[cnt++] = '-', exp = -exp;
-        if (exp > 10) buffer[cnt++] = exp / 10 | 48;
+        if (exp > 10) buffer[cnt++] = (char)(exp / 10 | 48);
         buffer[cnt++] = exp % 10 | 48;
         goto function_return;
     case 'E':
@@ -611,7 +611,7 @@ function_return:
 
 int pvc_PV_55p8_print(const pvc_PV_55p8 *a)
 {
-    size_t cnt = 0;
+    int cnt = 0;
     pvc_PV_55p8 b;
     if (a == NULL) return printf("(null)");
     b = *a;
