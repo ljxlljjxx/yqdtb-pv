@@ -43,11 +43,10 @@ var menudata={children:[
 {text:"m",url:"globals.html#index_m"},
 {text:"p",url:"globals.html#index_p"},
 {text:"q",url:"globals.html#index_q"},
-{text:"t",url:"globals.html#index_t"}]},
+{text:"r",url:"globals.html#index_r"}]},
 {text:"Functions",url:"globals_func.html"},
 {text:"Variables",url:"globals_vars.html",children:[
 {text:"g",url:"globals_vars.html#index_g"},
-{text:"q",url:"globals_vars.html#index_q"},
-{text:"t",url:"globals_vars.html#index_t"}]},
+{text:"q",url:"globals_vars.html#index_q"}]},
 {text:"Typedefs",url:"globals_type.html"},
 {text:"Macros",url:"globals_defs.html"}]}]}]}

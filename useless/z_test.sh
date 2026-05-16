@@ -52,6 +52,7 @@ fi
 
 echo 'Python tests'
 
+source .venv/bin/activate
 python setup.py clean --all
 pip install --no-cache-dir .
 if [ $? -eq 1 ]; then

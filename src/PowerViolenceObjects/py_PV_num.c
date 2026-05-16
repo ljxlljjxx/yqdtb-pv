@@ -1,6 +1,6 @@
 #include "py_PV_num.h"
 
-const int typetype_type[MAX_DERIVED][MAX_DERIVED] = {
+static const int typetype_type[MAX_DERIVED][MAX_DERIVED] = {
     {PVO_NUM, PVI_PID, PVI_SID, PVI_NRS, PVI_LRS, PVF_11P, PVF_27P, PVF_55P, PVF_119, PVC_64C, PVC_128, PVC_256, PVH_SRT, PVH_NOR, PVO_NOR, PVF_447, PVO_PFT},
     {PVI_PID, PVI_PID, PVI_SID, PVI_NRS, PVI_LRS, PVF_11P, PVF_27P, PVF_55P, PVF_119, PVC_64C, PVC_128, PVC_256, PVH_SRT, PVH_NOR, PVO_NOR, PVF_447, PVO_PFT},
     {PVI_SID, PVI_SID, PVI_SID, PVI_NRS, PVI_LRS, PVF_27P, PVF_27P, PVF_55P, PVF_119, PVC_64C, PVC_128, PVC_256, PVH_SRT, PVH_NOR, PVO_NOR, PVF_447, PVO_PFT},
@@ -20,14 +20,30 @@ const int typetype_type[MAX_DERIVED][MAX_DERIVED] = {
     {PVO_PFT, PVO_PFT, PVO_PFT, PVO_PFT, PVO_PFT, PVO_PFT, PVO_PFT, PVO_PFT, PVO_PFT, PVO_PFT, PVO_PFT, PVO_PFT, PVO_PFT, PVO_PFT, PVO_PFT, PVO_PFT, PVO_PFT},
 };
 
+static const char *type_str[MAX_DERIVED] = {
+    "PV_num",
+    "PV_pID", 
+    "PV_sID", 
+    "PV_nRounds", 
+    "PV_lRounds", 
+    "PV_11p4", 
+    "PV_27p4", 
+    "PV_55p8", 
+    "PV_119p8", 
+    "PV_power", 
+    "PV_lives", 
+    "PV_com64", 
+    "PV_quaternion", 
+    "PV_s_quaternion", 
+    "PV_octonion", 
+    "PV_447p64", 
+    "PV_perfect"
+};
+
 PyTypeObject *g_type_by_id[MAX_DERIVED];
 
-static PyObject *register_type(PyObject *self, PyObject *args)
+static int register_type(int type_id, PyTypeObject *type)
 {
-    int type_id;
-    PyTypeObject *type;
-    if (!PyArg_ParseTuple(args, "iO!", &type_id, &PyType_Type, &type))
-        return NULL;
     if (type_id < 0 || type_id >= MAX_DERIVED) {
         PyErr_SetString(PyExc_ValueError, "invalid type_id");
         return NULL;
@@ -46,7 +62,8 @@ static PyObject *PV_num_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 {
     PV_num_Object *self;
     self = (PV_num_Object *)type->tp_alloc(type, 0);
-    return (PyObject *) self;
+    self->type_id = 0;
+    return (PyObject *)self;
 }
 
 static PyObject *PV_num_add(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
@@ -125,6 +142,22 @@ static PyNumberMethods PV_num_as_number = {
     .nb_index = (unaryfunc)PV_num_index,
 };
 
+static PyObject *PV_num_typename_int(PyObject *self, PyObject *Py_UNUSED(args))
+{
+    return ((PV_num_Object *)self)->type_id;
+}
+
+static PyObject *PV_num_typename(PyObject *self, PyObject *Py_UNUSED(args))
+{
+    return PyUnicode_FromString(type_str[((PV_num_Object *)self)->type_id]);
+}
+
+static PyMethodDef PV_num_methods[] = {
+    {"typename_int", PV_num_typename_int, METH_NOARGS, "return the typename by int. You can use pv_num.get_type() to get the type"},
+    {"typename", PV_num_typename, METH_NOARGS, "return the typename by str.  You can use pv_num.get_type() to get the type"},
+    {NULL}
+};
+
 static PyTypeObject PV_num_Type = {
     PyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "PV_num.PV_num",
@@ -134,11 +167,14 @@ static PyTypeObject PV_num_Type = {
     .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
     .tp_new = (newfunc)PV_num_new,
     .tp_dealloc = (destructor)PV_num_dealloc,
-    .tp_as_number = &PV_num_as_number
+    .tp_as_number = &PV_num_as_number,
+    .tp_methods = PV_num_methods,
 };
 
 static int PV_num_module_exec(PyObject *m)
 {
+    PyObject *capsule = PyCapsule_New(register_type, "PV_num.register_type", NULL);
+    PyModule_AddObject(m, "_register_type_capsule", capsule);
     if (PyType_Ready(&PV_num_Type) < 0) return -1;
     if (PyModule_AddObjectRef(m, "PV_num", (PyObject *)&PV_num_Type) < 0) return -1;
     return 0;
@@ -151,8 +187,8 @@ static PyModuleDef_Slot PV_num_module_slots[] = {
 };
 
 static PyMethodDef PV_num_module_method[] = {
-    {"register_type", (PyCFunction)register_type, METH_VARARGS, NULL},
-    {NULL},
+    // {"register_type", (PyCFunction)register_type, METH_VARARGS, NULL},
+    {NULL}
 };
 
 static PyModuleDef PV_num_module = {

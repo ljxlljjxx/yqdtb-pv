@@ -233,7 +233,8 @@ PyMODINIT_FUNC PyInit_PV_55p8(void)
     PyObject *base_module = PyImport_ImportModule("PowerViolenceObjects.PV_num");
     if (!base_module) return NULL;
     g_PV_num_Type = (PyTypeObject *)PyObject_GetAttrString(base_module, "PV_num");
-    PyObject *register_func = PyObject_GetAttrString(base_module, "register_type");
+    PyObject *capsule = PyObject_GetAttrString(base_module, "_register_type_capsule");
+    register_type_func_t register_func = (register_type_func_t)PyCapsule_GetPointer(capsule, "PV_num.register_type");
     Py_DECREF(base_module);
     if (!g_PV_num_Type || !register_func) return NULL;
 
@@ -244,13 +245,7 @@ PyMODINIT_FUNC PyInit_PV_55p8(void)
         return NULL;
     }
 
-    PyObject *args = Py_BuildValue("(iO)", PVF_55P, &PV_55p8_Type);
-    PyObject *res = PyObject_CallObject(register_func, args);
-    Py_DECREF(args);
-    Py_DECREF(register_func);
-
-    if (!res) return NULL;
-    Py_DECREF(res);
+    if (!register_func(PVF_55P, &PV_55p8_Type)) return NULL;
 
     return PyModuleDef_Init(&PV_55p8_module);
 }

@@ -77,6 +77,7 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#define-members">Macros</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">py_PV_num.h File Reference</div></div>
 </div><!--header-->
@@ -135,13 +136,18 @@ Macros</h2></td></tr>
 <tr class="separator:aa31a353ba82521f24c5a0f9c3f2fbfde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9d2e93029fba564350a05bacc25ad24" id="r_ab9d2e93029fba564350a05bacc25ad24"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#ab9d2e93029fba564350a05bacc25ad24">PVC_LVS</a>&#160;&#160;&#160;<a class="el" href="py___p_v__num_8h.html#a0d353d6c2c5d4300c0e0a6cd235bb587">PVC_128</a></td></tr>
 <tr class="separator:ab9d2e93029fba564350a05bacc25ad24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1983cbccf3c9ca12a2de456c31e8eb46" id="r_a1983cbccf3c9ca12a2de456c31e8eb46"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a1983cbccf3c9ca12a2de456c31e8eb46">GET_RESULT_TYPE_ID</a>(a,  b)&#160;&#160;&#160;(<a class="el" href="py___p_v__num_8c.html#a8ce1207dc2915ec4a000bebfe4392200">typetype_type</a>[((<a class="el" href="struct_p_v__num___object.html">PV_num_Object</a> *)(a))-&gt;type_id][((<a class="el" href="struct_p_v__num___object.html">PV_num_Object</a> *)(b))-&gt;type_id])</td></tr>
+<tr class="memitem:a08e62615c9aaf3226418fe0791afa3f8" id="r_a08e62615c9aaf3226418fe0791afa3f8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(a)&#160;&#160;&#160;(((<a class="el" href="struct_p_v__num___object.html">PV_num_Object</a> *)(a))-&gt;type_id)</td></tr>
+<tr class="separator:a08e62615c9aaf3226418fe0791afa3f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1983cbccf3c9ca12a2de456c31e8eb46" id="r_a1983cbccf3c9ca12a2de456c31e8eb46"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a1983cbccf3c9ca12a2de456c31e8eb46">GET_RESULT_TYPE_ID</a>(a,  b)&#160;&#160;&#160;(typetype_type[<a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(a)][<a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(b)])</td></tr>
 <tr class="separator:a1983cbccf3c9ca12a2de456c31e8eb46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a902812d733b4dd519ed93434339644ae" id="r_a902812d733b4dd519ed93434339644ae"><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a902812d733b4dd519ed93434339644ae">register_type_func_t</a>) (int, PyTypeObject *)</td></tr>
+<tr class="separator:a902812d733b4dd519ed93434339644ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a8ce1207dc2915ec4a000bebfe4392200" id="r_a8ce1207dc2915ec4a000bebfe4392200"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a8ce1207dc2915ec4a000bebfe4392200">typetype_type</a> [<a class="el" href="py___p_v__num_8h.html#a71f88afd1f703a9fc8d19337a5165b4a">MAX_DERIVED</a>][<a class="el" href="py___p_v__num_8h.html#a71f88afd1f703a9fc8d19337a5165b4a">MAX_DERIVED</a>]</td></tr>
-<tr class="separator:a8ce1207dc2915ec4a000bebfe4392200"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a777162a35d6873d620e3babdb89f7d1a" id="r_a777162a35d6873d620e3babdb89f7d1a"><td class="memItemLeft" align="right" valign="top">PyTypeObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a777162a35d6873d620e3babdb89f7d1a">g_type_by_id</a> [<a class="el" href="py___p_v__num_8h.html#a71f88afd1f703a9fc8d19337a5165b4a">MAX_DERIVED</a>]</td></tr>
 <tr class="separator:a777162a35d6873d620e3babdb89f7d1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -167,7 +173,25 @@ Variables</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;(<a class="el" href="py___p_v__num_8c.html#a8ce1207dc2915ec4a000bebfe4392200">typetype_type</a>[((<a class="el" href="struct_p_v__num___object.html">PV_num_Object</a> *)(a))-&gt;type_id][((<a class="el" href="struct_p_v__num___object.html">PV_num_Object</a> *)(b))-&gt;type_id])</td>
+          <td></td><td>&#160;&#160;&#160;(typetype_type[<a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(a)][<a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(b)])</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a08e62615c9aaf3226418fe0791afa3f8" name="a08e62615c9aaf3226418fe0791afa3f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08e62615c9aaf3226418fe0791afa3f8">&#9670;&#160;</a></span>GET_TYPE_ID</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define GET_TYPE_ID</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">a</td><td>)</td>
+          <td>&#160;&#160;&#160;(((<a class="el" href="struct_p_v__num___object.html">PV_num_Object</a> *)(a))-&gt;type_id)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -468,6 +492,21 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="a902812d733b4dd519ed93434339644ae" name="a902812d733b4dd519ed93434339644ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a902812d733b4dd519ed93434339644ae">&#9670;&#160;</a></span>register_type_func_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef int(* register_type_func_t) (int, PyTypeObject *)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Variable Documentation</h2>
 <a id="a777162a35d6873d620e3babdb89f7d1a" name="a777162a35d6873d620e3babdb89f7d1a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a777162a35d6873d620e3babdb89f7d1a">&#9670;&#160;</a></span>g_type_by_id</h2>
@@ -480,28 +519,6 @@ Variables</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">PyTypeObject* g_type_by_id[<a class="el" href="py___p_v__num_8h.html#a71f88afd1f703a9fc8d19337a5165b4a">MAX_DERIVED</a>]</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a8ce1207dc2915ec4a000bebfe4392200" name="a8ce1207dc2915ec4a000bebfe4392200"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8ce1207dc2915ec4a000bebfe4392200">&#9670;&#160;</a></span>typetype_type</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const int typetype_type[<a class="el" href="py___p_v__num_8h.html#a71f88afd1f703a9fc8d19337a5165b4a">MAX_DERIVED</a>][<a class="el" href="py___p_v__num_8h.html#a71f88afd1f703a9fc8d19337a5165b4a">MAX_DERIVED</a>]</td>
         </tr>
       </table>
   </td>
