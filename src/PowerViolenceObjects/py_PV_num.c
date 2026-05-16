@@ -141,12 +141,12 @@ static PyNumberMethods PV_num_as_number = {
 
 static PyObject *PV_num_typename_int(PyObject *self, PyObject *Py_UNUSED(args))
 {
-    return ((PV_num_Object *)self)->type_id;
+    return PyLong_FromLong((long)GET_TYPE_ID(self));
 }
 
 static PyObject *PV_num_typename(PyObject *self, PyObject *Py_UNUSED(args))
 {
-    return PyUnicode_FromString(type_str[((PV_num_Object *)self)->type_id]);
+    return PyUnicode_FromString(type_str[GET_TYPE_ID(self)]);
 }
 
 static PyMethodDef PV_num_methods[] = {

@@ -36,3 +36,6 @@ class PV_num:
     def __ior__(self, other):       return NotImplemented
 
     def __index__(self):            return NotImplemented
+
+    def typename(self) -> str: pass
+    def typename_int(self) -> int: pass

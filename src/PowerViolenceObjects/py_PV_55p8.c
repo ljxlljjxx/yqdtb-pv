@@ -7,12 +7,12 @@ static void PV_55p8_dealloc(PV_55p8_Object *self)
 
 static PyObject *PV_55p8_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 {
+    PV_num_Object *obj = g_PV_num_Type->tp_new(type, args, kwds);
     PV_55p8_Object *self;
-    self = (PV_55p8_Object *)type->tp_alloc(type, 0);
-    if (self != NULL)
-    {
-        self->value._1 = 0;
-    }
+    if (!obj) return NULL;
+    obj->type_id = PVF_55P;
+    self = (PV_55p8_Object *)obj;
+    if (self != NULL) self->value._1 = 0;
     return (PyObject *) self;
 }
 
