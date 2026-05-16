@@ -450,7 +450,7 @@ bool test_pvc_PV_119p8_format_pointf(void)
     assert_equal(format_length, 5);
     assert_string_length_equal(s, ans, "9.9960937500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
     
-    a._1 = ~0ll, a._2 = -2559;
+    a._1 = ~0ll, a._2 = (uint64_t)(-2559ll);
     ans = pvc_PV_119p8_format(s, "f", &a, &format_length);
     assert_equal(format_length, 1);
     assert_string_length_equal(s, ans, "-9.99609375");
@@ -528,7 +528,7 @@ bool test_pvc_PV_119p8_format_pointf(void)
     assert_equal(format_length, 5);
     assert_string_length_equal(s, ans, "999999999999999999999999999999.9960937500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
     
-    a._1 = ~13877787807814ll, a._2 = -8425648038478872575ll;
+    a._1 = ~13877787807814ll, a._2 = (uint64_t)((uint64_t)(-8425648038478872575ll));
     ans = pvc_PV_119p8_format(s, "f", &a, &format_length);
     assert_equal(format_length, 1);
     assert_string_length_equal(s, ans, "-999999999999999999999999999999.99609375");
@@ -659,7 +659,7 @@ bool test_pvc_PV_119p8_format_starf(void)
     assert_equal(format_length, 3);
     assert_string_length_equal(s, ans, "9.9960937500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
     
-    a._1 = ~0ll, a._2 = -2559;
+    a._1 = ~0ll, a._2 = (uint64_t)(-2559);
     ans = pvc_PV_119p8_format(s, "f", &a, &format_length);
     assert_equal(format_length, 1);
     assert_string_length_equal(s, ans, "-9.99609375");
@@ -737,7 +737,7 @@ bool test_pvc_PV_119p8_format_starf(void)
     assert_equal(format_length, 3);
     assert_string_length_equal(s, ans, "999999999999999999999999999999.9960937500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
     
-    a._1 = ~13877787807814ll, a._2 = -8425648038478872575ll;
+    a._1 = ~13877787807814ll, a._2 = (uint64_t)(-8425648038478872575ll);
     ans = pvc_PV_119p8_format(s, "f", &a, &format_length);
     assert_equal(format_length, 1);
     assert_string_length_equal(s, ans, "-999999999999999999999999999999.99609375");
@@ -1014,7 +1014,7 @@ bool test_pvc_PV_119p8_format_negf(void)
     assert_equal(format_length, 3);
     assert_string_length_equal(s, ans, "0");
 
-    a._1 = ~0, a._2 = -384000;
+    a._1 = ~0, a._2 = (uint64_t)(-384000);
     ans = pvc_PV_119p8_format(s, "f", &a, &format_length);
     assert_equal(format_length, 1);
     assert_string_length_equal(s, ans, "-1500.0");
@@ -1127,7 +1127,7 @@ bool test_pvc_PV_119p8_format_pointe(void)
     assert_equal(format_length, 5);
     assert_string_length_equal(s, ans, "9.9960937500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e+0");
     
-    a._1 = ~0ll, a._2 = -2559;
+    a._1 = ~0ll, a._2 = (uint64_t)(-2559);
     ans = pvc_PV_119p8_format(s, "e", &a, &format_length);
     assert_equal(format_length, 1);
     assert_string_length_equal(s, ans, "-1.0e+1");
@@ -1205,7 +1205,7 @@ bool test_pvc_PV_119p8_format_pointe(void)
     assert_equal(format_length, 5);
     assert_string_length_equal(s, ans, "999999999999999999999999999999.9960937500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
     
-    a._1 = ~13877787807814ll, a._2 = -8425648038478872575ll;
+    a._1 = ~13877787807814ll, a._2 = (uint64_t)(-8425648038478872575ll);
     ans = pvc_PV_119p8_format(s, "e", &a, &format_length);
     assert_equal(format_length, 1);
     assert_string_length_equal(s, ans, "-999999999999999999999999999999.99609375");

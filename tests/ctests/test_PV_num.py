@@ -14,6 +14,11 @@ class TestPv_num(unittest.TestCase):
         with self.assertRaises(TypeError): pow(a, 100)
         with self.assertRaises(TypeError): a *= 2
 
+    def test_typename(self):
+        a: PV_num = PV_num()
+        self.assertEqual(a.typename(), 'PV_num')
+        self.assertEqual(a.typename_int(), 0)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,4 +1,4 @@
-from .PV_num import PV_num
+from .pv_num import PV_num
 
 class PV_55p8(PV_num):
     _value: int

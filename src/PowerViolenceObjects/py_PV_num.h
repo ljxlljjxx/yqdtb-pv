@@ -5,8 +5,6 @@
 #include <Python.h>
 #include <stddef.h>
 
-static PyTypeObject PV_num_Type;
-
 typedef struct {
     PyObject_HEAD
     int type_id;
@@ -35,11 +33,12 @@ typedef struct {
 #define PVC_POW PVC_256
 #define PVC_LVS PVC_128
 
-#define GET_RESULT_TYPE_ID(a, b) (typetype_type[((PV_num_Object *)(a))->type_id][((PV_num_Object *)(b))->type_id])
+#define GET_TYPE_ID(a) (((PV_num_Object *)(a))->type_id)
+#define GET_RESULT_TYPE_ID(a, b) (typetype_type[GET_TYPE_ID(a)][GET_TYPE_ID(b)])
 
 
-extern const int typetype_type[MAX_DERIVED][MAX_DERIVED];
 extern PyTypeObject *g_type_by_id[MAX_DERIVED];
 
+typedef int (*register_type_func_t)(int, PyTypeObject*);
 
 #endif /* _PY_PV_num_H */

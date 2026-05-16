@@ -12,8 +12,8 @@
 void pvc_PV_119p8_set(pvc_PV_119p8 *res, __int128_t *a)
 {
     const __int128_t pos = (__int128_t)1 << 64;
-    res->_2 = *a % pos;
-    res->_1 = *a / pos;
+    res->_2 = (uint64_t)(*a % pos);
+    res->_1 = (int64_t)(*a / pos);
 }
 
 /**
@@ -33,7 +33,8 @@ bool pvc_PV_119p8_add(pvc_PV_119p8 *a, pvc_PV_119p8 *b, pvc_PV_119p8 *restrict r
     res->_1 = a->_1 + b->_1 + (res->_2 < a->_2);
     if ((!((a->_1 ^ b->_1) & INT64_MIN)) && ((a->_1 ^ res->_1) & INT64_MIN))
     {
-        res->_1 = res->_2 = 0;
+        res->_1 = 0ll;
+        res->_2 = 0ull;
         return true;
     }
     return false;
@@ -84,7 +85,7 @@ char *pvc_PV_119p8_tostring(pvc_PV_119p8 *a)
         tmp = a->_2 >> 8;
         while (tmp)
         {
-            temp[temp_size++] = tmp % 10 | 48;
+            temp[temp_size++] = (char)(tmp % 10 | 48);
             tmp /= 10;
         }
         while (temp_size)
@@ -109,12 +110,12 @@ char *pvc_PV_119p8_tostring(pvc_PV_119p8 *a)
             return buffer;
         }
     }
-    high = b._1;
+    high = (uint64_t)b._1;
     low = b._2 >> 8;
     while (low || high)
     {
         tmp = high % 10;
-        temp[temp_size++] = (6 * tmp + low) % 10 | 48;
+        temp[temp_size++] = (char)((6 * tmp + low) % 10 | 48);
         low = ((tmp << 56) + low) / 10;
         high /= 10;
     }
@@ -204,18 +205,18 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
         *format_length = 2;
         switch (format[1])
         {
-        case 'i': return sprintf(buffer, "%lld", a->_1);
-        case 'u': return sprintf(buffer, "%llu", a->_1);
-        case 'x': return sprintf(buffer, "%016llx", a->_1);;
+        case 'i': return sprintf(buffer, "%"PRId64, a->_1);
+        case 'u': return sprintf(buffer, "%"PRIu64, a->_1);
+        case 'x': return sprintf(buffer, "%016"PRIx64, a->_1);;
         default: goto unknown_format;
         }
     case 'l':
         *format_length = 2;
         switch (format[1])
         {
-        case 'i': return sprintf(buffer, "%lld", a->_2);
-        case 'u': return sprintf(buffer, "%llu", a->_2);
-        case 'x': return sprintf(buffer, "%016llx", a->_2);
+        case 'i': return sprintf(buffer, "%"PRId64, a->_2);
+        case 'u': return sprintf(buffer, "%"PRIu64, a->_2);
+        case 'x': return sprintf(buffer, "%016"PRIx64, a->_2);
         default:  goto unknown_format;
         }
     case 'b':
@@ -226,10 +227,10 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
         return 128;
     case 'x':
         *format_length = 1;
-        return sprintf(buffer, "%016llx%016llx", a->_1, a->_2);
+        return sprintf(buffer, "%016"PRIx64"%016"PRIx64, a->_1, a->_2);
     case 'X':
         *format_length = 1;
-        return sprintf(buffer, "%016llX%016llX", a->_1, a->_2);
+        return sprintf(buffer, "%016"PRIX64"%016"PRIX64, a->_1, a->_2);
     case 'd':
         *format_length = 1;
         format_d_type = 0;
@@ -246,7 +247,7 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
             format_b_tmp = a->_2 >> 8;
             while (format_b_tmp)
             {
-                format_b_temp[format_b_temp_size++] = format_b_tmp % 10 | 48;
+                format_b_temp[format_b_temp_size++] = (char)(format_b_tmp % 10 | 48);
                 format_b_tmp /= 10;
             }
             while (format_b_temp_size)
@@ -266,12 +267,12 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
                 goto format_d_return;
             }
         }
-        format_b_high = format_b_b._1;
+        format_b_high = (uint64_t)format_b_b._1;
         format_b_low = format_b_b._2 >> 8;
         while (format_b_low || format_b_high)
         {
             format_b_tmp = format_b_high % 10;
-            format_b_temp[format_b_temp_size++] = (6 * format_b_tmp + format_b_low) % 10 | 48;
+            format_b_temp[format_b_temp_size++] = (char)((6 * format_b_tmp + format_b_low) % 10 | 48);
             format_b_low = ((format_b_tmp << 56) + format_b_low) / 10;
             format_b_high /= 10;
         }
@@ -420,6 +421,8 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
                 buffer[cnt+precision] = '0';
                 goto function_return;
             }
+        default:
+            break;
         }
         goto function_return;
     case '+':
@@ -466,20 +469,20 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
                 }
                 else
                 {
-                    strncpy(buffer + cnt, &pvc_PV_119p8_max[1], precision - 1);
+                    strncpy(buffer + cnt, &pvc_PV_119p8_max[1], (size_t)(precision - 1));
                     cnt += precision - 1;
                     goto format_e_suf;
                 }
             }
         }
-        format_b_high = format_b_b._1;
+        format_b_high = (uint64_t)format_b_b._1;
         format_b_low = format_b_b._2 >> 8;
         while (format_b_low || format_b_high)
         {
-        _debug printf("format_b_temp_size = %d\n", format_b_temp_size);
-        _debug printf("format_b_temp = %s\n", format_b_temp);
+        // _debug printf("format_b_temp_size = %d\n", format_b_temp_size);
+        // _debug printf("format_b_temp = %s\n", format_b_temp);
             format_b_tmp = format_b_high % 10;
-            format_b_temp[format_b_temp_size++] = (6 * format_b_tmp + format_b_low) % 10 | 48;
+            format_b_temp[format_b_temp_size++] = (char)((6 * format_b_tmp + format_b_low) % 10 | 48);
             format_b_low = ((format_b_tmp << 56) + format_b_low) / 10;
             format_b_high /= 10;
         }
@@ -547,8 +550,8 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
         else buffer[cnt++] = 'E';
         if (flag >= 0) buffer[cnt++] = '+';
         else buffer[cnt++] = '-', flag = -flag;
-        if (flag > 10) buffer[cnt++] = flag / 10 | 48;
-        buffer[cnt++] = flag % 10 | 48;
+        if (flag > 10) buffer[cnt++] = (char)(flag / 10 | 48);
+        buffer[cnt++] = (char)(flag % 10 | 48);
         goto function_return;
     case 'E':
         *format_length = 1;
@@ -602,7 +605,11 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
             case 'E':
                 format_d_type = 3;
                 goto format_e;
+            default:
+                break;
         }
+        goto unknown_format;
+    default:
         goto unknown_format;
     }
 unknown_format:
@@ -666,7 +673,7 @@ function_return:
 int pvc_PV_119p8_print(pvc_PV_119p8 *a)
 {
     static char temp[40];
-    size_t temp_size = 0, cnt = 0;
+    int temp_size = 0, cnt = 0;
     uint64_t high, low, tmp;
     pvc_PV_119p8 b;
     if (a == NULL) return printf("(null)");
@@ -676,7 +683,7 @@ int pvc_PV_119p8_print(pvc_PV_119p8 *a)
         tmp = a->_2 >> 8;
         while (tmp)
         {
-            temp[temp_size++] = tmp % 10 | 48;
+            temp[temp_size++] = (char)(tmp % 10 | 48);
             tmp /= 10;
         }
         while (temp_size)
@@ -695,12 +702,12 @@ int pvc_PV_119p8_print(pvc_PV_119p8 *a)
         putchar('-');
         if (pvc_PV_119p8_neg(&b)) return 1 + printf("%s", pvc_PV_119p8_max);
     }
-    high = b._1;
+    high = (uint64_t)b._1;
     low = b._2 >> 8;
     while (low || high)
     {
         tmp = high % 10;
-        temp[temp_size++] = (6 * tmp + low) % 10 | 48;
+        temp[temp_size++] = (char)((6 * tmp + low) % 10 | 48);
         low = ((tmp << 56) + low) / 10;
         high /= 10;
     }
