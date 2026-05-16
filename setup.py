@@ -2,10 +2,26 @@ import setuptools
 import sys
 
 version = '2.5.0'
-if sys.platform.startswith('win'):
-    extra_compile_args = ['-Wconversion', '-Wreturn-type', '-Wshadow', '-Wnull-dereference', '-Wpointer-arith', '-Wfloat-equal', '-Wswitch-default', '-Wswitch-enum', '-Wall', '-Wextra', '-Wno-unused-parameter', '-Werror']
+IS_MSVC = sys.platform.startswith('win') and sys.version_info.major >= 3
+try:
+    from setuptools import distutils
+    compiler = distutils.ccompiler.new_compiler()
+    IS_MSVC = compiler.compiler_type == 'msvc'
+except:
+    IS_MSVC = sys.platform.startswith('win')
+
+if IS_MSVC:
+    extra_compile_args = [
+        '/W4', '/WX', '/we4061', '/we4715', '/wd4100', '/wd4127', '/w44265'
+    ]
 else:
-    extra_compile_args = ['-Wformat=2', '-Wconversion', '-Wreturn-type', '-Wshadow', '-Wnull-dereference', '-Wpointer-arith', '-Wfloat-equal', '-Wswitch-default', '-Wswitch-enum', '-Wall', '-Wextra', '-Wno-unused-parameter', '-Werror']
+    # GCC/Clang 编译参数（原列表）
+    extra_compile_args = [
+        '-Wformat=2', '-Wconversion', '-Wreturn-type', '-Wshadow',
+        '-Wnull-dereference', '-Wpointer-arith', '-Wfloat-equal',
+        '-Wswitch-default', '-Wswitch-enum', '-Wall', '-Wextra',
+        '-Wno-unused-parameter', '-Werror'
+    ]
 
 setuptools.setup(
     packages=['PowerViolenceObjects'],
