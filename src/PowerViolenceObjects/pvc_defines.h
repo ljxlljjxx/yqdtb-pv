@@ -13,24 +13,18 @@
 
 #ifndef _MSC_VER
     #include "pvc_debug.h"
-    #if defined(__GNUC__) && __GNUC__ >= 5
-        #define HAS_BUILTIN_ADD_OVERFLOW 1
-    #elif defined(__clang__) && __has_builtin(__builtin_add_overflow)
-        #define HAS_BUILTIN_ADD_OVERFLOW 1
-    #elif defined(__INTEL_COMPILER) && __INTEL_COMPILER >= 1900
-        #define HAS_BUILTIN_ADD_OVERFLOW 1
-    #else
-        #define HAS_BUILTIN_ADD_OVERFLOW 0
-    #endif
 #else
     #define deprint(a) ((void)0)
-    #if defined(__GNUC__) && __GNUC__ >= 5
-        #define HAS_BUILTIN_ADD_OVERFLOW 1
-    #elif defined(__INTEL_COMPILER) && __INTEL_COMPILER >= 1900
-        #define HAS_BUILTIN_ADD_OVERFLOW 1
-    #else
-        #define HAS_BUILTIN_ADD_OVERFLOW 0
-    #endif
+#endif
+
+#if defined(__GNUC__) && __GNUC__ >= 5
+    #define HAS_BUILTIN_ADD_OVERFLOW 1
+#elif defined(__clang__)
+    #define HAS_BUILTIN_ADD_OVERFLOW 1
+#elif defined(__INTEL_COMPILER) && __INTEL_COMPILER >= 1900
+    #define HAS_BUILTIN_ADD_OVERFLOW 1
+#else
+    #define HAS_BUILTIN_ADD_OVERFLOW 0
 #endif
 
 #if HAS_BUILTIN_ADD_OVERFLOW
