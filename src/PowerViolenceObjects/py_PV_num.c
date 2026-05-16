@@ -169,7 +169,7 @@ static PyTypeObject PV_num_Type = {
 
 static int pv_num_exec(PyObject *m)
 {
-    PyObject *capsule = PyCapsule_New(register_type, "pv_num.register_type", NULL);
+    PyObject *capsule = PyCapsule_New((void *)register_type, "pv_num.register_type", NULL);
     PyModule_AddObject(m, "_register_type_capsule", capsule);
     if (PyType_Ready(&PV_num_Type) < 0) return -1;
     if (PyModule_AddObjectRef(m, "PV_num", (PyObject *)&PV_num_Type) < 0) return -1;
@@ -177,7 +177,7 @@ static int pv_num_exec(PyObject *m)
 }
 
 static PyModuleDef_Slot pv_num_slots[] = {
-    {Py_mod_exec,                  pv_num_exec},
+    {Py_mod_exec,                  (void *)pv_num_exec},
     {Py_mod_multiple_interpreters, Py_MOD_MULTIPLE_INTERPRETERS_NOT_SUPPORTED},
     {0, NULL}
 };
