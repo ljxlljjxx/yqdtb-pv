@@ -44,13 +44,10 @@ PyTypeObject *g_type_by_id[MAX_DERIVED];
 
 static int register_type(int type_id, PyTypeObject *type)
 {
-    if (type_id < 0 || type_id >= MAX_DERIVED) {
-        PyErr_SetString(PyExc_ValueError, "invalid type_id");
-        return NULL;
-    }
+    if (type_id < 0 || type_id >= MAX_DERIVED) return 1;
     g_type_by_id[type_id] = type;
     Py_INCREF(type);
-    Py_RETURN_NONE;
+    return 0;
 }
 
 static void PV_num_dealloc(PV_num_Object *self)

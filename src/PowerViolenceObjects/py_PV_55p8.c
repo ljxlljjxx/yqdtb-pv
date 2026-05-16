@@ -162,7 +162,7 @@ PyMODINIT_FUNC PyInit_pv_55p8(void)
         return NULL;
     }
 
-    if (!register_func(PVF_55P, &PV_55p8_Type)) return NULL;
+    if (register_func(PVF_55P, &PV_55p8_Type)) return NULL;
 
     return PyModuleDef_Init(&pv_55p8);
 }
