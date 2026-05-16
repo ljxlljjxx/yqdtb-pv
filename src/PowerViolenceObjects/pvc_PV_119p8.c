@@ -204,18 +204,18 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
         *format_length = 2;
         switch (format[1])
         {
-        case 'i': return sprintf(buffer, "%lld", a->_1);
-        case 'u': return sprintf(buffer, "%llu", a->_1);
-        case 'x': return sprintf(buffer, "%016llx", a->_1);;
+        case 'i': return sprintf(buffer, "%"PRId64, a->_1);
+        case 'u': return sprintf(buffer, "%"PRIu64, a->_1);
+        case 'x': return sprintf(buffer, "%016"PRIx64, a->_1);;
         default: goto unknown_format;
         }
     case 'l':
         *format_length = 2;
         switch (format[1])
         {
-        case 'i': return sprintf(buffer, "%lld", a->_2);
-        case 'u': return sprintf(buffer, "%llu", a->_2);
-        case 'x': return sprintf(buffer, "%016llx", a->_2);
+        case 'i': return sprintf(buffer, "%"PRId64, a->_2);
+        case 'u': return sprintf(buffer, "%"PRIu64, a->_2);
+        case 'x': return sprintf(buffer, "%016"PRIx64, a->_2);
         default:  goto unknown_format;
         }
     case 'b':
@@ -226,10 +226,10 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
         return 128;
     case 'x':
         *format_length = 1;
-        return sprintf(buffer, "%016llx%016llx", a->_1, a->_2);
+        return sprintf(buffer, "%016"PRIx64"%016"PRIx64, a->_1, a->_2);
     case 'X':
         *format_length = 1;
-        return sprintf(buffer, "%016llX%016llX", a->_1, a->_2);
+        return sprintf(buffer, "%016"PRIX64"%016"PRIX64, a->_1, a->_2);
     case 'd':
         *format_length = 1;
         format_d_type = 0;
