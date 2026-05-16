@@ -348,7 +348,7 @@ static PyMethodDef pv_num_method[] = {
     {"type_int", (PyCFunction)pv_num_type_int, METH_O, "change the type to int"},
     {"type_str", (PyCFunction)pv_num_type_str, METH_O, "change the type to str"},
     {"get_type", (PyCFunction)pv_num_get_type, METH_O, "return the type"},
-    {"typetype_type", (PyCFunction)pv_num_typetype_type, METH_FASTCALL, "return the result of type promotion"},
+    {"typetype_type", (PyCFunction)(void(*)(void))pv_num_typetype_type, METH_FASTCALL, "return the result of type promotion"},
     {NULL, NULL, 0, NULL}
 };
 
