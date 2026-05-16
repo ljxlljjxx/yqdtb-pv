@@ -29,7 +29,7 @@ static int PV_55p8_init(PV_55p8_Object *self, PyObject *args, PyObject *kwds)
 static PyObject *PV_55p8_richcmp(PyObject *lhs, PyObject *rhs, int op)
 {
     int64_t a = ((PV_55p8_Object *)lhs)->value._1, b = ((PV_55p8_Object *)rhs)->value._1;
-    int c;
+    int c = 0;
     PyObject *result;
     if (!PyObject_TypeCheck(lhs, &PV_55p8_Type) || !PyObject_TypeCheck(rhs, &PV_55p8_Type))
     {
@@ -43,6 +43,9 @@ static PyObject *PV_55p8_richcmp(PyObject *lhs, PyObject *rhs, int op)
     case Py_NE: c = a != b; break;
     case Py_GE: c = a >= b; break;
     case Py_GT: c = a > b; break;
+    default: 
+        PyErr_SetString(PyExc_SystemError, "Unknown op");
+        return NULL;
     }
     result = c ? Py_True : Py_False;
     return Py_NewRef(result);

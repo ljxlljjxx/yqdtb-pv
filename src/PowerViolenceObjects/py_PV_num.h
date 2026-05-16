@@ -5,8 +5,6 @@
 #include <Python.h>
 #include <stddef.h>
 
-static PyTypeObject PV_num_Type;
-
 typedef struct {
     PyObject_HEAD
     int type_id;
