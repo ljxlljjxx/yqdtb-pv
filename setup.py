@@ -7,13 +7,13 @@ setuptools.setup(
     package_dir={'': 'src'},
     ext_modules=[
         setuptools.Extension(
-            'PowerViolenceObjects.PV_num',
+            'PowerViolenceObjects.pv_num',
             sources=[
                 'src/PowerViolenceObjects/py_PV_num.c',
             ],
         ),
         setuptools.Extension(
-            'PowerViolenceObjects.PV_55p8',
+            'PowerViolenceObjects.pv_55p8',
             sources=[
                 'src/PowerViolenceObjects/py_PV_55p8.c',
                 'src/PowerViolenceObjects/pvc_PV_55p8.c',

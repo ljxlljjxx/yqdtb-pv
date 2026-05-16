@@ -28,7 +28,7 @@ from importlib.metadata import version
 
 __version__ = version("PowerViolenceObjects")
 
-from .PV_num import PV_num
-from .PV_55p8 import PV_55p8
+from .pv_num import PV_num
+from .pv_55p8 import PV_55p8
 
 __all__ = ['PV_55p8', 'PV_num']
