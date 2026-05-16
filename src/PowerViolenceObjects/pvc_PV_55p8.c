@@ -68,9 +68,9 @@ char *pvc_PV_55p8_tostring(const pvc_PV_55p8 *a)
         }
     }
     if (b._1 & 255)
-        sprintf(buffer + cnt, "%lld.%s", b._1 >> 8, quick_float[b._1 & 255]);
+        sprintf(buffer + cnt, "%"PRId64".%s", b._1 >> 8, quick_float[b._1 & 255]);
     else
-        sprintf(buffer + cnt, "%lld", b._1 >> 8);
+        sprintf(buffer + cnt, "%"PRId64, b._1 >> 8);
     return buffer;
 }
 
@@ -142,10 +142,10 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const
         return 64;
     case 'x':
         *format_length = 1;
-        return sprintf(buffer, "%016llx", a->_1);
+        return sprintf(buffer, "%016"PRIx64, a->_1);
     case 'X':
         *format_length = 1;
-        return sprintf(buffer, "%016llX", a->_1);
+        return sprintf(buffer, "%016"PRIX64, a->_1);
     case 'd':
         *format_length = 1;
         format_d_type = 0;
@@ -153,7 +153,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const
         format_b_b = *a;
         if (format_b_b._1 >= 0)
         {
-            cnt += sprintf(buffer + cnt, "%lld", a->_1 >> 8);
+            cnt += sprintf(buffer + cnt, "%"PRId64, a->_1 >> 8);
             goto format_d_return;
         }
         else
@@ -165,7 +165,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const
                 cnt += 17;
                 goto format_d_return;
             }
-            cnt += sprintf(buffer + cnt, "%lld", format_b_b._1 >> 8);
+            cnt += sprintf(buffer + cnt, "%"PRId64, format_b_b._1 >> 8);
             goto format_d_return;
         }
     format_d_return:
@@ -623,7 +623,7 @@ int pvc_PV_55p8_print(const pvc_PV_55p8 *a)
             return 1 + printf("%s", pvc_PV_55p8_max);
         }
     }
-    cnt += printf("%lld", b._1 >> 8);
+    cnt += printf("%"PRId64, b._1 >> 8);
     if (b._1 & 255) return cnt + printf(".%s", quick_float[b._1 & 255]);
     return cnt;
 }
