@@ -94,7 +94,7 @@ static int _ctest_sprintf(int s, ...)
     case 'f': return sprintf(test_temp_buffer, "%f",   (float)         va_arg(args, double));              
     case 'd': return sprintf(test_temp_buffer, "%lf",                  va_arg(args, double));             
     case 'p': return sprintf(test_temp_buffer, "%p",                   va_arg(args, const void *));       
-    case '?': return sprintf(test_temp_buffer, "unknown type");
+    default: return sprintf(test_temp_buffer, "unknown type");
     }
     va_end(args);
     return 0;
