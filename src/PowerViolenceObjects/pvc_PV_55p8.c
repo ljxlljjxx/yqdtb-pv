@@ -487,7 +487,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const
         *format_length = 1;
         precision = 1;
     format_G:
-        if (log10(fabs(a->_1 / 256.0)) >= precision)
+        if (log10(fabs((double)a->_1 / 256.0)) >= precision)
         {
             format_d_type = 3;
             goto format_e;
