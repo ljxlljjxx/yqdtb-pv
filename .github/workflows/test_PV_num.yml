@@ -27,6 +27,8 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: '3.14'
+      - name: Deepseek 要我打印
+        run: Get-Content src/PowerViolenceObjects/pvc_defines.h -TotalCount 25 | Select-Object -Skip 19
       - name: Install dependencies
         run: |
           pip install .
