@@ -1,6 +1,7 @@
 #ifndef _PVC_DEFINES_H
 #define _PVC_DEFINES_H
 
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>

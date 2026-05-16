@@ -43,7 +43,7 @@ bool pvc_PV_55p8_neg(pvc_PV_55p8 *a)
 }
 
 /**
- * @brief   print pvc_PV_55p8 int string
+ * @brief   print pvc_PV_55p8 in string
  * @param   a pvc_PV_55p8 *
  * @return  char *
  * @retval  return the string
