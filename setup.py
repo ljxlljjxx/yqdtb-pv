@@ -1,7 +1,7 @@
 import setuptools
 
 version = '2.5.0'
-extra_compile_args = ['-Wformat=2', '-Wconversion', '-Werror=return-type', '-Wshadow', '-Wnull-dereference', '-Wpointer-arith', '-Wfloat-equal', '-Wswitch-default', '-Wswitch-enum', '-Wall', '-Wextra', '-Wno-unused-parameter', '-Werror']
+extra_compile_args = ['-Wformat=2', '-Wconversion', '-Wreturn-type', '-Wshadow', '-Wnull-dereference', '-Wpointer-arith', '-Wfloat-equal', '-Wswitch-default', '-Wswitch-enum', '-Wall', '-Wextra', '-Wno-unused-parameter', '-Werror']
 
 setuptools.setup(
     packages=['PowerViolenceObjects'],
