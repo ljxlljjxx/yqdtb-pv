@@ -1,3 +1,10 @@
+def get_type(arg: int | str, /) -> type: pass
+def typestr_int(arg: str, /) -> int: pass
+def typeint_str(arg: int, /) -> str: pass
+def type_int(arg: type, /) -> int: pass
+def type_str(arg: type, /) -> str: pass
+def typetype_type(arg1: int, arg2: int, /) -> int: pass
+
 class PV_num:
     def __add__(self, other):       return NotImplemented
     def __sub__(self, other):       return NotImplemented
@@ -10,7 +17,7 @@ class PV_num:
     def __neg__(self):              return NotImplemented
     def __pos__(self):              return NotImplemented
     def __abs__(self):              return NotImplemented
-    def __bool__(self):             pass
+    # def __bool__(self):             pass
     def __abs__(self):              return NotImplemented
     def __invert__(self):           return NotImplemented
     def __int__(self):              return NotImplemented

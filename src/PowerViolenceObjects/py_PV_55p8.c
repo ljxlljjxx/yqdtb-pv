@@ -7,7 +7,7 @@ static void PV_55p8_dealloc(PV_55p8_Object *self)
 
 static PyObject *PV_55p8_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 {
-    PV_num_Object *obj = g_PV_num_Type->tp_new(type, args, kwds);
+    PV_num_Object *obj = (PV_num_Object *)g_PV_num_Type->tp_new(type, args, kwds);
     PV_55p8_Object *self;
     if (!obj) return NULL;
     obj->type_id = PVF_55P;

@@ -74,7 +74,7 @@ static PyObject *PV_num_floordiv(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEM
 static PyObject *PV_num_neg(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_pos(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_abs(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
-int PV_num_bool(PyObject *a) { return (a != 0); }
+// int PV_num_bool(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_invert(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_int(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_float(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
@@ -89,7 +89,6 @@ static PyObject *PV_num_isub(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTE
 static PyObject *PV_num_imul(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_imod(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_ipow(PyObject *a, PyObject *b, PyObject *c) { Py_RETURN_NOTIMPLEMENTED; }
-static PyObject *PV_num_idivmod(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_itruediv(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_ifloordiv(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_ilshift(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
@@ -110,7 +109,7 @@ static PyNumberMethods PV_num_as_number = {
     .nb_negative = (unaryfunc)PV_num_neg,
     .nb_positive = (unaryfunc)PV_num_pos,
     .nb_absolute = (unaryfunc)PV_num_abs,
-    .nb_bool = (inquiry)PV_num_bool,
+    // .nb_bool = (inquiry)PV_num_bool,
     .nb_invert = (unaryfunc)PV_num_invert,
     .nb_int = (unaryfunc)PV_num_int,
     .nb_float = (unaryfunc)PV_num_float,
@@ -183,8 +182,173 @@ static PyModuleDef_Slot pv_num_slots[] = {
     {0, NULL}
 };
 
+static int pv_num_typestr_to_typeint(PyObject *arg)
+{
+    /* arg must be a PyUnicode */
+    const char *s = PyUnicode_AsUTF8(arg);
+    if (!s) return -1;
+    for (int i = 0; i < MAX_DERIVED; i++)
+    {
+        if (!strcmp(s, type_str[i])) return i;
+    }
+    return -2;
+}
+
+static int pv_num_type_to_typeint(PyTypeObject *arg)
+{
+    for (int i = 0; i < MAX_DERIVED; i++)
+    {
+        if (g_type_by_id[i] == arg) return i;
+    }
+    return -1;
+}
+
+static PyObject *pv_num_typestr_int(PyObject *Py_UNUSED(self), PyObject *arg)
+{
+    if (PyUnicode_Check(arg))
+    {
+        int value = pv_num_typestr_to_typeint(arg);
+        if (value == -1) return NULL;
+        if (value == -2)
+        {
+            PyErr_SetString(PyExc_ValueError, "Unknown type name");
+            return NULL;
+        }
+        return PyLong_FromLong((long)value);
+    }
+    PyErr_SetString(PyExc_TypeError, "arg must be str");
+    return NULL;
+}
+
+static PyObject *pv_num_typeint_str(PyObject *Py_UNUSED(self), PyObject *arg)
+{
+    if (PyLong_Check(arg))
+    {
+        long value = PyLong_AsLong(arg);
+        if (value == -1 && PyErr_Occurred()) return NULL;
+        if (value < 0 || value >= MAX_DERIVED)
+        {
+            PyErr_Format(PyExc_ValueError, "The arg must in [0, %d)", MAX_DERIVED);
+            return NULL;
+        }
+        return PyUnicode_FromString(type_str[value]);
+    }
+    PyErr_SetString(PyExc_TypeError, "arg must be int");
+    return NULL;
+}
+
+static PyObject *pv_num_type_int(PyObject *Py_UNUSED(self), PyObject *arg)
+{
+    if (PyType_Check(arg))
+    {
+        int value = pv_num_type_to_typeint((PyTypeObject *)(arg));
+        if (value == -1)
+        {
+            PyErr_SetString(PyExc_ValueError, "Unknown type");
+            return NULL;
+        }
+        return PyLong_FromLong((long)value);
+    }
+    PyErr_SetString(PyExc_TypeError, "arg must be type");
+    return NULL;
+}
+
+static PyObject *pv_num_type_str(PyObject *Py_UNUSED(self), PyObject *arg)
+{
+    if (PyType_Check(arg))
+    {
+        int value = pv_num_type_to_typeint((PyTypeObject *)arg);
+        if (value == -1)
+        {
+            PyErr_SetString(PyExc_ValueError, "Unknown type");
+            return NULL;
+        }
+        return PyUnicode_FromString(type_str[value]);
+    }
+    PyErr_SetString(PyExc_TypeError, "arg must be type");
+    return NULL;
+}
+
+static PyObject *pv_num_get_type(PyObject *Py_UNUSED(self), PyObject *arg)
+{
+    if (PyLong_Check(arg))
+    {
+        long value = PyLong_AsLong(arg);
+        if (value == -1 && PyErr_Occurred()) return NULL;
+        if (value < 0 || value >= MAX_DERIVED)
+        {
+            PyErr_Format(PyExc_ValueError, "The arg must in [0, %d)", MAX_DERIVED);
+            return NULL;
+        }
+        if (g_type_by_id[value]) return (PyObject *)g_type_by_id[value];
+        PyErr_SetString(PyExc_RuntimeError, "The arg's type isn't prepared yet");
+        return NULL;
+    }
+    if (PyUnicode_Check(arg))
+    {
+        int value = pv_num_typestr_to_typeint(arg);
+        if (value == -1) return NULL;
+        if (value == -2)
+        {
+            PyErr_SetString(PyExc_ValueError, "Unknown type name");
+            return NULL;
+        }
+        if (g_type_by_id[value]) return (PyObject *)g_type_by_id[value];
+        PyErr_SetString(PyExc_RuntimeError, "The arg's type isn't prepared yet");
+        return NULL;
+    }
+    PyErr_SetString(PyExc_TypeError, "arg must be str or int");
+    return NULL;
+}
+
+static PyObject *pv_num_typetype_type(PyObject *Py_UNUSED(self), PyObject *const *args, Py_ssize_t nargs)
+{
+    if (nargs != 2)
+    {
+        PyErr_Format(PyExc_TypeError, "function expected 2 arguments, got %d", nargs);
+        return NULL;
+    }
+    long arg1, arg2;
+    if (!PyLong_Check(args[0]))
+    {
+        PyErr_SetString(PyExc_TypeError, "args must be int");
+        return NULL;
+    }
+    else
+    {
+        arg1 = PyLong_AsLong(args[0]);
+        if (arg1 == -1 && PyErr_Occurred()) return NULL;
+        if (arg1 < 0 || arg1 >= MAX_DERIVED)
+        {
+            PyErr_Format(PyExc_ValueError, "arg1 must in [0, %d)", MAX_DERIVED);
+            return NULL;
+        }
+    }
+    if (!PyLong_Check(args[1]))
+    {
+        PyErr_SetString(PyExc_TypeError, "args must be int");
+        return NULL;
+    }
+    else
+    {
+        arg2 = PyLong_AsLong(args[1]);
+        if (arg2 == -1 && PyErr_Occurred()) return NULL;
+        if (arg2 < 0 || arg2 >= MAX_DERIVED)
+        {
+            PyErr_Format(PyExc_ValueError, "arg2 must in [0, %d)", MAX_DERIVED);
+            return NULL;
+        }
+    }
+    return PyLong_FromLong((long)typetype_type[arg1][arg2]);
+}
+
 static PyMethodDef pv_num_method[] = {
-    // {"register_type", (PyCFunction)register_type, METH_VARARGS, NULL},
+    {"typestr_int", (PyCFunction)pv_num_typestr_int, METH_O, "change the str to int"},
+    {"typeint_str", (PyCFunction)pv_num_typeint_str, METH_O, "change the int to str"},
+    {"type_int", (PyCFunction)pv_num_type_int, METH_O, "change the type to int"},
+    {"type_str", (PyCFunction)pv_num_type_str, METH_O, "change the type to str"},
+    {"get_type", (PyCFunction)pv_num_get_type, METH_O, "return the type"},
+    {"typetype_type", (PyCFunction)pv_num_typetype_type, METH_FASTCALL, "return the result of type promotion"},
     {NULL}
 };
 
