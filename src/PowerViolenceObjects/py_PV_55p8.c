@@ -125,7 +125,7 @@ static int pv_55p8_exec(PyObject *m)
 }
 
 static PyModuleDef_Slot pv_55p8_slots[] = {
-    {Py_mod_exec,                  pv_55p8_exec},
+    {Py_mod_exec,                  (void *)pv_55p8_exec},
     {Py_mod_multiple_interpreters, Py_MOD_MULTIPLE_INTERPRETERS_NOT_SUPPORTED},
     {0, NULL}
 };
