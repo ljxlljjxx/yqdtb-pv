@@ -33,7 +33,8 @@ bool pvc_PV_119p8_add(pvc_PV_119p8 *a, pvc_PV_119p8 *b, pvc_PV_119p8 *restrict r
     res->_1 = a->_1 + b->_1 + (res->_2 < a->_2);
     if ((!((a->_1 ^ b->_1) & INT64_MIN)) && ((a->_1 ^ res->_1) & INT64_MIN))
     {
-        res->_1 = res->_2 = 0;
+        res->_1 = 0ll;
+        res->_2 = 0ull;
         return true;
     }
     return false;
@@ -84,7 +85,7 @@ char *pvc_PV_119p8_tostring(pvc_PV_119p8 *a)
         tmp = a->_2 >> 8;
         while (tmp)
         {
-            temp[temp_size++] = tmp % 10 | 48;
+            temp[temp_size++] = (char)(tmp % 10 | 48);
             tmp /= 10;
         }
         while (temp_size)
@@ -114,7 +115,7 @@ char *pvc_PV_119p8_tostring(pvc_PV_119p8 *a)
     while (low || high)
     {
         tmp = high % 10;
-        temp[temp_size++] = (6 * tmp + low) % 10 | 48;
+        temp[temp_size++] = (char)((6 * tmp + low) % 10 | 48);
         low = ((tmp << 56) + low) / 10;
         high /= 10;
     }
@@ -246,7 +247,7 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
             format_b_tmp = a->_2 >> 8;
             while (format_b_tmp)
             {
-                format_b_temp[format_b_temp_size++] = format_b_tmp % 10 | 48;
+                format_b_temp[format_b_temp_size++] = (char)(format_b_tmp % 10 | 48);
                 format_b_tmp /= 10;
             }
             while (format_b_temp_size)
@@ -271,7 +272,7 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
         while (format_b_low || format_b_high)
         {
             format_b_tmp = format_b_high % 10;
-            format_b_temp[format_b_temp_size++] = (6 * format_b_tmp + format_b_low) % 10 | 48;
+            format_b_temp[format_b_temp_size++] = (char)((6 * format_b_tmp + format_b_low) % 10 | 48);
             format_b_low = ((format_b_tmp << 56) + format_b_low) / 10;
             format_b_high /= 10;
         }
@@ -420,6 +421,8 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
                 buffer[cnt+precision] = '0';
                 goto function_return;
             }
+        default:
+            break;
         }
         goto function_return;
     case '+':
@@ -466,7 +469,7 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
                 }
                 else
                 {
-                    strncpy(buffer + cnt, &pvc_PV_119p8_max[1], precision - 1);
+                    strncpy(buffer + cnt, &pvc_PV_119p8_max[1], (size_t)(precision - 1));
                     cnt += precision - 1;
                     goto format_e_suf;
                 }
@@ -476,10 +479,10 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
         format_b_low = format_b_b._2 >> 8;
         while (format_b_low || format_b_high)
         {
-        _debug printf("format_b_temp_size = %d\n", format_b_temp_size);
-        _debug printf("format_b_temp = %s\n", format_b_temp);
+        // _debug printf("format_b_temp_size = %d\n", format_b_temp_size);
+        // _debug printf("format_b_temp = %s\n", format_b_temp);
             format_b_tmp = format_b_high % 10;
-            format_b_temp[format_b_temp_size++] = (6 * format_b_tmp + format_b_low) % 10 | 48;
+            format_b_temp[format_b_temp_size++] = (char)((6 * format_b_tmp + format_b_low) % 10 | 48);
             format_b_low = ((format_b_tmp << 56) + format_b_low) / 10;
             format_b_high /= 10;
         }
@@ -548,7 +551,7 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
         if (flag >= 0) buffer[cnt++] = '+';
         else buffer[cnt++] = '-', flag = -flag;
         if (flag > 10) buffer[cnt++] = (char)(flag / 10 | 48);
-        buffer[cnt++] = flag % 10 | 48;
+        buffer[cnt++] = (char)(flag % 10 | 48);
         goto function_return;
     case 'E':
         *format_length = 1;
@@ -602,7 +605,11 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
             case 'E':
                 format_d_type = 3;
                 goto format_e;
+            default:
+                break;
         }
+        goto unknown_format;
+    default:
         goto unknown_format;
     }
 unknown_format:
@@ -676,7 +683,7 @@ int pvc_PV_119p8_print(pvc_PV_119p8 *a)
         tmp = a->_2 >> 8;
         while (tmp)
         {
-            temp[temp_size++] = tmp % 10 | 48;
+            temp[temp_size++] = (char)(tmp % 10 | 48);
             tmp /= 10;
         }
         while (temp_size)
@@ -700,7 +707,7 @@ int pvc_PV_119p8_print(pvc_PV_119p8 *a)
     while (low || high)
     {
         tmp = high % 10;
-        temp[temp_size++] = (6 * tmp + low) % 10 | 48;
+        temp[temp_size++] = (char)((6 * tmp + low) % 10 | 48);
         low = ((tmp << 56) + low) / 10;
         high /= 10;
     }
