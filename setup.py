@@ -11,6 +11,7 @@ setuptools.setup(
             sources=[
                 'src/PowerViolenceObjects/py_PV_num.c',
             ],
+            extra_compile_args=['-Werror'],
         ),
         setuptools.Extension(
             'PowerViolenceObjects.pv_55p8',
@@ -19,6 +20,7 @@ setuptools.setup(
                 'src/PowerViolenceObjects/pvc_PV_55p8.c',
                 'src/PowerViolenceObjects/pvc_defines.c',
             ],
+            extra_compile_args=['-Werror'],
         ),
     ],
     version=version
