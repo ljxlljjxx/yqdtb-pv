@@ -10,7 +10,12 @@
 #include <ctype.h>
 #include <math.h>
 #include <inttypes.h>
-#include "pvc_debug.h"
+
+#ifndef _MSC_VER
+    #include "pvc_debug.h"
+#else
+    #define deprint(a) ((void)0)
+#endif
 
 #if defined(__GNUC__) && __GNUC__ >= 5
     #define HAS_BUILTIN_ADD_OVERFLOW 1
