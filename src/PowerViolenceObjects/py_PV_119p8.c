@@ -24,11 +24,9 @@ static int PV_119p8_init(PV_119p8_Object *self, PyObject *args, PyObject *kwds)
 {
     static char *kwlist[] = {"value", NULL};
     double tmp;
-    __int128_t tmp2;
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "|d", kwlist, &tmp))
         return -1;
-    tmp2 = (__int128_t)(tmp * 256);
-    pvc_PV_119p8_set(&self->value, &tmp2);
+    pvc_PV_119p8_set(&self->value, tmp);
     return 0;
 }
 

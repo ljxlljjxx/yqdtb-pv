@@ -4,16 +4,18 @@
 /**
  * @brief   use __int128_t to set pvc_PV_119p8
  * @param   res pvc_PV_119p8 *
- * @param   a __int128_t *
+ * @param   a double
  * @warning This function does not check whether the parameter is null.
  * @author  ljx
  * @date    2026-04-24 20:12
  */
-void pvc_PV_119p8_set(pvc_PV_119p8 *res, __int128_t *a)
+void pvc_PV_119p8_set(pvc_PV_119p8 *res, double a)
 {
-    const __int128_t pos = (__int128_t)1 << 64;
-    res->_2 = (uint64_t)(*a % pos);
-    res->_1 = (int64_t)(*a / pos);
+    double val = a * 256.0;
+    const double c = ldexp(1.0, 64);
+
+    res->_1 = (int64_t)(val / c);
+    res->_2 = (uint64_t)fmod(val, c);
 }
 
 /**
