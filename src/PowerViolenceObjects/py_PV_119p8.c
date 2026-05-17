@@ -12,17 +12,23 @@ static PyObject *PV_119p8_new(PyTypeObject *type, PyObject *args, PyObject *kwds
     if (!obj) return NULL;
     obj->type_id = PVF_119;
     self = (PV_119p8_Object *)obj;
-    if (self != NULL) self->value._1 = 0;
-    return (PyObject *) self;
+    if (self != NULL)
+    {
+        self->value._1 = 0ll;
+        self->value._2 = 0ull;
+    }
+    return (PyObject *)self;
 }
 
 static int PV_119p8_init(PV_119p8_Object *self, PyObject *args, PyObject *kwds)
 {
     static char *kwlist[] = {"value", NULL};
     double tmp;
+    __int128_t tmp2;
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "|d", kwlist, &tmp))
         return -1;
-    self->value._1 = (int64_t)(tmp * 256);
+    tmp2 = (__int128_t)(tmp * 256);
+    pvc_PV_119p8_set(&self->value, &tmp2);
     return 0;
 }
 

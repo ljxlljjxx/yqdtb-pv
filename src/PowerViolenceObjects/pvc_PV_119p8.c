@@ -469,7 +469,7 @@ int pvc_PV_119p8_format(char *restrict buffer, const char *restrict format, pvc_
                 }
                 else
                 {
-                    strncpy(buffer + cnt, &pvc_PV_119p8_max[1], (size_t)(precision - 1));
+                    memcpy(buffer + cnt, &pvc_PV_119p8_max[1], (size_t)(precision - 1));
                     cnt += precision - 1;
                     goto format_e_suf;
                 }
