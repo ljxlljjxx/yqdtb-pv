@@ -169,6 +169,7 @@ static PyTypeObject PV_num_Type = {
 
 static int pv_num_exec(PyObject *m)
 {
+    *g_type_by_id = &PV_num_Type;
     PyObject *capsule = PyCapsule_New((void *)register_type, "pv_num.register_type", NULL);
     PyModule_AddObject(m, "_register_type_capsule", capsule);
     if (PyType_Ready(&PV_num_Type) < 0) return -1;

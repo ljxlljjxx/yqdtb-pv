@@ -19,6 +19,17 @@ class TestPv_num(unittest.TestCase):
         self.assertEqual(a.typename(), 'PV_num')
         self.assertEqual(a.typename_int(), 0)
 
+    def test_functions(self):
+        from PowerViolenceObjects import get_type, type_int, type_str, typestr_int, typeint_str, typetype_type
+        a: PV_num = PV_num()
+        self.assertEqual(get_type(a.typename_int()), PV_num)
+        self.assertEqual(get_type(a.typename()), PV_num)
+        self.assertEqual(typestr_int(a.typename()), 0)
+        self.assertEqual(typeint_str(a.typename_int()), "PV_num")
+        self.assertEqual(type_int(PV_num), 0)
+        self.assertEqual(type_str(PV_num), "PV_num")
+        self.assertEqual(typetype_type(type_int(PV_num), type_int(PV_num)), type_int(PV_num))
+
 
 if __name__ == '__main__':
     unittest.main()
