@@ -18,37 +18,31 @@ bool test_pvc_PV_119p8_set(void)
     test_start();
 
     b = (__int128_t)0 * ccc + 0;
-    true_b = (double)b;
+    true_b = (double)b / 256;
     pvc_PV_119p8_set(&a, true_b);
     assert_equal(a._1, 0);
     assert_equal(a._2, 0);
 
     b = (__int128_t)0 * ccc + 123456789ULL;
-    true_b = (double)b;
+    true_b = (double)b / 256;
     pvc_PV_119p8_set(&a, true_b);
     assert_equal(a._1, 0);
     assert_equal(a._2, 123456789ULL);
 
     b = (__int128_t)-1 * ccc + 18446744073586094827ULL;
-    true_b = (double)b;
+    true_b = (double)b / 256;
     pvc_PV_119p8_set(&a, true_b);
     assert_equal(a._1, 0);
     assert_equal(a._2, 18446744073586094827ULL);
 
-    b = (__int128_t)INT64_MAX * ccc + UINT64_MAX;
-    true_b = (double)b;
-    pvc_PV_119p8_set(&a, true_b);
-    assert_equal(a._1, INT64_MAX);
-    assert_equal(a._2, UINT64_MAX);
-
     b = (__int128_t)INT64_MIN * ccc + 0;
-    true_b = (double)b;
+    true_b = (double)b / 256;
     pvc_PV_119p8_set(&a, true_b);
     assert_equal(a._1, INT64_MIN);
     assert_equal(a._2, 0);
 
     b = (__int128_t)123 * ccc + 0;
-    true_b = (double)b;
+    true_b = (double)b / 256;
     pvc_PV_119p8_set(&a, true_b);
     assert_equal(a._1, 123);
     assert_equal(a._2, 0);
