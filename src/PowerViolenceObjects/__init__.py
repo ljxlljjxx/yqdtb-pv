@@ -30,5 +30,10 @@ __version__ = version("PowerViolenceObjects")
 
 from .pv_num import PV_num, get_type, typestr_int, typeint_str, type_int, type_str, typetype_type  # type: ignore
 from .pv_55p8 import PV_55p8  # type: ignore
+from .pv_119p8 import PV_119p8  # type: ignore
 
-__all__ = ['PV_num', 'get_type', 'typestr_int', 'typeint_str', 'type_int', 'type_str', 'typetype_type', 'PV_55p8']
+__all__ = [
+    'PV_num', 'get_type', 'typestr_int', 'typeint_str', 'type_int', 'type_str', 'typetype_type',
+    'PV_55p8',
+    'PV_119p8',
+]

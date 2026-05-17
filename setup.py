@@ -43,6 +43,15 @@ setuptools.setup(
             ],
             extra_compile_args=extra_compile_args,
         ),
+        setuptools.Extension(
+            'PowerViolenceObjects.pv_119p8',
+            sources=[
+                'src/PowerViolenceObjects/py_PV_119p8.c',
+                'src/PowerViolenceObjects/pvc_PV_119p8.c',
+                'src/PowerViolenceObjects/pvc_defines.c',
+            ],
+            extra_compile_args=extra_compile_args,
+        ),
     ],
     version=version
 )
