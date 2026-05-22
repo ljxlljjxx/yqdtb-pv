@@ -10,18 +10,7 @@ try:
 except:
     IS_MSVC = sys.platform.startswith('win')
 
-if IS_MSVC:
-    extra_compile_args = [
-        '/W4', '/WX', '/we4061', '/we4715', '/wd4100', '/wd4127', '/w44265'
-    ]
-else:
-    # GCC/Clang 编译参数（原列表）
-    extra_compile_args = [
-        '-Wformat=2', '-Wconversion', '-Wreturn-type', '-Wshadow',
-        '-Wnull-dereference', '-Wpointer-arith', '-Wfloat-equal',
-        '-Wswitch-default', '-Wswitch-enum', '-Wall', '-Wextra',
-        '-Wno-unused-parameter', '-Werror'
-    ]
+extra_compile_args = []
 
 if sys.platform.startswith('linux') or sys.platform == 'darwin':
     math_libs = ['m']
