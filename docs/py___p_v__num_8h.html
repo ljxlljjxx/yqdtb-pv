@@ -76,7 +76,9 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#define-members">Macros</a>  </div>
+<a href="#define-members">Macros</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">py_PV_num.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -94,8 +96,388 @@ Classes</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:ac9efdaac9411d0868b715edccca3269d" id="r_ac9efdaac9411d0868b715edccca3269d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#ac9efdaac9411d0868b715edccca3269d">PY_SSIZE_T_CLEAN</a></td></tr>
 <tr class="separator:ac9efdaac9411d0868b715edccca3269d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71f88afd1f703a9fc8d19337a5165b4a" id="r_a71f88afd1f703a9fc8d19337a5165b4a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a71f88afd1f703a9fc8d19337a5165b4a">MAX_DERIVED</a>&#160;&#160;&#160;17</td></tr>
+<tr class="separator:a71f88afd1f703a9fc8d19337a5165b4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6773986022fb273072b7a67f8916cc56" id="r_a6773986022fb273072b7a67f8916cc56"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a6773986022fb273072b7a67f8916cc56">PVO_NUM</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:a6773986022fb273072b7a67f8916cc56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fb9584b206cddcc5956d6dce1531e1d" id="r_a0fb9584b206cddcc5956d6dce1531e1d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a0fb9584b206cddcc5956d6dce1531e1d">PVI_PID</a>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:a0fb9584b206cddcc5956d6dce1531e1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91d23d7f72ca86508609951a638b2934" id="r_a91d23d7f72ca86508609951a638b2934"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a91d23d7f72ca86508609951a638b2934">PVI_SID</a>&#160;&#160;&#160;2</td></tr>
+<tr class="separator:a91d23d7f72ca86508609951a638b2934"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9e4078154a449b3b3e660b94259b443" id="r_ac9e4078154a449b3b3e660b94259b443"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#ac9e4078154a449b3b3e660b94259b443">PVI_NRS</a>&#160;&#160;&#160;3</td></tr>
+<tr class="separator:ac9e4078154a449b3b3e660b94259b443"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d42a429db88a93c3672d83c9e4b85a0" id="r_a2d42a429db88a93c3672d83c9e4b85a0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a2d42a429db88a93c3672d83c9e4b85a0">PVI_LRS</a>&#160;&#160;&#160;4</td></tr>
+<tr class="separator:a2d42a429db88a93c3672d83c9e4b85a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c13f7c4b4060b159412216bc6333469" id="r_a3c13f7c4b4060b159412216bc6333469"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a3c13f7c4b4060b159412216bc6333469">PVF_11P</a>&#160;&#160;&#160;5</td></tr>
+<tr class="separator:a3c13f7c4b4060b159412216bc6333469"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18b11ebfa9c3327cfdc12d1bafe06ad7" id="r_a18b11ebfa9c3327cfdc12d1bafe06ad7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a18b11ebfa9c3327cfdc12d1bafe06ad7">PVF_27P</a>&#160;&#160;&#160;6</td></tr>
+<tr class="separator:a18b11ebfa9c3327cfdc12d1bafe06ad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9c5436fbd833c958611fe077dff0dff" id="r_aa9c5436fbd833c958611fe077dff0dff"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#aa9c5436fbd833c958611fe077dff0dff">PVF_55P</a>&#160;&#160;&#160;7</td></tr>
+<tr class="separator:aa9c5436fbd833c958611fe077dff0dff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c5b777e44f7403c32f9642ed512d445" id="r_a9c5b777e44f7403c32f9642ed512d445"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a9c5b777e44f7403c32f9642ed512d445">PVF_119</a>&#160;&#160;&#160;8</td></tr>
+<tr class="separator:a9c5b777e44f7403c32f9642ed512d445"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6990f3d55bdcd894c489cbb84d61fe88" id="r_a6990f3d55bdcd894c489cbb84d61fe88"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a6990f3d55bdcd894c489cbb84d61fe88">PVC_64C</a>&#160;&#160;&#160;9</td></tr>
+<tr class="separator:a6990f3d55bdcd894c489cbb84d61fe88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d353d6c2c5d4300c0e0a6cd235bb587" id="r_a0d353d6c2c5d4300c0e0a6cd235bb587"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a0d353d6c2c5d4300c0e0a6cd235bb587">PVC_128</a>&#160;&#160;&#160;10</td></tr>
+<tr class="separator:a0d353d6c2c5d4300c0e0a6cd235bb587"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bc2b1c726221ac638b50d2b809b5d7a" id="r_a9bc2b1c726221ac638b50d2b809b5d7a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a9bc2b1c726221ac638b50d2b809b5d7a">PVC_256</a>&#160;&#160;&#160;11</td></tr>
+<tr class="separator:a9bc2b1c726221ac638b50d2b809b5d7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9b739e53ef8e21daffe1621102bc240" id="r_ae9b739e53ef8e21daffe1621102bc240"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#ae9b739e53ef8e21daffe1621102bc240">PVH_SRT</a>&#160;&#160;&#160;12</td></tr>
+<tr class="separator:ae9b739e53ef8e21daffe1621102bc240"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5112a4f28b0ca9161ab14ddf73c0530" id="r_ad5112a4f28b0ca9161ab14ddf73c0530"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#ad5112a4f28b0ca9161ab14ddf73c0530">PVH_NOR</a>&#160;&#160;&#160;13</td></tr>
+<tr class="separator:ad5112a4f28b0ca9161ab14ddf73c0530"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a211a1bb78f50c884e0567bdca7036edd" id="r_a211a1bb78f50c884e0567bdca7036edd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a211a1bb78f50c884e0567bdca7036edd">PVO_NOR</a>&#160;&#160;&#160;14</td></tr>
+<tr class="separator:a211a1bb78f50c884e0567bdca7036edd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd8fcf57881c68fab73c3bc9df5a1f80" id="r_acd8fcf57881c68fab73c3bc9df5a1f80"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#acd8fcf57881c68fab73c3bc9df5a1f80">PVF_447</a>&#160;&#160;&#160;15</td></tr>
+<tr class="separator:acd8fcf57881c68fab73c3bc9df5a1f80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad025cfecae6d5d5591bc39edd66b251f" id="r_ad025cfecae6d5d5591bc39edd66b251f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#ad025cfecae6d5d5591bc39edd66b251f">PVO_PFT</a>&#160;&#160;&#160;16</td></tr>
+<tr class="separator:ad025cfecae6d5d5591bc39edd66b251f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa31a353ba82521f24c5a0f9c3f2fbfde" id="r_aa31a353ba82521f24c5a0f9c3f2fbfde"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#aa31a353ba82521f24c5a0f9c3f2fbfde">PVC_POW</a>&#160;&#160;&#160;<a class="el" href="py___p_v__num_8h.html#a9bc2b1c726221ac638b50d2b809b5d7a">PVC_256</a></td></tr>
+<tr class="separator:aa31a353ba82521f24c5a0f9c3f2fbfde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9d2e93029fba564350a05bacc25ad24" id="r_ab9d2e93029fba564350a05bacc25ad24"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#ab9d2e93029fba564350a05bacc25ad24">PVC_LVS</a>&#160;&#160;&#160;<a class="el" href="py___p_v__num_8h.html#a0d353d6c2c5d4300c0e0a6cd235bb587">PVC_128</a></td></tr>
+<tr class="separator:ab9d2e93029fba564350a05bacc25ad24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08e62615c9aaf3226418fe0791afa3f8" id="r_a08e62615c9aaf3226418fe0791afa3f8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(a)&#160;&#160;&#160;(((<a class="el" href="struct_p_v__num___object.html">PV_num_Object</a> *)(a))-&gt;type_id)</td></tr>
+<tr class="separator:a08e62615c9aaf3226418fe0791afa3f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1983cbccf3c9ca12a2de456c31e8eb46" id="r_a1983cbccf3c9ca12a2de456c31e8eb46"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a1983cbccf3c9ca12a2de456c31e8eb46">GET_RESULT_TYPE_ID</a>(a,  b)&#160;&#160;&#160;(typetype_type[<a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(a)][<a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(b)])</td></tr>
+<tr class="separator:a1983cbccf3c9ca12a2de456c31e8eb46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a902812d733b4dd519ed93434339644ae" id="r_a902812d733b4dd519ed93434339644ae"><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a902812d733b4dd519ed93434339644ae">register_type_func_t</a>) (int, PyTypeObject *)</td></tr>
+<tr class="separator:a902812d733b4dd519ed93434339644ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a777162a35d6873d620e3babdb89f7d1a" id="r_a777162a35d6873d620e3babdb89f7d1a"><td class="memItemLeft" align="right" valign="top">PyTypeObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a777162a35d6873d620e3babdb89f7d1a">g_type_by_id</a> [<a class="el" href="py___p_v__num_8h.html#a71f88afd1f703a9fc8d19337a5165b4a">MAX_DERIVED</a>]</td></tr>
+<tr class="separator:a777162a35d6873d620e3babdb89f7d1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a1983cbccf3c9ca12a2de456c31e8eb46" name="a1983cbccf3c9ca12a2de456c31e8eb46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1983cbccf3c9ca12a2de456c31e8eb46">&#9670;&#160;</a></span>GET_RESULT_TYPE_ID</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define GET_RESULT_TYPE_ID</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">a, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">b&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;(typetype_type[<a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(a)][<a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(b)])</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a08e62615c9aaf3226418fe0791afa3f8" name="a08e62615c9aaf3226418fe0791afa3f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08e62615c9aaf3226418fe0791afa3f8">&#9670;&#160;</a></span>GET_TYPE_ID</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define GET_TYPE_ID</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">a</td><td>)</td>
+          <td>&#160;&#160;&#160;(((<a class="el" href="struct_p_v__num___object.html">PV_num_Object</a> *)(a))-&gt;type_id)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a71f88afd1f703a9fc8d19337a5165b4a" name="a71f88afd1f703a9fc8d19337a5165b4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71f88afd1f703a9fc8d19337a5165b4a">&#9670;&#160;</a></span>MAX_DERIVED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MAX_DERIVED&#160;&#160;&#160;17</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0d353d6c2c5d4300c0e0a6cd235bb587" name="a0d353d6c2c5d4300c0e0a6cd235bb587"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d353d6c2c5d4300c0e0a6cd235bb587">&#9670;&#160;</a></span>PVC_128</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PVC_128&#160;&#160;&#160;10</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9bc2b1c726221ac638b50d2b809b5d7a" name="a9bc2b1c726221ac638b50d2b809b5d7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9bc2b1c726221ac638b50d2b809b5d7a">&#9670;&#160;</a></span>PVC_256</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PVC_256&#160;&#160;&#160;11</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6990f3d55bdcd894c489cbb84d61fe88" name="a6990f3d55bdcd894c489cbb84d61fe88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6990f3d55bdcd894c489cbb84d61fe88">&#9670;&#160;</a></span>PVC_64C</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PVC_64C&#160;&#160;&#160;9</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab9d2e93029fba564350a05bacc25ad24" name="ab9d2e93029fba564350a05bacc25ad24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9d2e93029fba564350a05bacc25ad24">&#9670;&#160;</a></span>PVC_LVS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PVC_LVS&#160;&#160;&#160;<a class="el" href="py___p_v__num_8h.html#a0d353d6c2c5d4300c0e0a6cd235bb587">PVC_128</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa31a353ba82521f24c5a0f9c3f2fbfde" name="aa31a353ba82521f24c5a0f9c3f2fbfde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa31a353ba82521f24c5a0f9c3f2fbfde">&#9670;&#160;</a></span>PVC_POW</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PVC_POW&#160;&#160;&#160;<a class="el" href="py___p_v__num_8h.html#a9bc2b1c726221ac638b50d2b809b5d7a">PVC_256</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9c5b777e44f7403c32f9642ed512d445" name="a9c5b777e44f7403c32f9642ed512d445"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c5b777e44f7403c32f9642ed512d445">&#9670;&#160;</a></span>PVF_119</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PVF_119&#160;&#160;&#160;8</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3c13f7c4b4060b159412216bc6333469" name="a3c13f7c4b4060b159412216bc6333469"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c13f7c4b4060b159412216bc6333469">&#9670;&#160;</a></span>PVF_11P</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PVF_11P&#160;&#160;&#160;5</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a18b11ebfa9c3327cfdc12d1bafe06ad7" name="a18b11ebfa9c3327cfdc12d1bafe06ad7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18b11ebfa9c3327cfdc12d1bafe06ad7">&#9670;&#160;</a></span>PVF_27P</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PVF_27P&#160;&#160;&#160;6</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acd8fcf57881c68fab73c3bc9df5a1f80" name="acd8fcf57881c68fab73c3bc9df5a1f80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd8fcf57881c68fab73c3bc9df5a1f80">&#9670;&#160;</a></span>PVF_447</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PVF_447&#160;&#160;&#160;15</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa9c5436fbd833c958611fe077dff0dff" name="aa9c5436fbd833c958611fe077dff0dff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9c5436fbd833c958611fe077dff0dff">&#9670;&#160;</a></span>PVF_55P</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PVF_55P&#160;&#160;&#160;7</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad5112a4f28b0ca9161ab14ddf73c0530" name="ad5112a4f28b0ca9161ab14ddf73c0530"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5112a4f28b0ca9161ab14ddf73c0530">&#9670;&#160;</a></span>PVH_NOR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PVH_NOR&#160;&#160;&#160;13</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae9b739e53ef8e21daffe1621102bc240" name="ae9b739e53ef8e21daffe1621102bc240"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9b739e53ef8e21daffe1621102bc240">&#9670;&#160;</a></span>PVH_SRT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PVH_SRT&#160;&#160;&#160;12</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2d42a429db88a93c3672d83c9e4b85a0" name="a2d42a429db88a93c3672d83c9e4b85a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d42a429db88a93c3672d83c9e4b85a0">&#9670;&#160;</a></span>PVI_LRS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PVI_LRS&#160;&#160;&#160;4</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac9e4078154a449b3b3e660b94259b443" name="ac9e4078154a449b3b3e660b94259b443"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9e4078154a449b3b3e660b94259b443">&#9670;&#160;</a></span>PVI_NRS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PVI_NRS&#160;&#160;&#160;3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0fb9584b206cddcc5956d6dce1531e1d" name="a0fb9584b206cddcc5956d6dce1531e1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fb9584b206cddcc5956d6dce1531e1d">&#9670;&#160;</a></span>PVI_PID</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PVI_PID&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a91d23d7f72ca86508609951a638b2934" name="a91d23d7f72ca86508609951a638b2934"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91d23d7f72ca86508609951a638b2934">&#9670;&#160;</a></span>PVI_SID</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PVI_SID&#160;&#160;&#160;2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a211a1bb78f50c884e0567bdca7036edd" name="a211a1bb78f50c884e0567bdca7036edd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a211a1bb78f50c884e0567bdca7036edd">&#9670;&#160;</a></span>PVO_NOR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PVO_NOR&#160;&#160;&#160;14</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6773986022fb273072b7a67f8916cc56" name="a6773986022fb273072b7a67f8916cc56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6773986022fb273072b7a67f8916cc56">&#9670;&#160;</a></span>PVO_NUM</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PVO_NUM&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad025cfecae6d5d5591bc39edd66b251f" name="ad025cfecae6d5d5591bc39edd66b251f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad025cfecae6d5d5591bc39edd66b251f">&#9670;&#160;</a></span>PVO_PFT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PVO_PFT&#160;&#160;&#160;16</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ac9efdaac9411d0868b715edccca3269d" name="ac9efdaac9411d0868b715edccca3269d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac9efdaac9411d0868b715edccca3269d">&#9670;&#160;</a></span>PY_SSIZE_T_CLEAN</h2>
 
@@ -106,6 +488,44 @@ Macros</h2></td></tr>
           <td class="memname">#define PY_SSIZE_T_CLEAN</td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="a902812d733b4dd519ed93434339644ae" name="a902812d733b4dd519ed93434339644ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a902812d733b4dd519ed93434339644ae">&#9670;&#160;</a></span>register_type_func_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef int(* register_type_func_t) (int, PyTypeObject *)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a777162a35d6873d620e3babdb89f7d1a" name="a777162a35d6873d620e3babdb89f7d1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a777162a35d6873d620e3babdb89f7d1a">&#9670;&#160;</a></span>g_type_by_id</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">PyTypeObject* g_type_by_id[<a class="el" href="py___p_v__num_8h.html#a71f88afd1f703a9fc8d19337a5165b4a">MAX_DERIVED</a>]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>

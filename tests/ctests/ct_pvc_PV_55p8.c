@@ -2371,11 +2371,11 @@ bool test_pvc_PV_55p8_print(void)
     CAPTURE_STROUT(s, ans = pvc_PV_55p8_print(&a));
     assert_string_length_equal(s, ans, "0");
 
-    a._1 = 123456789ULL;
+    a._1 = 123456789LL;
     CAPTURE_STROUT(s, ans = pvc_PV_55p8_print(&a));
     assert_string_length_equal(s, ans, "482253.08203125");
 
-    a._1 = -123456789ULL;
+    a._1 = -123456789LL;
     CAPTURE_STROUT(s, ans = pvc_PV_55p8_print(&a));
     assert_string_length_equal(s, ans, "-482253.08203125");
 

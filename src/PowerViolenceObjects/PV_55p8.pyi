@@ -1,6 +1,6 @@
-from PV_fixed import PV_fixed
+from .pv_num import PV_num
 
-class PV_55p8(PV_fixed):
+class PV_55p8(PV_num):
     _value: int
     
     def __init__(self, value: float = 0) -> None: ...

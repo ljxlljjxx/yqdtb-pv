@@ -1,30 +1,53 @@
 import setuptools
+import sys
 
-version = '2.3.0'
+version = '2.5.0'
+IS_MSVC = sys.platform.startswith('win') and sys.version_info.major >= 3
+try:
+    from setuptools import distutils
+    compiler = distutils.ccompiler.new_compiler()
+    IS_MSVC = compiler.compiler_type == 'msvc'
+except:
+    IS_MSVC = sys.platform.startswith('win')
+
+extra_compile_args = []
+
+if sys.platform.startswith('linux') or sys.platform == 'darwin':
+    math_libs = ['m']
+else:
+    math_libs = []
 
 setuptools.setup(
     packages=['PowerViolenceObjects'],
     package_dir={'': 'src'},
     ext_modules=[
         setuptools.Extension(
-            'PowerViolenceObjects.PV_num',
+            'PowerViolenceObjects.pv_num',
             sources=[
                 'src/PowerViolenceObjects/py_PV_num.c',
             ],
+            extra_compile_args=extra_compile_args,
+            libraries=[*math_libs],
         ),
         setuptools.Extension(
-            'PowerViolenceObjects.PV_fixed',
-            sources=[
-                'src/PowerViolenceObjects/py_PV_fixed.c',
-            ],
-        ),
-        setuptools.Extension(
-            'PowerViolenceObjects.PV_55p8',
+            'PowerViolenceObjects.pv_55p8',
             sources=[
                 'src/PowerViolenceObjects/py_PV_55p8.c',
                 'src/PowerViolenceObjects/pvc_PV_55p8.c',
                 'src/PowerViolenceObjects/pvc_defines.c',
             ],
+            extra_compile_args=extra_compile_args,
+            libraries=[*math_libs],
+        ),
+        setuptools.Extension(
+            'PowerViolenceObjects.pv_119p8',
+            sources=[
+                'src/PowerViolenceObjects/py_PV_119p8.c',
+                'src/PowerViolenceObjects/pvc_PV_119p8.c',
+                'src/PowerViolenceObjects/pvc_defines.c',
+            ],
+            extra_compile_args=extra_compile_args,
+            libraries=[*math_libs],
         ),
     ],
     version=version

@@ -1,6 +1,7 @@
 #ifndef _PVC_DEFINES_H
 #define _PVC_DEFINES_H
 
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
@@ -8,11 +9,12 @@
 #include <stdarg.h>
 #include <ctype.h>
 #include <math.h>
+#include <inttypes.h>
 #include "pvc_debug.h"
 
 #if defined(__GNUC__) && __GNUC__ >= 5
     #define HAS_BUILTIN_ADD_OVERFLOW 1
-#elif defined(__clang__) && __has_builtin(__builtin_add_overflow)
+#elif defined(__clang__)
     #define HAS_BUILTIN_ADD_OVERFLOW 1
 #elif defined(__INTEL_COMPILER) && __INTEL_COMPILER >= 1900
     #define HAS_BUILTIN_ADD_OVERFLOW 1

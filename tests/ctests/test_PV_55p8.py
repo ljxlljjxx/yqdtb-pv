@@ -19,6 +19,11 @@ class TestPv_55p8(unittest.TestCase):
         a: PV_55p8 = PV_55p8(10.55)
         self.assertEqual(a._value, 2700)
 
+    def test_typename(self):
+        a: PV_55p8 = PV_55p8()
+        self.assertEqual(a.typename(), 'PV_55p8')
+        self.assertEqual(a.typename_int(), 7)
+
     def test__value(self):
         a: PV_55p8 = PV_55p8()
         a._value = 10
@@ -95,9 +100,6 @@ class TestPv_55p8(unittest.TestCase):
 
     def test_issubclass(self):
         from PowerViolenceObjects import PV_num
-        from PowerViolenceObjects import PV_fixed
-        self.assertTrue(issubclass(PV_fixed, PV_num))
-        self.assertTrue(issubclass(PV_55p8, PV_fixed))
         self.assertTrue(issubclass(PV_55p8, PV_num))
 
 

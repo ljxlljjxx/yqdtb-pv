@@ -1,45 +1,39 @@
 """
 PowerViolenceObjects:
 |_  PV_num
-|   |_  PV_integer
-|   |   |_ PV_pID
-|   |   |_ PV_sID
-|   |   |_ PV_nRounds
-|   |   |_ PV_lRounds
-|   |_  PV_fixed
-|   |   |_ PV_11p4
-|   |   |_ PV_27p4
-|   |   |_ PV_55p8
-|   |   |_ PV_119p8
-|   |_  PV_complex
-|   |   |_ PV_power
-|   |   |_ PV_lives
-|   |   |_ PV_com64
-|   |_  PV_onum
-|       |_ PV_quaternion
-|       |_ PV_s_quaternion
-|       |_ PV_octonion
-|       |_ PV_447p64
+|   |_ PV_pID
+|   |_ PV_sID
+|   |_ PV_nRounds
+|   |_ PV_lRounds
+|   |_ PV_11p4
+|   |_ PV_27p4
+|   |_ PV_55p8
+|   |_ PV_119p8
+|   |_ PV_power
+|   |_ PV_lives
+|   |_ PV_com64
+|   |_ PV_quaternion
+|   |_ PV_s_quaternion
+|   |_ PV_octonion
+|   |_ PV_447p64
+|   |_ PV_perfect
 |
 |_  PV_str
-|   |_  PV_str_names
-|   |_  PV_str_others
 |
 |_  PV_binary
 |
 |_  PV_struct
-|   |_  PV_harm
-|   |_  PV_skill
-|   |_  PV_skilluse
-|   |_  PV_state
-|   |_  PV_range
 """
 from importlib.metadata import version
 
 __version__ = version("PowerViolenceObjects")
 
-from .PV_num import PV_num
-from .PV_fixed import PV_fixed
-from .PV_55p8 import PV_55p8
+from .pv_num import PV_num, get_type, typestr_int, typeint_str, type_int, type_str, typetype_type  # type: ignore
+from .pv_55p8 import PV_55p8  # type: ignore
+from .pv_119p8 import PV_119p8  # type: ignore
 
-__all__ = ['PV_55p8', 'PV_num', 'PV_fixed']
+__all__ = [
+    'PV_num', 'get_type', 'typestr_int', 'typeint_str', 'type_int', 'type_str', 'typetype_type',
+    'PV_55p8',
+    'PV_119p8',
+]
