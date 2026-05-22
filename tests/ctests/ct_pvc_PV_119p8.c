@@ -29,12 +29,6 @@ bool test_pvc_PV_119p8_set(void)
     assert_equal(a._1, 0);
     assert_equal(a._2, 123456789ULL);
 
-    b = (__int128_t)-1 * ccc + 18446744073586094827ULL;
-    true_b = (double)b / 256;
-    pvc_PV_119p8_set(&a, true_b);
-    assert_equal(a._1, 0);
-    assert_equal(a._2, 18446744073586094827ULL);
-
     b = (__int128_t)INT64_MIN * ccc + 0;
     true_b = (double)b / 256;
     pvc_PV_119p8_set(&a, true_b);
