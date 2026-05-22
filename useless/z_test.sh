@@ -3,66 +3,24 @@ return_val=0
 cd $PV
 rm *-macos
 
-echo 'C Test pvc_add_overflow'
-
-gcc -Wformat=2 -Wconversion -Wreturn-type -Wshadow -Wnull-dereference -Wpointer-arith -Wfloat-equal -Wswitch-default -Wswitch-enum -Wall -Wextra -Werror -c src/PowerViolenceObjects/pvc_defines.c -o pvc_defines-macos.o
-gcc -Wformat=2 -Wconversion -Wreturn-type -Wshadow -Wnull-dereference -Wpointer-arith -Wfloat-equal -Wswitch-default -Wswitch-enum -Wall -Wextra -Werror -c tests/ctests/ct_pvc_add_overflow.c -o ct_pvc_add_overflow-macos.o -Isrc/PowerViolenceObjects
-gcc ct_pvc_add_overflow-macos.o pvc_defines-macos.o -o ct_pvc_add_overflow-macos
-if [ $? -eq 1 ]; then
-    return_val=1;
-else
-    ./ct_pvc_add_overflow-macos
-    if [[ $? > 0 ]]; then
-        return_val=1;
-    fi
+if [[ $2 == "-c" ]]; then
+    useless/z_test_py.sh
+    exit $?
+elif [[ $2 == "-py" ]]; then
+    useless/z_test_c.sh
+    exit $?
 fi
-
-
-echo 'C Test pvc_PV_119p8.c'
-
-gcc -Wformat=2 -Wconversion -Wreturn-type -Wshadow -Wnull-dereference -Wpointer-arith -Wfloat-equal -Wswitch-default -Wswitch-enum -Wall -Wextra -Werror -c src/PowerViolenceObjects/pvc_PV_119p8.c -o pvc_PV_119p8-macos.o
-gcc -Wformat=2 -Wconversion -Wreturn-type -Wshadow -Wnull-dereference -Wpointer-arith -Wfloat-equal -Wswitch-default -Wswitch-enum -Wall -Wextra -Werror -c src/PowerViolenceObjects/pvc_defines.c -o pvc_defines-macos.o
-gcc -Wformat=2 -Wconversion -Wreturn-type -Wshadow -Wnull-dereference -Wpointer-arith -Wfloat-equal -Wswitch-default -Wswitch-enum -Wall -Wextra -Werror -c tests/ctests/ct_pvc_PV_119p8.c -o ct_pvc_PV_119p8-macos.o -Isrc/PowerViolenceObjects
-gcc pvc_PV_119p8-macos.o ct_pvc_PV_119p8-macos.o pvc_defines-macos.o -o ct_pvc_PV_119p8-macos
-if [ $? -eq 1 ]; then
-    return_val=1;
-else
-    ./ct_pvc_PV_119p8-macos
-    if [[ $? > 0 ]]; then
-        return_val=1;
-    fi
-fi
-
-
-echo 'C Test pvc_PV_55p8.c'
-
-gcc -Wformat=2 -Wconversion -Wreturn-type -Wshadow -Wnull-dereference -Wpointer-arith -Wfloat-equal -Wswitch-default -Wswitch-enum -Wall -Wextra -Werror -c src/PowerViolenceObjects/pvc_PV_55p8.c -o pvc_PV_55p8-macos.o
-gcc -Wformat=2 -Wconversion -Wreturn-type -Wshadow -Wnull-dereference -Wpointer-arith -Wfloat-equal -Wswitch-default -Wswitch-enum -Wall -Wextra -Werror -c src/PowerViolenceObjects/pvc_defines.c -o pvc_defines-macos.o
-gcc -Wformat=2 -Wconversion -Wreturn-type -Wshadow -Wnull-dereference -Wpointer-arith -Wfloat-equal -Wswitch-default -Wswitch-enum -Wall -Wextra -Werror -c tests/ctests/ct_pvc_PV_55p8.c -o ct_pvc_PV_55p8-macos.o -Isrc/PowerViolenceObjects
-gcc pvc_PV_55p8-macos.o ct_pvc_PV_55p8-macos.o pvc_defines-macos.o -o ct_pvc_PV_55p8-macos
-if [ $? -eq 1 ]; then
-    return_val=1;
-else
-    ./ct_pvc_PV_55p8-macos
-    if [[ $? > 0 ]]; then
-        return_val=1;
-    fi
-fi
-
 
 echo 'Python tests'
 
-source .venv/bin/activate
-python setup.py clean --all
-pip install --no-cache-dir .
+useless/z_test_c.sh
 if [ $? -eq 1 ]; then
-    return_val=1;
-else
-    echo 'Python test'
-    python -m unittest discover tests
-    if [[ $? > 0 ]]; then
-        return_val=1;
-    fi
+    return_val=1
+fi
+
+useless/z_test_py.sh
+if [ $? -eq 1 ]; then
+    return_val=1
 fi
 
 

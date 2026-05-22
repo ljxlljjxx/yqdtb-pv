@@ -80,6 +80,8 @@ static PyMethodDef PV_119p8_methods[] = {
 static int PV_119p8_set__value(PyObject *op, PyObject *value, void *closure)
 {
     PV_119p8_Object *self = (PV_119p8_Object *)op;
+    unsigned char s[16];
+    uint64_t high, low;
     if (value == NULL)
     {
         PyErr_SetString(PyExc_TypeError, "Cannot delete the _value attribute");
@@ -90,14 +92,27 @@ static int PV_119p8_set__value(PyObject *op, PyObject *value, void *closure)
         PyErr_Format(PyExc_TypeError, "The 'first' attribute must be an int, not '%.200s'", Py_TYPE(value)->tp_name);
         return -1;
     }
-    if (PyLong_AsInt64(value, &self->value._1)) return -1;
+    if (_PyLong_AsByteArray(value, s, 16, 1, 1, 1)) return -1;
+    for (int i = 7; i >= 0; --i)
+    {
+        low  = (low << 8) | s[i];
+        high = (high << 8) | s[i + 8];
+    }
+    self->value._1 = (int64_t)high;
+    self->value._2 = low;
     return 0;
 }
 
 static PyObject *PV_119p8_get__value(PyObject *op, void *closure)
 {
     PV_119p8_Object *self = (PV_119p8_Object *)op;
-    return PyLong_FromInt64(self->value._1);
+    unsigned char s[16];
+    for (int i = 0; i < 8; ++i)
+    {
+        s[i]     = self->value._2 >> (i << 3) & 0xFF;
+        s[i + 8] = self->value._1 >> (i << 3) & 0xFF;
+    }
+    return _PyLong_FromByteArray(s, 16, 1, 1);
 }
 
 static PyGetSetDef PV_119p8_getsetters[] = {
