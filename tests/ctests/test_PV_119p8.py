@@ -17,7 +17,7 @@ class TestPv_119p8(unittest.TestCase):
         self.assertEqual(a._value, 0)
 
         a: PV_119p8 = PV_119p8(10.119)
-        self.assertEqual(a._value, 2700)
+        self.assertEqual(a._value, 2590)
 
     def test_typename(self):
         a: PV_119p8 = PV_119p8()

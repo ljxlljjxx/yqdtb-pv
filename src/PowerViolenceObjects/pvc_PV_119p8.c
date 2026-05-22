@@ -11,11 +11,25 @@
  */
 void pvc_PV_119p8_set(pvc_PV_119p8 *res, double a)
 {
-    double val = a * 256.0;
-    const double c = ldexp(1.0, 64);
-
-    res->_1 = (int64_t)(val / c);
-    res->_2 = (uint64_t)fmod(val, c);
+    if (fabs(a) < 0.00390625)
+    {
+        res->_1 = 0ll;
+        res->_2 = 0ull;
+    }
+    else if (a > 0)
+    {
+        double val = a * 256.0;
+        const double c = ldexp(1.0, 64);
+        res->_1 = (int64_t)(val / c);
+        res->_2 = (uint64_t)fmod(val, c);
+    }
+    else
+    {
+        double val = -a * 256.0;
+        const double c = ldexp(1.0, 64);
+        res->_1 = ~(int64_t)(val / c);
+        res->_2 = -(uint64_t)fmod(val, c);
+    }
 }
 
 /**
@@ -64,7 +78,6 @@ bool pvc_PV_119p8_neg(pvc_PV_119p8 *a)
  * @param   a pvc_PV_119p8 *
  * @return  char *
  * @retval  return the string
- * @note    the return value is const.
  * @author  ljx
  * @date    2026-04-26 11:22
  */
@@ -94,6 +107,7 @@ char *pvc_PV_119p8_tostring(pvc_PV_119p8 *a)
         {
             buffer[cnt++] = temp[--temp_size];
         }
+        if (!cnt) buffer[cnt++] = '0';
         if (a->_2 & 255)
         {
             buffer[cnt++] = '.';
