@@ -33,6 +33,7 @@ setuptools.setup(
                 'src/PowerViolenceObjects/py_PV_num.c',
             ],
             extra_compile_args=extra_compile_args,
+            libraries=['m'],
         ),
         setuptools.Extension(
             'PowerViolenceObjects.pv_55p8',
@@ -42,6 +43,7 @@ setuptools.setup(
                 'src/PowerViolenceObjects/pvc_defines.c',
             ],
             extra_compile_args=extra_compile_args,
+            libraries=['m'],
         ),
         setuptools.Extension(
             'PowerViolenceObjects.pv_119p8',
@@ -51,6 +53,7 @@ setuptools.setup(
                 'src/PowerViolenceObjects/pvc_defines.c',
             ],
             extra_compile_args=extra_compile_args,
+            libraries=['m'],
         ),
     ],
     version=version
