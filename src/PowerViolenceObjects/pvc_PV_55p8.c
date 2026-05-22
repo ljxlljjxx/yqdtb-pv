@@ -43,7 +43,7 @@ bool pvc_PV_55p8_neg(pvc_PV_55p8 *a)
 }
 
 /**
- * @brief   print pvc_PV_55p8 int string
+ * @brief   print pvc_PV_55p8 in string
  * @param   a pvc_PV_55p8 *
  * @return  char *
  * @retval  return the string
@@ -68,9 +68,9 @@ char *pvc_PV_55p8_tostring(const pvc_PV_55p8 *a)
         }
     }
     if (b._1 & 255)
-        sprintf(buffer + cnt, "%lld.%s", b._1 >> 8, quick_float[b._1 & 255]);
+        sprintf(buffer + cnt, "%"PRId64".%s", b._1 >> 8, quick_float[b._1 & 255]);
     else
-        sprintf(buffer + cnt, "%lld", b._1 >> 8);
+        sprintf(buffer + cnt, "%"PRId64, b._1 >> 8);
     return buffer;
 }
 
@@ -100,6 +100,7 @@ char *pvc_PV_55p8_tostring(const pvc_PV_55p8 *a)
             .*G: the next parameter specified is the precision
         B:  if a == 0, return "true". else return "false".
  * @param   a pvc_PV_119p8 *restrict 
+ * @param   format_length int *restrict: return how many bytes in format are used.
  * @param   ... if format is .*f/.*e/.*E/.*g/.*G, this will give precision.
  * @return  int
  * @retval  the strlen of buffer.
@@ -107,7 +108,7 @@ char *pvc_PV_55p8_tostring(const pvc_PV_55p8 *a)
  * @author  ljx
  * @date    2026-04-26 15:34
  */
-int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const pvc_PV_55p8 *restrict a, int *format_length, ...)
+int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const pvc_PV_55p8 *restrict a, int *restrict format_length, ...)
 {
     int cnt = 0;
     pvc_PV_55p8 format_b_b;
@@ -141,10 +142,10 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const
         return 64;
     case 'x':
         *format_length = 1;
-        return sprintf(buffer, "%016llx", a->_1);
+        return sprintf(buffer, "%016"PRIx64, a->_1);
     case 'X':
         *format_length = 1;
-        return sprintf(buffer, "%016llX", a->_1);
+        return sprintf(buffer, "%016"PRIX64, a->_1);
     case 'd':
         *format_length = 1;
         format_d_type = 0;
@@ -152,7 +153,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const
         format_b_b = *a;
         if (format_b_b._1 >= 0)
         {
-            cnt += sprintf(buffer + cnt, "%lld", a->_1 >> 8);
+            cnt += sprintf(buffer + cnt, "%"PRId64, a->_1 >> 8);
             goto format_d_return;
         }
         else
@@ -164,7 +165,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const
                 cnt += 17;
                 goto format_d_return;
             }
-            cnt += sprintf(buffer + cnt, "%lld", format_b_b._1 >> 8);
+            cnt += sprintf(buffer + cnt, "%"PRId64, format_b_b._1 >> 8);
             goto format_d_return;
         }
     format_d_return:
@@ -308,6 +309,8 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const
                 buffer[cnt+precision] = '0';
                 goto function_return;
             }
+        default:
+            break;
         }
         goto function_return;
     case '+':
@@ -335,7 +338,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const
 
         if (a->_1 < 0) buffer[cnt++] = '-';
         if (a->_1 == INT64_MIN) tN = 1ull << 63;
-        else tN = a->_1 > 0 ? a->_1 : -a->_1;
+        else tN = a->_1 > 0 ? (uint64_t)a->_1 : (uint64_t)-a->_1;
         p1 = tN >> 8, p2 = tN & 255;
         tD = 1;
         if (p1 == 0)
@@ -361,7 +364,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const
 
         uint64_t int_part = p1 / tD;
         uint64_t rem = p1 % tD;
-        buffer[cnt++] = int_part + 48;
+        buffer[cnt++] = (char)(int_part + 48);
         if (precision == 1)
         {
             if (exp == 0)
@@ -378,7 +381,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const
             for (int i = 1; i < precision; i++)
             {
                 rem *= 10;
-                buffer[cnt++] = 48 + rem / tD;
+                buffer[cnt++] = (char)(48 + rem / tD);
                 rem %= tD;
             }
             if (precision == exp)
@@ -402,7 +405,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const
             for (int i = 0; i < exp; i++)
             {
                 rem *= 10;
-                buffer[cnt++] = 48 + rem / tD;
+                buffer[cnt++] = (char)(48 + rem / tD);
                 rem %= tD;
             }
             if (precision - exp <= 8)
@@ -458,8 +461,8 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const
         else buffer[cnt++] = 'E';
         if (exp >= 0) buffer[cnt++] = '+';
         else buffer[cnt++] = '-', exp = -exp;
-        if (exp > 10) buffer[cnt++] = exp / 10 | 48;
-        buffer[cnt++] = exp % 10 | 48;
+        if (exp > 10) buffer[cnt++] = (char)(exp / 10 | 48);
+        buffer[cnt++] = (char)(exp % 10 | 48);
         goto function_return;
     case 'E':
         *format_length = 1;
@@ -470,7 +473,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const
         *format_length = 1;
         precision = 1;
     format_g:
-        if (log10(fabs(a->_1 / 256.0)) >= precision)
+        if (log10(fabs((double)a->_1 / 256.0)) >= precision)
         {
             format_d_type = 2;
             goto format_e;
@@ -484,7 +487,7 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const
         *format_length = 1;
         precision = 1;
     format_G:
-        if (log10(fabs(a->_1 / 256.0)) >= precision)
+        if (log10(fabs((double)a->_1 / 256.0)) >= precision)
         {
             format_d_type = 3;
             goto format_e;
@@ -547,7 +550,10 @@ int pvc_PV_55p8_format(char *restrict buffer, const char *restrict format, const
             case 'G':
                 format_d_type = 5;
                 goto format_G;
+            default:
+                goto unknown_format;
         }
+    default:
         goto unknown_format;
     }
 unknown_format:
@@ -610,7 +616,7 @@ function_return:
 
 int pvc_PV_55p8_print(const pvc_PV_55p8 *a)
 {
-    size_t cnt = 0;
+    int cnt = 0;
     pvc_PV_55p8 b;
     if (a == NULL) return printf("(null)");
     b = *a;
@@ -622,7 +628,7 @@ int pvc_PV_55p8_print(const pvc_PV_55p8 *a)
             return 1 + printf("%s", pvc_PV_55p8_max);
         }
     }
-    cnt += printf("%lld", b._1 >> 8);
+    cnt += printf("%"PRId64, b._1 >> 8);
     if (b._1 & 255) return cnt + printf(".%s", quick_float[b._1 & 255]);
     return cnt;
 }

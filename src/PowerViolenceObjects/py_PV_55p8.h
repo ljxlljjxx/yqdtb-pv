@@ -4,15 +4,14 @@
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include <stddef.h>
-#include "py_PV_fixed.h"
+#include "py_PV_num.h"
 #include "pvc_PV_55p8.h"
 
 static PyTypeObject PV_55p8_Type;
-static PyTypeObject *PV_fixed_Type_p;
-static PyTypeObject *PV_num_Type_p;
+static PyTypeObject *g_PV_num_Type;
 
 typedef struct {
-    PV_fixed_Object base;
+    PV_num_Object base;
     pvc_PV_55p8 value;
 } PV_55p8_Object;
 
