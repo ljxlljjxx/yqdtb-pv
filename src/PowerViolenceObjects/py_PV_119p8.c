@@ -58,7 +58,7 @@ static PyObject *PV_119p8_richcmp(PyObject *lhs, PyObject *rhs, int op)
 
 static Py_hash_t PV_119p8_hash(PyObject *op)
 {
-    Py_hash_t result = ((PV_119p8_Object *)op)->value._1;
+    Py_hash_t result = (Py_hash_t)((PV_119p8_Object *)op)->value._2;
     if (result == -1) return -2;
     return result;
 }

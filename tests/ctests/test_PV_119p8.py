@@ -22,7 +22,7 @@ class TestPv_119p8(unittest.TestCase):
     def test_typename(self):
         a: PV_119p8 = PV_119p8()
         self.assertEqual(a.typename(), 'PV_119p8')
-        self.assertEqual(a.typename_int(), 7)
+        self.assertEqual(a.typename_int(), 8)
 
     def test__value(self):
         a: PV_119p8 = PV_119p8()
@@ -87,9 +87,12 @@ class TestPv_119p8(unittest.TestCase):
     def test_hash(self):
         a = PV_119p8()
         
-        for i in range(1000):
-            a._value = randint(-2**63, 2**63-1)
-            self.assertEqual(hash(a), a._value if a._value != -1 else -2)
+        def uint64_to_int64(x: int) -> int:
+            return x if x < 2**63 else x - 2**64 
+        
+        for _ in range(1000):
+            a._value = randint(-2**127, 2**127-1)
+            self.assertEqual(hash(a), uint64_to_int64(a._value % 2**64) if uint64_to_int64(a._value % 2**64) != -1 else -2)
 
     def test_str(self):
         a = PV_119p8()
