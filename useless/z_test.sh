@@ -3,11 +3,11 @@ return_val=0
 cd $PV
 rm *-macos
 
-if [[ $2 == "-c" ]]; then
-    useless/z_test_py.sh
-    exit $?
-elif [[ $2 == "-py" ]]; then
+if [[ $1 == "-c" ]]; then
     useless/z_test_c.sh
+    exit $?
+elif [[ $1 == "-py" ]]; then
+    useless/z_test_py.sh
     exit $?
 fi
 

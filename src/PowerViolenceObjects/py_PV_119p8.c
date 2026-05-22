@@ -32,7 +32,8 @@ static int PV_119p8_init(PV_119p8_Object *self, PyObject *args, PyObject *kwds)
 
 static PyObject *PV_119p8_richcmp(PyObject *lhs, PyObject *rhs, int op)
 {
-    int64_t a = ((PV_119p8_Object *)lhs)->value._1, b = ((PV_119p8_Object *)rhs)->value._1;
+    int64_t a1 = ((PV_119p8_Object *)lhs)->value._1, b1 = ((PV_119p8_Object *)rhs)->value._1;
+    int64_t a2 = ((PV_119p8_Object *)lhs)->value._2, b2 = ((PV_119p8_Object *)rhs)->value._2;
     int c = 0;
     PyObject *result;
     if (!PyObject_TypeCheck(lhs, &PV_119p8_Type) || !PyObject_TypeCheck(rhs, &PV_119p8_Type))
@@ -41,12 +42,12 @@ static PyObject *PV_119p8_richcmp(PyObject *lhs, PyObject *rhs, int op)
     }
     switch (op)
     {
-    case Py_LT: c = a < b; break;
-    case Py_LE: c = a <= b; break;
-    case Py_EQ: c = a == b; break;
-    case Py_NE: c = a != b; break;
-    case Py_GE: c = a >= b; break;
-    case Py_GT: c = a > b; break;
+    case Py_LT: c = a1 < b1 || (a1 == b1 && a2 < b2); break;
+    case Py_LE: c = a1 < b1 || (a1 == b1 && a2 <= b2); break;
+    case Py_EQ: c = a1 == b1 && a2 == b2; break;
+    case Py_NE: c = a1 != b1 || a2 != b2; break;
+    case Py_GE: c = a1 > b1 || (a1 == b1 && a2 >= b2); break;
+    case Py_GT: c = c = a1 > b1 || (a1 == b1 && a2 > b2); break;
     default: 
         PyErr_SetString(PyExc_SystemError, "Unknown op");
         return NULL;
