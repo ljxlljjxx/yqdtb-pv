@@ -23,6 +23,11 @@ else:
         '-Wno-unused-parameter', '-Werror'
     ]
 
+if sys.platform.startswith('linux') or sys.platform == 'darwin':
+    math_libs = ['m']
+else:
+    math_libs = []
+
 setuptools.setup(
     packages=['PowerViolenceObjects'],
     package_dir={'': 'src'},
@@ -33,7 +38,7 @@ setuptools.setup(
                 'src/PowerViolenceObjects/py_PV_num.c',
             ],
             extra_compile_args=extra_compile_args,
-            libraries=['m'],
+            libraries=[*math_libs],
         ),
         setuptools.Extension(
             'PowerViolenceObjects.pv_55p8',
@@ -43,7 +48,7 @@ setuptools.setup(
                 'src/PowerViolenceObjects/pvc_defines.c',
             ],
             extra_compile_args=extra_compile_args,
-            libraries=['m'],
+            libraries=[*math_libs],
         ),
         setuptools.Extension(
             'PowerViolenceObjects.pv_119p8',
@@ -53,7 +58,7 @@ setuptools.setup(
                 'src/PowerViolenceObjects/pvc_defines.c',
             ],
             extra_compile_args=extra_compile_args,
-            libraries=['m'],
+            libraries=[*math_libs],
         ),
     ],
     version=version

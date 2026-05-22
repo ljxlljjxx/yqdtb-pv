@@ -10,8 +10,8 @@ Rules for the Power Violence Edition
 规则版本: 0.0.20<br>
 Rule version: 0.0.20<br>
 <br>
-规则撰写日期: 2026年5月10日<br>
-Date of rule writing: May 10, 2026<br>
+规则撰写日期: 2026年5月22日<br>
+Date of rule writing: May 22, 2026<br>
 </div></font>
 
 <font size="3"><div style="text-align: right;">
