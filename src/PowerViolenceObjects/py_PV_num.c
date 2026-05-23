@@ -176,13 +176,13 @@ static int pv_num_exec(PyObject *m)
     if (PyType_Ready(&PV_num_Type) < 0) return -1;
     if (PyModule_AddObjectRef(m, "PV_num", (PyObject *)&PV_num_Type) < 0) return -1;
     PV_OverflowWarning = PyErr_NewException("pv_num.PV_OverflowWarning", PyExc_Warning, NULL);
-    if (!PV_OverflowWarning) { Py_DECREF(m); return NULL; }
+    if (!PV_OverflowWarning) { Py_DECREF(m); return -1; }
     if (PyModule_AddObject(m, "PV_OverflowWarning", PV_OverflowWarning) < 0) {
         Py_DECREF(PV_OverflowWarning);
         Py_DECREF(m);
-        return NULL;
+        return -1;
     }
-    if (!m) return NULL;
+    if (!m) return -1;
     return 0;
 }
 
