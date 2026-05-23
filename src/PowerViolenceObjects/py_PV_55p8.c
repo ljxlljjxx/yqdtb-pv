@@ -33,13 +33,13 @@ static int PV_55p8_init(PV_55p8_Object *self, PyObject *args, PyObject *kwds)
         }
         else
         {
-            int is_pv_num = PyObject_IsInstance(value, g_PV_num_Type);
+            int is_pv_num = PyObject_IsInstance(value, (PyObject *)g_PV_num_Type);
             if (is_pv_num == -1) return -1;
             if (is_pv_num)
             {
                 if (TYPE_TRANSFORM_TYPE(self, value, PVF_55P))
                 {
-                    if (PyErr_WarnEx(PV_OverflowWarning, "", 1) < 0) return NULL;
+                    if (PyErr_WarnEx(PV_OverflowWarning, "", 1) < 0) return -1;
                 }
                 return 0;
             }
