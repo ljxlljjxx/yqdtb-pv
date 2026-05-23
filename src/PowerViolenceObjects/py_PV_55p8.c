@@ -18,11 +18,38 @@ static PyObject *PV_55p8_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 
 static int PV_55p8_init(PV_55p8_Object *self, PyObject *args, PyObject *kwds)
 {
+    PyObject *value = NULL;
     static char *kwlist[] = {"value", NULL};
-    double tmp;
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|d", kwlist, &tmp))
+    double val = 0.0;
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|O", kwlist, &value))
         return -1;
-    self->value._1 = (int64_t)(tmp * 256);
+    if (value)
+    {
+        if (PyFloat_Check(value))
+        {
+            val = PyFloat_AsDouble(value);
+            self->value._1 = (int64_t)(val * 256);
+            return 0;
+        }
+        else
+        {
+            int is_pv_num = PyObject_IsInstance(value, g_PV_num_Type);
+            if (is_pv_num == -1) return -1;
+            if (is_pv_num)
+            {
+                if (TYPE_TRANSFORM_TYPE(self, value, PVF_55P))
+                {
+                    if (PyErr_WarnEx(PV_OverflowWarning, "", 1) < 0) return NULL;
+                }
+                return 0;
+            }
+            else
+            {
+                PyErr_SetString(PyExc_TypeError,  "value must be a float or PV_num instance");
+                return -1;
+            }
+        }
+    }
     return 0;
 }
 
@@ -101,6 +128,81 @@ static PyGetSetDef PV_55p8_getsetters[] = {
     {NULL, NULL, NULL, NULL, NULL}
 };
 
+static PyObject *PV_55p8_add(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_sub(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_mul(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_mod(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_pow(PyObject *a, PyObject *b, PyObject *c) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_divmod(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_truediv(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_floordiv(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_neg(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_pos(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_abs(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+// int PV_num_bool(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_invert(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_int(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_float(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_lshift(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_rshift(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_and(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_xor(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_or(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+
+static PyObject *PV_55p8_iadd(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_isub(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_imul(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_imod(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_ipow(PyObject *a, PyObject *b, PyObject *c) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_itruediv(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_ifloordiv(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_ilshift(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_irshift(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_iand(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_ixor(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_55p8_ior(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+
+static PyObject *PV_55p8_index(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+
+static PyNumberMethods PV_55p8_as_number = {
+    .nb_add = (binaryfunc)PV_55p8_add,
+    .nb_subtract = (binaryfunc)PV_55p8_sub,
+    .nb_multiply = (binaryfunc)PV_55p8_mul,
+    .nb_remainder = (binaryfunc)PV_55p8_mod,
+    .nb_divmod = (binaryfunc)PV_55p8_divmod,
+    .nb_power = (ternaryfunc)PV_55p8_pow,
+    .nb_negative = (unaryfunc)PV_55p8_neg,
+    .nb_positive = (unaryfunc)PV_55p8_pos,
+    .nb_absolute = (unaryfunc)PV_55p8_abs,
+    // .nb_bool = (inquiry)PV_55p8_bool,
+    .nb_invert = (unaryfunc)PV_55p8_invert,
+    .nb_int = (unaryfunc)PV_55p8_int,
+    .nb_float = (unaryfunc)PV_55p8_float,
+    .nb_lshift = (binaryfunc)PV_55p8_lshift,
+    .nb_rshift = (binaryfunc)PV_55p8_rshift,
+    .nb_and = (binaryfunc)PV_55p8_and,
+    .nb_xor = (binaryfunc)PV_55p8_xor,
+    .nb_or = (binaryfunc)PV_55p8_or,
+
+    .nb_inplace_add = (binaryfunc)PV_55p8_iadd,
+    .nb_inplace_subtract = (binaryfunc)PV_55p8_isub,
+    .nb_inplace_multiply = (binaryfunc)PV_55p8_imul,
+    .nb_inplace_remainder = (binaryfunc)PV_55p8_imod,
+    .nb_inplace_power = (ternaryfunc)PV_55p8_ipow,
+    .nb_inplace_lshift = (binaryfunc)PV_55p8_ilshift,
+    .nb_inplace_rshift = (binaryfunc)PV_55p8_irshift,
+    .nb_inplace_and = (binaryfunc)PV_55p8_iand,
+    .nb_inplace_xor = (binaryfunc)PV_55p8_ixor,
+    .nb_inplace_or = (binaryfunc)PV_55p8_ior,
+
+    .nb_true_divide = (binaryfunc)PV_55p8_truediv,
+    .nb_floor_divide = (binaryfunc)PV_55p8_floordiv,
+    .nb_inplace_true_divide = (binaryfunc)PV_55p8_itruediv,
+    .nb_inplace_floor_divide = (binaryfunc)PV_55p8_ifloordiv,
+
+    .nb_index = (unaryfunc)PV_55p8_index,
+};
+
 static PyTypeObject PV_55p8_Type = {
     .ob_base = PyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "pv_55p8.PV_55p8",
@@ -116,6 +218,7 @@ static PyTypeObject PV_55p8_Type = {
     .tp_dealloc = (destructor)PV_55p8_dealloc,
     .tp_methods = PV_55p8_methods,
     .tp_getset = PV_55p8_getsetters,
+    .tp_as_number = &PV_55p8_as_number,
 };
 
 static int pv_55p8_exec(PyObject *m)

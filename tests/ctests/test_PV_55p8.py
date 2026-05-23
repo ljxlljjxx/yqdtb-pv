@@ -7,13 +7,13 @@ class TestPv_55p8(unittest.TestCase):
         a: PV_55p8 = PV_55p8()
         self.assertEqual(a._value, 0)
 
-        a: PV_55p8 = PV_55p8(10)
+        a: PV_55p8 = PV_55p8(10.0)
         self.assertEqual(a._value, 2560)
 
-        a: PV_55p8 = PV_55p8(-10)
+        a: PV_55p8 = PV_55p8(-10.0)
         self.assertEqual(a._value, -2560)
 
-        a: PV_55p8 = PV_55p8(0)
+        a: PV_55p8 = PV_55p8(0.0)
         self.assertEqual(a._value, 0)
 
         a: PV_55p8 = PV_55p8(10.55)

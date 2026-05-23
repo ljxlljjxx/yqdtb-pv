@@ -1,7 +1,7 @@
 import setuptools
 import sys
 
-version = '2.5.0'
+version = '2.6.0'
 IS_MSVC = sys.platform.startswith('win') and sys.version_info.major >= 3
 try:
     from setuptools import distutils
@@ -24,6 +24,7 @@ setuptools.setup(
         setuptools.Extension(
             'PowerViolenceObjects.pv_num',
             sources=[
+                'src/PowerViolenceObjects/pvc_PV_num.c',
                 'src/PowerViolenceObjects/py_PV_num.c',
             ],
             extra_compile_args=extra_compile_args,
@@ -32,6 +33,7 @@ setuptools.setup(
         setuptools.Extension(
             'PowerViolenceObjects.pv_55p8',
             sources=[
+                'src/PowerViolenceObjects/pvc_PV_num.c',
                 'src/PowerViolenceObjects/py_PV_55p8.c',
                 'src/PowerViolenceObjects/pvc_PV_55p8.c',
                 'src/PowerViolenceObjects/pvc_defines.c',
@@ -42,6 +44,7 @@ setuptools.setup(
         setuptools.Extension(
             'PowerViolenceObjects.pv_119p8',
             sources=[
+                'src/PowerViolenceObjects/pvc_PV_num.c',
                 'src/PowerViolenceObjects/py_PV_119p8.c',
                 'src/PowerViolenceObjects/pvc_PV_119p8.c',
                 'src/PowerViolenceObjects/pvc_defines.c',
