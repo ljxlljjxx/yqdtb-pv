@@ -5,9 +5,9 @@ var indexSectionsWithContent =
   2: "p",
   3: "_ip",
   4: "p",
-  5: "_bgqtv",
+  5: "_bgpqtv",
   6: "pr",
-  7: "_dghmp",
+  7: "_dghmpt",
   8: "py"
 };
 

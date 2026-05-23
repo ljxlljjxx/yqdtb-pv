@@ -174,6 +174,16 @@ static int pv_num_exec(PyObject *m)
     PyModule_AddObject(m, "_register_type_capsule", capsule);
     if (PyType_Ready(&PV_num_Type) < 0) return -1;
     if (PyModule_AddObjectRef(m, "PV_num", (PyObject *)&PV_num_Type) < 0) return -1;
+    PV_OverflowWarning = PyErr_NewException("pv_num.PV_OverflowWarning", PyExc_Warning, NULL);
+    if (!PV_OverflowWarning) { Py_DECREF(m); return -1; }
+    capsule = PyCapsule_New((void *)PV_OverflowWarning, "pv_num.PV_OverflowWarning", NULL);
+    PyModule_AddObject(m, "_PV_OverflowWarning", capsule);
+    if (PyModule_AddObject(m, "PV_OverflowWarning", PV_OverflowWarning) < 0) {
+        Py_DECREF(PV_OverflowWarning);
+        Py_DECREF(m);
+        return -1;
+    }
+    if (!m) return -1;
     return 0;
 }
 
@@ -364,6 +374,8 @@ static PyModuleDef pv_num_module = {
 
 PyMODINIT_FUNC PyInit_pv_num(void)
 {
-    return PyModuleDef_Init(&pv_num_module);
+    PyObject *m = PyModuleDef_Init(&pv_num_module);
+    
+    return m;
 }
 
