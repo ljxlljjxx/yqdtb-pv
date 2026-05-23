@@ -1,7 +1,7 @@
 import setuptools
 import sys
 
-version = '2.6.0'
+version = "2.6.5"
 IS_MSVC = sys.platform.startswith('win') and sys.version_info.major >= 3
 try:
     from setuptools import distutils

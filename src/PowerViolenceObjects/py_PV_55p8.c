@@ -21,6 +21,7 @@ static int PV_55p8_init(PV_55p8_Object *self, PyObject *args, PyObject *kwds)
     PyObject *value = NULL;
     static char *kwlist[] = {"value", NULL};
     double val = 0.0;
+    int ret;
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "|O", kwlist, &value))
         return -1;
     if (value)
@@ -37,11 +38,15 @@ static int PV_55p8_init(PV_55p8_Object *self, PyObject *args, PyObject *kwds)
             if (is_pv_num == -1) return -1;
             if (is_pv_num)
             {
-                if (TYPE_TRANSFORM_TYPE(self, value, PVF_55P))
+                if (TYPE_TRANSFORM_CHECK(PVF_55P, GET_TYPE_ID(value)))
                 {
-                    if (PyErr_WarnEx(PV_OverflowWarning, "", 1) < 0) return -1;
+                    PyErr_SetString(PyExc_RuntimeError, "uninit type transform.");
+                    return -1;
                 }
-                return 0;
+                ret = TYPE_TRANSFORM_TYPE(self, value, PVF_55P);
+                if (!ret) return 0;
+                if (PyErr_WarnEx(PV_OverflowWarning, "", 1) < 0)
+                    return -1;
             }
             else
             {
