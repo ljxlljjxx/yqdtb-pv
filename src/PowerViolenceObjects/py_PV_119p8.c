@@ -22,11 +22,43 @@ static PyObject *PV_119p8_new(PyTypeObject *type, PyObject *args, PyObject *kwds
 
 static int PV_119p8_init(PV_119p8_Object *self, PyObject *args, PyObject *kwds)
 {
+    PyObject *value = NULL;
     static char *kwlist[] = {"value", NULL};
-    double tmp;
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|d", kwlist, &tmp))
+    double val = 0.0;
+    int ret;
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|O", kwlist, &value))
         return -1;
-    pvc_PV_119p8_set(&self->value, tmp);
+    if (value)
+    {
+        if (PyFloat_Check(value))
+        {
+            val = PyFloat_AsDouble(value);
+            pvc_PV_119p8_set(&self->value, val);
+            return 0;
+        }
+        else
+        {
+            int is_pv_num = PyObject_IsInstance(value, (PyObject *)g_PV_num_Type);
+            if (is_pv_num == -1) return -1;
+            if (is_pv_num)
+            {
+                if (TYPE_TRANSFORM_CHECK(PVF_119, GET_TYPE_ID(value)))
+                {
+                    PyErr_SetString(PyExc_RuntimeError, "uninit type transform.");
+                    return -1;
+                }
+                ret = TYPE_TRANSFORM_TYPE(self, value, PVF_119);
+                if (!ret) return 0;
+                if (PyErr_WarnEx(PV_OverflowWarning, "", 1) < 0)
+                    return -1;
+            }
+            else
+            {
+                PyErr_SetString(PyExc_TypeError,  "value must be a float or PV_num instance");
+                return -1;
+            }
+        }
+    }
     return 0;
 }
 

@@ -1,6 +1,6 @@
 import unittest
 from random import randint
-from PowerViolenceObjects import PV_55p8
+from PowerViolenceObjects import PV_55p8, PV_OverflowWarning
 
 class TestPv_55p8(unittest.TestCase):
     def test_init_with_float(self):
@@ -33,8 +33,9 @@ class TestPv_55p8(unittest.TestCase):
         a: PV_55p8 = PV_55p8(PV_119p8())
         self.assertEqual(a._value, 0)
 
-        a: PV_55p8 = PV_55p8(PV_119p8(2**100))
-        self.assertEqual(a._value, 2700)
+        with self.assertWarns(PV_OverflowWarning):
+            a: PV_55p8 = PV_55p8(PV_119p8(float(2**100)))
+        self.assertEqual(a._value, 0)
 
     def test_typename(self):
         a: PV_55p8 = PV_55p8()

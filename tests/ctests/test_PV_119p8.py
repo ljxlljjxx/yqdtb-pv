@@ -7,17 +7,20 @@ class TestPv_119p8(unittest.TestCase):
         a: PV_119p8 = PV_119p8()
         self.assertEqual(a._value, 0)
 
-        a: PV_119p8 = PV_119p8(10)
+        a: PV_119p8 = PV_119p8(10.0)
         self.assertEqual(a._value, 2560)
 
-        a: PV_119p8 = PV_119p8(-10)
+        a: PV_119p8 = PV_119p8(-10.0)
         self.assertEqual(a._value, -2560)
 
-        a: PV_119p8 = PV_119p8(0)
+        a: PV_119p8 = PV_119p8(0.0)
         self.assertEqual(a._value, 0)
 
         a: PV_119p8 = PV_119p8(10.119)
         self.assertEqual(a._value, 2590)
+
+        a: PV_119p8 = PV_119p8(float(2**100))
+        self.assertEqual(a._value, 324518553658426726783156020576256)
 
     def test_typename(self):
         a: PV_119p8 = PV_119p8()
