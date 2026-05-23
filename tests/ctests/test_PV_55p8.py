@@ -1,23 +1,41 @@
 import unittest
 from random import randint
-from PowerViolenceObjects import PV_55p8
+from PowerViolenceObjects import PV_55p8, PV_OverflowWarning
 
 class TestPv_55p8(unittest.TestCase):
-    def test_init(self):
+    def test_init_with_float(self):
         a: PV_55p8 = PV_55p8()
         self.assertEqual(a._value, 0)
 
-        a: PV_55p8 = PV_55p8(10)
+        a: PV_55p8 = PV_55p8(10.0)
         self.assertEqual(a._value, 2560)
 
-        a: PV_55p8 = PV_55p8(-10)
+        a: PV_55p8 = PV_55p8(-10.0)
         self.assertEqual(a._value, -2560)
 
-        a: PV_55p8 = PV_55p8(0)
+        a: PV_55p8 = PV_55p8(0.0)
         self.assertEqual(a._value, 0)
 
         a: PV_55p8 = PV_55p8(10.55)
         self.assertEqual(a._value, 2700)
+
+    def test_init_with_PV_num(self):
+        from PowerViolenceObjects import PV_num, PV_119p8
+        a: PV_55p8 = PV_55p8(10.0)
+        self.assertEqual(a._value, 2560)
+
+        a: PV_55p8 = PV_55p8(a)
+        self.assertEqual(a._value, 2560)
+
+        a: PV_55p8 = PV_55p8(PV_num())
+        self.assertEqual(a._value, 0)
+
+        a: PV_55p8 = PV_55p8(PV_119p8())
+        self.assertEqual(a._value, 0)
+
+        with self.assertWarns(PV_OverflowWarning):
+            a: PV_55p8 = PV_55p8(PV_119p8(float(2**100)))
+        self.assertEqual(a._value, 0)
 
     def test_typename(self):
         a: PV_55p8 = PV_55p8()

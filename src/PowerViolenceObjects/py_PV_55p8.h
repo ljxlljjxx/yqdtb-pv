@@ -5,7 +5,6 @@
 #include <Python.h>
 #include <stddef.h>
 #include "py_PV_num.h"
-#include "pvc_PV_55p8.h"
 
 static PyTypeObject PV_55p8_Type;
 static PyTypeObject *g_PV_num_Type;
