@@ -37,7 +37,7 @@ typedef struct {
 #define GET_RESULT_TYPE_ID(a, b) (typetype_type[GET_TYPE_ID(a)][GET_TYPE_ID(b)])
 
 extern PyTypeObject *g_type_by_id[MAX_DERIVED];
-extern PyObject *PV_OverflowWarning;
+static PyObject *PV_OverflowWarning = NULL;
 
 typedef int (*register_type_func_t)(int, PyTypeObject*);
 

@@ -258,6 +258,8 @@ PyMODINIT_FUNC PyInit_pv_55p8(void)
     g_PV_num_Type = (PyTypeObject *)PyObject_GetAttrString(base_module, "PV_num");
     PyObject *capsule = PyObject_GetAttrString(base_module, "_register_type_capsule");
     register_type_func_t register_func = (register_type_func_t)PyCapsule_GetPointer(capsule, "pv_num.register_type");
+    capsule = PyObject_GetAttrString(base_module, "_PV_OverflowWarning");
+    PV_OverflowWarning = (PyObject *)PyCapsule_GetPointer(capsule, "pv_num.PV_OverflowWarning");
     Py_DECREF(base_module);
     if (!g_PV_num_Type || !register_func) return NULL;
 

@@ -41,7 +41,6 @@ static const char *type_str[MAX_DERIVED] = {
 };
 
 PyTypeObject *g_type_by_id[MAX_DERIVED];
-PyObject *PV_OverflowWarning = NULL;
 
 static int register_type(int type_id, PyTypeObject *type)
 {
@@ -177,6 +176,8 @@ static int pv_num_exec(PyObject *m)
     if (PyModule_AddObjectRef(m, "PV_num", (PyObject *)&PV_num_Type) < 0) return -1;
     PV_OverflowWarning = PyErr_NewException("pv_num.PV_OverflowWarning", PyExc_Warning, NULL);
     if (!PV_OverflowWarning) { Py_DECREF(m); return -1; }
+    capsule = PyCapsule_New((void *)PV_OverflowWarning, "pv_num.PV_OverflowWarning", NULL);
+    PyModule_AddObject(m, "_PV_OverflowWarning", capsule);
     if (PyModule_AddObject(m, "PV_OverflowWarning", PV_OverflowWarning) < 0) {
         Py_DECREF(PV_OverflowWarning);
         Py_DECREF(m);
