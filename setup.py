@@ -1,11 +1,13 @@
 import setuptools
 import sys
 
-version = "2.7.26"
+version = "2.7.29"
 DEBUG = False
 
 if DEBUG:
     debug_args = ['-DDEBUG']
+else:
+    debug_args = []
 
 IS_MSVC = sys.platform.startswith('win') and sys.version_info.major >= 3
 try:
