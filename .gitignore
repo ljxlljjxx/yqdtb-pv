@@ -12,3 +12,4 @@ build
 !.github
 *.so
 .vscode
+*.log

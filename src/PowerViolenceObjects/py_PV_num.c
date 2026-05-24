@@ -1,6 +1,6 @@
 #include "py_PV_num.h"
 
-static const int typetype_type[MAX_DERIVED][MAX_DERIVED] = {
+static const int _typetype_type[MAX_DERIVED][MAX_DERIVED] = {
     {PVO_NUM, PVI_PID, PVI_SID, PVI_NRS, PVI_LRS, PVF_11P, PVF_27P, PVF_55P, PVF_119, PVC_64C, PVC_128, PVC_256, PVH_SRT, PVH_NOR, PVO_NOR, PVF_447, PVO_PFT},
     {PVI_PID, PVI_PID, PVI_SID, PVI_NRS, PVI_LRS, PVF_11P, PVF_27P, PVF_55P, PVF_119, PVC_64C, PVC_128, PVC_256, PVH_SRT, PVH_NOR, PVO_NOR, PVF_447, PVO_PFT},
     {PVI_SID, PVI_SID, PVI_SID, PVI_NRS, PVI_LRS, PVF_27P, PVF_27P, PVF_55P, PVF_119, PVC_64C, PVC_128, PVC_256, PVH_SRT, PVH_NOR, PVO_NOR, PVF_447, PVO_PFT},
@@ -61,6 +61,43 @@ static PyObject *PV_num_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
     self = (PV_num_Object *)type->tp_alloc(type, 0);
     self->type_id = 0;
     return (PyObject *)self;
+}
+
+static PyObject *PV_num_richcmp(PyObject *lhs, PyObject *rhs, int op)
+{
+    int lhs_type, rhs_type, result_type;
+    PyObject *lhs_new, *rhs_new;
+    if (PyObject_TypeCheck(lhs, g_PV_num_Type) && PyObject_TypeCheck(rhs, g_PV_num_Type))
+    {
+        lhs_type = GET_TYPE_ID(lhs);
+        rhs_type = GET_TYPE_ID(rhs);
+        if (lhs_type && rhs_type)
+        {
+            result_type = _typetype_type[lhs_type][rhs_type];
+            lhs_new = g_type_by_id[result_type]->tp_alloc(g_type_by_id[result_type], 0);
+            ((PV_num_Object *)lhs_new)->type_id = result_type;
+            TYPE_TRANSFORM_TYPE(lhs_new, lhs, lhs_type);
+            rhs_new = g_type_by_id[result_type]->tp_alloc(g_type_by_id[result_type], 0);
+            ((PV_num_Object *)rhs_new)->type_id = result_type;
+            TYPE_TRANSFORM_TYPE(rhs_new, rhs, rhs_type);
+            debug_printf("ask %s for help\n", type_str[result_type]);
+            return g_type_by_id[result_type]->tp_richcompare(lhs_new, rhs_new, op);
+        }
+        if (lhs_type || rhs_type)
+        {
+            PyErr_SetString(PyExc_TypeError, "No compare with PV_num");
+            return NULL;
+        }
+        Py_RETURN_RICHCOMPARE(0, 0, op);
+    }
+    Py_RETURN_NOTIMPLEMENTED;
+}
+
+static Py_hash_t PV_num_hash(PyObject *op)
+{
+    Py_hash_t result = (Py_hash_t)g_PV_num_Type;
+    if (result == -1) return -2;
+    return result;
 }
 
 static PyObject *PV_num_add(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
@@ -163,12 +200,15 @@ static PyTypeObject PV_num_Type = {
     .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
     .tp_new = (newfunc)PV_num_new,
     .tp_dealloc = (destructor)PV_num_dealloc,
+    .tp_richcompare = PV_num_richcmp,
+    .tp_hash = PV_num_hash,
     .tp_as_number = &PV_num_as_number,
     .tp_methods = PV_num_methods,
 };
 
 static int pv_num_exec(PyObject *m)
 {
+    g_PV_num_Type = &PV_num_Type;
     *g_type_by_id = &PV_num_Type;
     PyObject *capsule = PyCapsule_New((void *)register_type, "pv_num.register_type", NULL);
     PyModule_AddObject(m, "_register_type_capsule", capsule);
@@ -183,6 +223,11 @@ static int pv_num_exec(PyObject *m)
         Py_DECREF(m);
         return -1;
     }
+#ifdef DEBUG
+    __debug_file = fopen("/Users/ljx/Desktop/P/github/PowerViolence/src/PowerViolenceObjects/pv_num_debug.log", "w");
+    capsule = PyCapsule_New((void *)__debug_file, "pv_num.__debug_file", NULL);
+    PyModule_AddObject(m, "__debug_file", capsule);
+#endif
     if (!m) return -1;
     return 0;
 }
@@ -350,7 +395,7 @@ static PyObject *pv_num_typetype_type(PyObject *Py_UNUSED(self), PyObject *const
             return NULL;
         }
     }
-    return PyLong_FromLong((long)typetype_type[arg1][arg2]);
+    return PyLong_FromLong((long)_typetype_type[arg1][arg2]);
 }
 
 static PyMethodDef pv_num_method[] = {
@@ -363,6 +408,13 @@ static PyMethodDef pv_num_method[] = {
     {NULL, NULL, 0, NULL}
 };
 
+void pv_55p8_free(void *Py_UNUSED(module))
+{
+#if DEBUG
+    if (__debug_file) fclose(__debug_file);
+#endif
+}
+
 static PyModuleDef pv_num_module = {
     .m_base = PyModuleDef_HEAD_INIT,
     .m_name = "pv_num",
@@ -370,12 +422,11 @@ static PyModuleDef pv_num_module = {
     .m_size = 0,
     .m_slots = pv_num_slots,
     .m_methods = pv_num_method,
+    .m_free = pv_55p8_free,
 };
 
 PyMODINIT_FUNC PyInit_pv_num(void)
 {
-    PyObject *m = PyModuleDef_Init(&pv_num_module);
-    
-    return m;
+    return PyModuleDef_Init(&pv_num_module);
 }
 
