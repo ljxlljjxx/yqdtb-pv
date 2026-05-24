@@ -137,14 +137,16 @@ Macros</h2></td></tr>
 <tr class="separator:ab9d2e93029fba564350a05bacc25ad24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08e62615c9aaf3226418fe0791afa3f8" id="r_a08e62615c9aaf3226418fe0791afa3f8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(a)&#160;&#160;&#160;(((<a class="el" href="struct_p_v__num___object.html">PV_num_Object</a> *)(a))-&gt;type_id)</td></tr>
 <tr class="separator:a08e62615c9aaf3226418fe0791afa3f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1983cbccf3c9ca12a2de456c31e8eb46" id="r_a1983cbccf3c9ca12a2de456c31e8eb46"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a1983cbccf3c9ca12a2de456c31e8eb46">GET_RESULT_TYPE_ID</a>(a,  b)&#160;&#160;&#160;(typetype_type[<a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(a)][<a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(b)])</td></tr>
-<tr class="separator:a1983cbccf3c9ca12a2de456c31e8eb46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae887c6d4b88c165a106c0d02f04f391c" id="r_ae887c6d4b88c165a106c0d02f04f391c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#ae887c6d4b88c165a106c0d02f04f391c">PvNUM_TypeCheck</a>(a,  b)&#160;&#160;&#160;(<a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(a) == (b))</td></tr>
+<tr class="separator:ae887c6d4b88c165a106c0d02f04f391c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d3c2cc91b38b6e0007181f08f433be9" id="r_a8d3c2cc91b38b6e0007181f08f433be9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a8d3c2cc91b38b6e0007181f08f433be9">TYPE_TRANSFORM_CHECK</a>(typea,  typeb)&#160;&#160;&#160;(!<a class="el" href="pvc___p_v__num_8c.html#a917f5f269d1ae00bd3068bbad5d8ce95">pvc_type_trans_func</a>[typea][typeb])</td></tr>
 <tr class="separator:a8d3c2cc91b38b6e0007181f08f433be9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8525fa419da7eea8649b93279390e8af" id="r_a8525fa419da7eea8649b93279390e8af"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a8525fa419da7eea8649b93279390e8af">TYPE_TRANSFORM_TYPE</a>(a,  b,  type)&#160;&#160;&#160;(<a class="el" href="pvc___p_v__num_8c.html#a917f5f269d1ae00bd3068bbad5d8ce95">pvc_type_trans_func</a>[type][<a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(b)](&amp;(a)-&gt;value, ((char *)(value) + sizeof(<a class="el" href="struct_p_v__num___object.html">PV_num_Object</a>))))</td></tr>
+<tr class="memitem:a8525fa419da7eea8649b93279390e8af" id="r_a8525fa419da7eea8649b93279390e8af"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a8525fa419da7eea8649b93279390e8af">TYPE_TRANSFORM_TYPE</a>(a,  b,  type)&#160;&#160;&#160;(<a class="el" href="pvc___p_v__num_8c.html#a917f5f269d1ae00bd3068bbad5d8ce95">pvc_type_trans_func</a>[type][<a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(b)](((int8_t *)(a) + sizeof(<a class="el" href="struct_p_v__num___object.html">PV_num_Object</a>)), ((int8_t *)(b) + sizeof(<a class="el" href="struct_p_v__num___object.html">PV_num_Object</a>))))</td></tr>
 <tr class="separator:a8525fa419da7eea8649b93279390e8af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1219bd8001ee2e8e0233f3c5f3de6c82" id="r_a1219bd8001ee2e8e0233f3c5f3de6c82"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a1219bd8001ee2e8e0233f3c5f3de6c82">TYPE_TRANSFORM</a>(a,  b)&#160;&#160;&#160;(<a class="el" href="py___p_v__num_8h.html#a8525fa419da7eea8649b93279390e8af">TYPE_TRANSFORM_TYPE</a>((a), (b), <a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(a)))</td></tr>
 <tr class="separator:a1219bd8001ee2e8e0233f3c5f3de6c82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4aae897d3f43313ae406c6ed60a9d09" id="r_ab4aae897d3f43313ae406c6ed60a9d09"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#ab4aae897d3f43313ae406c6ed60a9d09">_GET_RESULT_TYPE_ID</a>(a,  b)&#160;&#160;&#160;(_typetype_type[<a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(a)][<a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(b)])</td></tr>
+<tr class="separator:ab4aae897d3f43313ae406c6ed60a9d09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -157,14 +159,14 @@ Variables</h2></td></tr>
 <tr class="separator:a777162a35d6873d620e3babdb89f7d1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a1983cbccf3c9ca12a2de456c31e8eb46" name="a1983cbccf3c9ca12a2de456c31e8eb46"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1983cbccf3c9ca12a2de456c31e8eb46">&#9670;&#160;</a></span>GET_RESULT_TYPE_ID</h2>
+<a id="ab4aae897d3f43313ae406c6ed60a9d09" name="ab4aae897d3f43313ae406c6ed60a9d09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4aae897d3f43313ae406c6ed60a9d09">&#9670;&#160;</a></span>_GET_RESULT_TYPE_ID</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define GET_RESULT_TYPE_ID</td>
+          <td class="memname">#define _GET_RESULT_TYPE_ID</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">a, </td>
@@ -178,7 +180,7 @@ Variables</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;(typetype_type[<a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(a)][<a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(b)])</td>
+          <td></td><td>&#160;&#160;&#160;(_typetype_type[<a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(a)][<a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(b)])</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -427,6 +429,34 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="ae887c6d4b88c165a106c0d02f04f391c" name="ae887c6d4b88c165a106c0d02f04f391c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae887c6d4b88c165a106c0d02f04f391c">&#9670;&#160;</a></span>PvNUM_TypeCheck</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PvNUM_TypeCheck</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">a, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">b&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;(<a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(a) == (b))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a211a1bb78f50c884e0567bdca7036edd" name="a211a1bb78f50c884e0567bdca7036edd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a211a1bb78f50c884e0567bdca7036edd">&#9670;&#160;</a></span>PVO_NOR</h2>
 
@@ -566,7 +596,7 @@ Variables</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;(<a class="el" href="pvc___p_v__num_8c.html#a917f5f269d1ae00bd3068bbad5d8ce95">pvc_type_trans_func</a>[type][<a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(b)](&amp;(a)-&gt;value, ((char *)(value) + sizeof(<a class="el" href="struct_p_v__num___object.html">PV_num_Object</a>))))</td>
+          <td></td><td>&#160;&#160;&#160;(<a class="el" href="pvc___p_v__num_8c.html#a917f5f269d1ae00bd3068bbad5d8ce95">pvc_type_trans_func</a>[type][<a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(b)](((int8_t *)(a) + sizeof(<a class="el" href="struct_p_v__num___object.html">PV_num_Object</a>)), ((int8_t *)(b) + sizeof(<a class="el" href="struct_p_v__num___object.html">PV_num_Object</a>))))</td>
         </tr>
       </table>
 </div><div class="memdoc">

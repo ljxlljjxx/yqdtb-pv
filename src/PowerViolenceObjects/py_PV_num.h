@@ -34,15 +34,19 @@ typedef struct {
 #define PVC_LVS PVC_C_LVS
 
 #define GET_TYPE_ID(a) (((PV_num_Object *)(a))->type_id)
-#define GET_RESULT_TYPE_ID(a, b) (typetype_type[GET_TYPE_ID(a)][GET_TYPE_ID(b)])
+#define PvNUM_TypeCheck(a, b) (GET_TYPE_ID(a) == (b))
 
 extern PyTypeObject *g_type_by_id[MAX_DERIVED];
 static PyObject *PV_OverflowWarning = NULL;
 
+static PyTypeObject *g_PV_num_Type;
+
 typedef int (*register_type_func_t)(int, PyTypeObject*);
 
 #define TYPE_TRANSFORM_CHECK(typea, typeb) (!pvc_type_trans_func[typea][typeb])
-#define TYPE_TRANSFORM_TYPE(a, b, type) (pvc_type_trans_func[type][GET_TYPE_ID(b)](&(a)->value, ((char *)(value) + sizeof(PV_num_Object))))
+#define TYPE_TRANSFORM_TYPE(a, b, type) (pvc_type_trans_func[type][GET_TYPE_ID(b)](((int8_t *)(a) + sizeof(PV_num_Object)), ((int8_t *)(b) + sizeof(PV_num_Object))))
 #define TYPE_TRANSFORM(a, b) (TYPE_TRANSFORM_TYPE((a), (b), GET_TYPE_ID(a)))
+
+#define _GET_RESULT_TYPE_ID(a, b) (_typetype_type[GET_TYPE_ID(a)][GET_TYPE_ID(b)])
 
 #endif /* _PY_PV_num_H */
