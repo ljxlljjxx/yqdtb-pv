@@ -1,7 +1,7 @@
 import setuptools
 import sys
 
-version = "2.7.29"
+version = "2.8.0"
 DEBUG = False
 
 if DEBUG:
