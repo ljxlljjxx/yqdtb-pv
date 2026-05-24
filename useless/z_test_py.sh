@@ -3,6 +3,22 @@ return_val=0
 cd $PV
 rm *-macos
 
+echo '更改vertion'
+python -c '
+with open("setup.py") as f:
+    a = f.read().splitlines()
+b = []
+for i in a:
+    if i.startswith("version = "):
+        x = int(i.split(".")[-1][:-1])
+        x += 1
+        b.append(".".join(i.split(".")[:-1]) + "." + str(x) + "\"")
+    else:
+        b.append(i)
+with open("setup.py", "w") as f:
+    f.write("\n".join(b))
+'
+
 echo 'Python tests'
 
 source .venv/bin/activate

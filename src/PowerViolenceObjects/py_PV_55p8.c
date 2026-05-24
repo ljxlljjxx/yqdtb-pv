@@ -63,24 +63,15 @@ static PyObject *PV_55p8_richcmp(PyObject *lhs, PyObject *rhs, int op)
     int64_t a = ((PV_55p8_Object *)lhs)->value._1, b = ((PV_55p8_Object *)rhs)->value._1;
     int c = 0;
     PyObject *result;
-    if (!PyObject_TypeCheck(lhs, &PV_55p8_Type) || !PyObject_TypeCheck(rhs, &PV_55p8_Type))
+    if (PyObject_TypeCheck(lhs, g_PV_num_Type) && PyObject_TypeCheck(rhs, g_PV_num_Type))
     {
-        Py_RETURN_NOTIMPLEMENTED;
+        if (PvNUM_TypeCheck(lhs, PVF_55P) && PvNUM_TypeCheck(rhs, PVF_55P))
+        {
+            Py_RETURN_RICHCOMPARE(a, b, op);
+        }
+        return g_PV_num_Type->tp_richcompare(lhs, rhs, op);
     }
-    switch (op)
-    {
-    case Py_LT: c = a < b; break;
-    case Py_LE: c = a <= b; break;
-    case Py_EQ: c = a == b; break;
-    case Py_NE: c = a != b; break;
-    case Py_GE: c = a >= b; break;
-    case Py_GT: c = a > b; break;
-    default: 
-        PyErr_SetString(PyExc_SystemError, "Unknown op");
-        return NULL;
-    }
-    result = c ? Py_True : Py_False;
-    return Py_NewRef(result);
+    Py_RETURN_NOTIMPLEMENTED;
 }
 
 static Py_hash_t PV_55p8_hash(PyObject *op)

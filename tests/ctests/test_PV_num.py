@@ -1,5 +1,6 @@
 import unittest
 from PowerViolenceObjects import PV_num
+import PowerViolenceObjects as PVOs
 
 class TestPv_num(unittest.TestCase):
     def test_warning(self):
@@ -26,6 +27,26 @@ class TestPv_num(unittest.TestCase):
         a: PV_num = PV_num()
         self.assertEqual(a.typename(), 'PV_num')
         self.assertEqual(a.typename_int(), 0)
+
+    def test_cmp(self):
+        a: PV_num = PV_num()
+        b: PV_num = PV_num()
+        self.assertTrue(a == b)
+        self.assertTrue(a >= b)
+        self.assertTrue(a <= b)
+        self.assertFalse(a != b)
+        self.assertFalse(a > b)
+        self.assertFalse(a < b)
+
+        c: PVOs.PV_55p8 = PVOs.PV_55p8()
+        with self.assertRaises(TypeError):
+            a >= c
+
+    def test_hash(self):
+        a: PV_num = PV_num()
+        b: PV_num = PV_num()
+
+        self.assertEqual(hash(a), hash(b))
 
     def test_functions(self):
         from PowerViolenceObjects import get_type, type_int, type_str, typestr_int, typeint_str, typetype_type
