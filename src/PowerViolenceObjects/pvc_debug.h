@@ -8,7 +8,7 @@
 #define _DEBUG_STR_HELPER(x) #x
 #define _DEBUG_STR(x) _DEBUG_STR_HELPER(x)
 
-#define pv_deprint_defo(string) fprintf(__debug_file, "[[" string "]]: " __FILE__ ", Line %d: ", __LINE__);
+#define pv_deprint_defo(string) fprintf(__debug_file, "[" string "]: " __FILE__ ", Line %d: ", __LINE__);
 
 #ifdef DEBUG
     static FILE *__debug_file;
