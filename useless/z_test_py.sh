@@ -13,6 +13,8 @@ for i in a:
         x = int(i.split(".")[-1][:-1])
         x += 1
         b.append(".".join(i.split(".")[:-1]) + "." + str(x) + "\"")
+    elif i.startswith("DEBUG = "):
+        b.append("DEBUG = True")
     else:
         b.append(i)
 with open("setup.py", "w") as f:

@@ -69,6 +69,7 @@ static PyObject *PV_55p8_richcmp(PyObject *lhs, PyObject *rhs, int op)
         {
             Py_RETURN_RICHCOMPARE(a, b, op);
         }
+        debug_puts("ask PV_num's help");
         return g_PV_num_Type->tp_richcompare(lhs, rhs, op);
     }
     Py_RETURN_NOTIMPLEMENTED;
@@ -219,6 +220,28 @@ static PyTypeObject PV_55p8_Type = {
 
 static int pv_55p8_exec(PyObject *m)
 {
+    PyObject *base_module = PyImport_ImportModule("PowerViolenceObjects.pv_num");
+    if (!base_module) return -1;
+    g_PV_num_Type = (PyTypeObject *)PyObject_GetAttrString(base_module, "PV_num");
+    PyObject *capsule = PyObject_GetAttrString(base_module, "_register_type_capsule");
+    register_type_func_t register_func = (register_type_func_t)PyCapsule_GetPointer(capsule, "pv_num.register_type");
+    capsule = PyObject_GetAttrString(base_module, "_PV_OverflowWarning");
+    PV_OverflowWarning = (PyObject *)PyCapsule_GetPointer(capsule, "pv_num.PV_OverflowWarning");
+#ifdef DEBUG
+    capsule = PyObject_GetAttrString(base_module, "__debug_file");
+    __debug_file = (PyObject *)PyCapsule_GetPointer(capsule, "pv_num.__debug_file");
+#endif
+    Py_DECREF(base_module);
+    if (!g_PV_num_Type || !register_func) return -1;
+
+    (&PV_55p8_Type)->tp_base = g_PV_num_Type;
+    if (PyType_Ready(&PV_55p8_Type) < 0)
+    {
+        Py_DECREF(g_PV_num_Type);
+        return -1;
+    }
+
+    if (register_func(PVF_55P, &PV_55p8_Type)) return -1;
     if (PyModule_AddObjectRef(m, "PV_55p8", (PyObject *)&PV_55p8_Type) < 0) return -1;
     return 0;
 }
@@ -249,24 +272,5 @@ static PyModuleDef pv_55p8 = {
 
 PyMODINIT_FUNC PyInit_pv_55p8(void)
 {
-    PyObject *base_module = PyImport_ImportModule("PowerViolenceObjects.pv_num");
-    if (!base_module) return NULL;
-    g_PV_num_Type = (PyTypeObject *)PyObject_GetAttrString(base_module, "PV_num");
-    PyObject *capsule = PyObject_GetAttrString(base_module, "_register_type_capsule");
-    register_type_func_t register_func = (register_type_func_t)PyCapsule_GetPointer(capsule, "pv_num.register_type");
-    capsule = PyObject_GetAttrString(base_module, "_PV_OverflowWarning");
-    PV_OverflowWarning = (PyObject *)PyCapsule_GetPointer(capsule, "pv_num.PV_OverflowWarning");
-    Py_DECREF(base_module);
-    if (!g_PV_num_Type || !register_func) return NULL;
-
-    (&PV_55p8_Type)->tp_base = g_PV_num_Type;
-    if (PyType_Ready(&PV_55p8_Type) < 0)
-    {
-        Py_DECREF(g_PV_num_Type);
-        return NULL;
-    }
-
-    if (register_func(PVF_55P, &PV_55p8_Type)) return NULL;
-
     return PyModuleDef_Init(&pv_55p8);
 }
