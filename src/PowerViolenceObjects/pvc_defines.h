@@ -9,7 +9,6 @@
 #include <stdarg.h>
 #include <ctype.h>
 #include <math.h>
-#include <inttypes.h>
 #include "pvc_debug.h"
 
 #if defined(__GNUC__) && __GNUC__ >= 5

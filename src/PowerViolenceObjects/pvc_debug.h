@@ -2,6 +2,7 @@
 #define _PVC_DEBUG_H
 
 #include <stdio.h>
+#include <time.h>
 #include <inttypes.h>
 
 #define _debug
