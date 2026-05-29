@@ -1,5 +1,5 @@
-name: Python test PV_55p8
-run-name: Python test PV_55p8 triggered bt ${{ github.actor }}
+name: Python test PV_num
+run-name: Python test PV_num triggered bt ${{ github.actor }}
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 on:
@@ -19,7 +19,6 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest, windows-2025-vs2026]
-        python: ['3.10', '3.11', '3.12', '3.13', '3.14']
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
@@ -27,10 +26,10 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python }}
+          python-version: '3.11'
       - name: Install dependencies
         run: |
           pip install .
       - name: Run unittest
         run: |
-          python -m unittest tests/ctests/test_PV_55p8.py
+          python -m unittest discover tests

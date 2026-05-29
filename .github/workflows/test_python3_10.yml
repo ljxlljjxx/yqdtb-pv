@@ -1,5 +1,5 @@
-name: Python test PV_119p8
-run-name: Python test PV_119p8 triggered bt ${{ github.actor }}
+name: Python test PV_num
+run-name: Python test PV_num triggered bt ${{ github.actor }}
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 on:
@@ -26,10 +26,10 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version: '3.14'
+          python-version: '3.10'
       - name: Install dependencies
         run: |
           pip install .
       - name: Run unittest
         run: |
-          python -m unittest tests/ctests/test_PV_119p8.py
+          python -m unittest discover tests

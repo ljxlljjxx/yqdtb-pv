@@ -7,7 +7,7 @@ var indexSectionsWithContent =
   4: "fgp",
   5: "_bgpqtv",
   6: "pr",
-  7: "_deghimptw",
+  7: "_deghimprtw",
   8: "py"
 };
 
