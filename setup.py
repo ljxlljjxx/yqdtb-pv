@@ -1,7 +1,7 @@
 import setuptools
 import sys
 
-version = "2.8.0"
+version = "2.8.19"
 DEBUG = False
 
 if DEBUG:
@@ -32,6 +32,7 @@ setuptools.setup(
             'PowerViolenceObjects.pv_num',
             sources=[
                 'src/PowerViolenceObjects/pvc_PV_num.c',
+                'src/PowerViolenceObjects/pvc_debug.c',
                 'src/PowerViolenceObjects/py_PV_num.c',
             ],
             extra_compile_args=[*extra_compile_args, *debug_args],
@@ -41,6 +42,7 @@ setuptools.setup(
             'PowerViolenceObjects.pv_55p8',
             sources=[
                 'src/PowerViolenceObjects/pvc_PV_num.c',
+                'src/PowerViolenceObjects/pvc_debug.c',
                 'src/PowerViolenceObjects/py_PV_55p8.c',
                 'src/PowerViolenceObjects/pvc_PV_55p8.c',
                 'src/PowerViolenceObjects/pvc_defines.c',
@@ -52,6 +54,7 @@ setuptools.setup(
             'PowerViolenceObjects.pv_119p8',
             sources=[
                 'src/PowerViolenceObjects/pvc_PV_num.c',
+                'src/PowerViolenceObjects/pvc_debug.c',
                 'src/PowerViolenceObjects/py_PV_119p8.c',
                 'src/PowerViolenceObjects/pvc_PV_119p8.c',
                 'src/PowerViolenceObjects/pvc_defines.c',

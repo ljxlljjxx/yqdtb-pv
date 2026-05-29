@@ -33,8 +33,7 @@ class TestPv_55p8(unittest.TestCase):
         a: PV_55p8 = PV_55p8(PV_119p8())
         self.assertEqual(a._value, 0)
 
-        with self.assertWarns(PV_OverflowWarning):
-            a: PV_55p8 = PV_55p8(PV_119p8(float(2**100)))
+        a: PV_55p8 = PV_55p8(PV_119p8(float(2**100)))
         self.assertEqual(a._value, 0)
 
     def test_typename(self):

@@ -3,14 +3,6 @@ from PowerViolenceObjects import PV_num
 import PowerViolenceObjects as PVOs
 
 class TestPv_num(unittest.TestCase):
-    def test_warning(self):
-        from PowerViolenceObjects import PV_OverflowWarning
-        import warnings
-        with self.assertWarns(PV_OverflowWarning):
-            warnings.warn('114514', PV_OverflowWarning)
-        with self.assertRaises(PV_OverflowWarning):
-            raise PV_OverflowWarning('114514')
-
     def test_init(self):
         PV_num()
 

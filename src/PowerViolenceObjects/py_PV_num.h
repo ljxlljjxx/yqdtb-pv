@@ -37,7 +37,6 @@ typedef struct {
 #define PvNUM_TypeCheck(a, b) (GET_TYPE_ID(a) == (b))
 
 extern PyTypeObject *g_type_by_id[MAX_DERIVED];
-static PyObject *PV_OverflowWarning = NULL;
 
 static PyTypeObject *g_PV_num_Type;
 

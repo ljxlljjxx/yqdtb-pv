@@ -45,8 +45,7 @@ static int PV_55p8_init(PV_55p8_Object *self, PyObject *args, PyObject *kwds)
                 }
                 ret = TYPE_TRANSFORM_TYPE(self, value, PVF_55P);
                 if (!ret) return 0;
-                if (PyErr_WarnEx(PV_OverflowWarning, "", 1) < 0)
-                    return -1;
+                pv_deprint_overflow();
             }
             else
             {
@@ -69,7 +68,7 @@ static PyObject *PV_55p8_richcmp(PyObject *lhs, PyObject *rhs, int op)
         {
             Py_RETURN_RICHCOMPARE(a, b, op);
         }
-        debug_puts("ask PV_num's help");
+        info_puts("ask PV_num's help");
         return g_PV_num_Type->tp_richcompare(lhs, rhs, op);
     }
     Py_RETURN_NOTIMPLEMENTED;
@@ -225,8 +224,6 @@ static int pv_55p8_exec(PyObject *m)
     g_PV_num_Type = (PyTypeObject *)PyObject_GetAttrString(base_module, "PV_num");
     PyObject *capsule = PyObject_GetAttrString(base_module, "_register_type_capsule");
     register_type_func_t register_func = (register_type_func_t)PyCapsule_GetPointer(capsule, "pv_num.register_type");
-    capsule = PyObject_GetAttrString(base_module, "_PV_OverflowWarning");
-    PV_OverflowWarning = (PyObject *)PyCapsule_GetPointer(capsule, "pv_num.PV_OverflowWarning");
 #ifdef DEBUG
     capsule = PyObject_GetAttrString(base_module, "__debug_file");
     __debug_file = (PyObject *)PyCapsule_GetPointer(capsule, "pv_num.__debug_file");

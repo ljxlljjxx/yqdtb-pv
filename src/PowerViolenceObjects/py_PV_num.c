@@ -80,7 +80,7 @@ static PyObject *PV_num_richcmp(PyObject *lhs, PyObject *rhs, int op)
             rhs_new = g_type_by_id[result_type]->tp_alloc(g_type_by_id[result_type], 0);
             ((PV_num_Object *)rhs_new)->type_id = result_type;
             TYPE_TRANSFORM_TYPE(rhs_new, rhs, rhs_type);
-            debug_printf("ask %s for help\n", type_str[result_type]);
+            info_printf("ask %s for help\n", type_str[result_type]);
             return g_type_by_id[result_type]->tp_richcompare(lhs_new, rhs_new, op);
         }
         if (lhs_type || rhs_type)
@@ -214,17 +214,8 @@ static int pv_num_exec(PyObject *m)
     PyModule_AddObject(m, "_register_type_capsule", capsule);
     if (PyType_Ready(&PV_num_Type) < 0) return -1;
     if (PyModule_AddObjectRef(m, "PV_num", (PyObject *)&PV_num_Type) < 0) return -1;
-    PV_OverflowWarning = PyErr_NewException("pv_num.PV_OverflowWarning", PyExc_Warning, NULL);
-    if (!PV_OverflowWarning) { Py_DECREF(m); return -1; }
-    capsule = PyCapsule_New((void *)PV_OverflowWarning, "pv_num.PV_OverflowWarning", NULL);
-    PyModule_AddObject(m, "_PV_OverflowWarning", capsule);
-    if (PyModule_AddObject(m, "PV_OverflowWarning", PV_OverflowWarning) < 0) {
-        Py_DECREF(PV_OverflowWarning);
-        Py_DECREF(m);
-        return -1;
-    }
 #ifdef DEBUG
-    __debug_file = fopen("/Users/ljx/Desktop/P/github/PowerViolence/src/PowerViolenceObjects/pv_num_debug.log", "w");
+    __debug_file = fopen("/Users/ljx/Desktop/P/github/PowerViolence/src/PowerViolenceObjects/pv_num_debug.log", "a");
     capsule = PyCapsule_New((void *)__debug_file, "pv_num.__debug_file", NULL);
     PyModule_AddObject(m, "__debug_file", capsule);
 #endif

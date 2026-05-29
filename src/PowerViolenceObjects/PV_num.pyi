@@ -56,7 +56,3 @@ class PV_num:
 
     def typename(self) -> str: pass
     def typename_int(self) -> int: pass
-
-
-class PV_OverflowWarning(Warning):
-    pass
