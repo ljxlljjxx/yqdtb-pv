@@ -215,7 +215,7 @@ static int pv_num_exec(PyObject *m)
     if (PyType_Ready(&PV_num_Type) < 0) return -1;
     if (PyModule_AddObjectRef(m, "PV_num", (PyObject *)&PV_num_Type) < 0) return -1;
 #ifdef DEBUG
-    __debug_file = fopen("/Users/ljx/Desktop/P/github/PowerViolence/src/PowerViolenceObjects/pv_num_debug.log", "a");
+    __debug_file = fopen("pv_num_debug.log", "a");
     capsule = PyCapsule_New((void *)__debug_file, "pv_num.__debug_file", NULL);
     PyModule_AddObject(m, "__debug_file", capsule);
 #endif
