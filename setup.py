@@ -2,7 +2,7 @@ import setuptools
 import sys
 
 version = "2.8.19"
-DEBUG = False
+DEBUG = True
 
 if DEBUG:
     debug_args = ['-DDEBUG']
