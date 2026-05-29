@@ -45,7 +45,7 @@ static int PV_55p8_init(PV_55p8_Object *self, PyObject *args, PyObject *kwds)
                 }
                 ret = TYPE_TRANSFORM_TYPE(self, value, PVF_55P);
                 if (!ret) return 0;
-                pv_deprint_overflow();
+                raise_overflow();
             }
             else
             {

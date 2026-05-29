@@ -43,4 +43,6 @@ typedef int (*PVcTypeTransFunc)(void *, const void *);
 typedef PVcTypeTransFunc PVcTTF;
 extern const PVcTTF pvc_type_trans_func[MAX_DERIVED][MAX_DERIVED];
 
+#define raise_overflow() do { pv_deprint_overflow(); } while (0)
+
 #endif /* _PY_PV_num_H */

@@ -49,7 +49,7 @@ static int PV_119p8_init(PV_119p8_Object *self, PyObject *args, PyObject *kwds)
                 }
                 ret = TYPE_TRANSFORM_TYPE(self, value, PVF_119);
                 if (!ret) return 0;
-                pv_deprint_overflow();
+                raise_overflow();
             }
             else
             {
