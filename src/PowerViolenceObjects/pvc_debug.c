@@ -21,6 +21,27 @@
 
 char *format_microsecond_time(char *buffer, size_t size)
 {
+#ifdef _WIN32
+    FILETIME ft;
+    GetSystemTimeAsFileTime(&ft);
+    ULARGE_INTEGER uli;
+    uli.LowPart = ft.dwLowDateTime;
+    uli.HighPart = ft.dwHighDateTime;
+    long long us_since_1601 = uli.QuadPart / 10;
+    long long us_since_epoch = us_since_1601 - 11644473600000000LL;
+    time_t sec = (time_t)(us_since_epoch / 1000000);
+    long usec = (long)(us_since_epoch % 1000000);
+
+    struct tm tm_buf;
+    struct tm *tm_info;
+    if (localtime_s(&tm_buf, &sec) != 0) return NULL;
+    tm_info = &tm_buf;
+
+    int len = strftime(buffer, size, "%Y-%m-%d %H:%M:%S", tm_info);
+    if (len == 0) return NULL;
+    snprintf(buffer + len, size - len, ".%06ld", usec);
+    return buffer;
+#else
     struct timeval tv;
     if (gettimeofday(&tv, NULL) == -1) return NULL;
     struct tm tm_buf;
@@ -28,6 +49,7 @@ char *format_microsecond_time(char *buffer, size_t size)
     if (tm_info == NULL) return NULL;
     int len = strftime(buffer, size, "%Y-%m-%d %H:%M:%S", tm_info);
     if (len == 0) return NULL;
-    snprintf(buffer + len, size - len, ".%06"PRId32, tv.tv_usec);
+    snprintf(buffer + len, size - len, ".%06ld", tv.tv_usec);
     return buffer;
+#endif
 }
