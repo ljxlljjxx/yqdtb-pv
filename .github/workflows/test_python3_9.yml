@@ -1,5 +1,5 @@
-name: Python test in 3.15
-run-name: Python test in 3.15 triggered bt ${{ github.actor }}
+name: Python test in 3.9
+run-name: Python test in 3.9 triggered bt ${{ github.actor }}
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 on:
