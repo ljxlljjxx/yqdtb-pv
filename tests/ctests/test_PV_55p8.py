@@ -46,7 +46,7 @@ class TestPv_55p8(unittest.TestCase):
         a._value = 10
         self.assertEqual(a._value, 10)
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(AttributeError):
             del a._value
 
         with self.assertRaises(TypeError):

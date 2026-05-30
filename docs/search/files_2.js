@@ -14,6 +14,12 @@ var searchData=
   ['py_5fpv_5f119p8_2eh_11',['py_PV_119p8.h',['../py___p_v__119p8_8h.html',1,'']]],
   ['py_5fpv_5f55p8_2ec_12',['py_PV_55p8.c',['../py___p_v__55p8_8c.html',1,'']]],
   ['py_5fpv_5f55p8_2eh_13',['py_PV_55p8.h',['../py___p_v__55p8_8h.html',1,'']]],
-  ['py_5fpv_5fnum_2ec_14',['py_PV_num.c',['../py___p_v__num_8c.html',1,'']]],
-  ['py_5fpv_5fnum_2eh_15',['py_PV_num.h',['../py___p_v__num_8h.html',1,'']]]
+  ['py_5fpv_5fgame_5fsettings_2ec_14',['py_PV_game_settings.c',['../py___p_v__game__settings_8c.html',1,'']]],
+  ['py_5fpv_5fgame_5fsettings_2eh_15',['py_PV_game_settings.h',['../py___p_v__game__settings_8h.html',1,'']]],
+  ['py_5fpv_5fnum_2ec_16',['py_PV_num.c',['../py___p_v__num_8c.html',1,'']]],
+  ['py_5fpv_5fnum_2eh_17',['py_PV_num.h',['../py___p_v__num_8h.html',1,'']]],
+  ['py_5fpv_5fstr_2ec_18',['py_PV_str.c',['../py___p_v__str_8c.html',1,'']]],
+  ['py_5fpv_5fstr_2eh_19',['py_PV_str.h',['../py___p_v__str_8h.html',1,'']]],
+  ['py_5fpv_5fstr_5fnames_2ec_20',['py_PV_str_names.c',['../py___p_v__str__names_8c.html',1,'']]],
+  ['py_5fpv_5fstr_5fnames_2eh_21',['py_PV_str_names.h',['../py___p_v__str__names_8h.html',1,'']]]
 ];

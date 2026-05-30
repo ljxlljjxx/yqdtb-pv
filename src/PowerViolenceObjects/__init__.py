@@ -28,12 +28,17 @@ from importlib.metadata import version
 
 __version__ = version("PowerViolenceObjects")
 
-from .pv_num import PV_num, get_type, typestr_int, typeint_str, type_int, type_str, typetype_type  # type: ignore
+from .pv_str import PV_str  # type: ignore
+from .pv_str_names import PV_str_names  # type: ignore
+
+from .pv_num import PV_num, get_type, typestr_int, typeint_str, type_int, type_str, typetype_type, get_overflow_function, set_overflow_function  # type: ignore
 from .pv_55p8 import PV_55p8  # type: ignore
 from .pv_119p8 import PV_119p8  # type: ignore
 
 __all__ = [
-    'PV_num', 'get_type', 'typestr_int', 'typeint_str', 'type_int', 'type_str', 'typetype_type',
+    'PV_str',
+    'PV_str_names',
+    'PV_num', 'get_type', 'typestr_int', 'typeint_str', 'type_int', 'type_str', 'typetype_type', 'get_overflow_function', 'set_overflow_function',
     'PV_55p8',
     'PV_119p8',
 ]

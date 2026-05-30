@@ -101,7 +101,7 @@ static int PV_55p8_set__value(PyObject *op, PyObject *value, void *closure)
     PV_55p8_Object *self = (PV_55p8_Object *)op;
     if (value == NULL)
     {
-        PyErr_SetString(PyExc_TypeError, "Cannot delete the _value attribute");
+        PyErr_SetString(PyExc_AttributeError, "Cannot delete the _value attribute");
         return -1;
     }
     if (!PyLong_Check(value))

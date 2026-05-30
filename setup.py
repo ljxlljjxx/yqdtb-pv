@@ -1,7 +1,7 @@
 import setuptools
 import sys
 
-version = "2.8.29"
+version = "3.0.28"
 DEBUG = False
 
 if DEBUG:
@@ -28,6 +28,24 @@ setuptools.setup(
     packages=['PowerViolenceObjects'],
     package_dir={'': 'src'},
     ext_modules=[
+        setuptools.Extension(
+            'PowerViolenceObjects.pv_str',
+            sources=[
+                'src/PowerViolenceObjects/pvc_debug.c',
+                'src/PowerViolenceObjects/py_PV_str.c',
+            ],
+            extra_compile_args=[*extra_compile_args, *debug_args],
+            libraries=[*math_libs],
+        ),
+        setuptools.Extension(
+            'PowerViolenceObjects.pv_str_names',
+            sources=[
+                'src/PowerViolenceObjects/pvc_debug.c',
+                'src/PowerViolenceObjects/py_PV_str_names.c',
+            ],
+            extra_compile_args=[*extra_compile_args, *debug_args],
+            libraries=[*math_libs],
+        ),
         setuptools.Extension(
             'PowerViolenceObjects.pv_num',
             sources=[

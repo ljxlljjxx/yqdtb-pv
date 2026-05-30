@@ -49,7 +49,7 @@ char *format_microsecond_time(char *buffer, size_t size)
     if (tm_info == NULL) return NULL;
     int len = strftime(buffer, size, "%Y-%m-%d %H:%M:%S", tm_info);
     if (len == 0) return NULL;
-    snprintf(buffer + len, size - len, ".%06ld", tv.tv_usec);
+    snprintf(buffer + len, size - len, ".%06ld", (long)tv.tv_usec);
     return buffer;
 #endif
 }

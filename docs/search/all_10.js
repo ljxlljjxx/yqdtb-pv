@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['warning_5fprint_0',['warning_print',['../pvc__debug_8h.html#a74af3191a6855f846faa86e47e0d721e',1,'pvc_debug.h']]],
-  ['warning_5fprintf_1',['warning_printf',['../pvc__debug_8h.html#aeb63f8bc1f65a22279bd950dcb6e8a11',1,'pvc_debug.h']]],
-  ['warning_5fputs_2',['warning_puts',['../pvc__debug_8h.html#a409c88e341292dee3612388ae2082d93',1,'pvc_debug.h']]]
+  ['value_0',['value',['../struct_p_v__119p8___object.html#a3955c5a3d9717aef5107567b66a91b9f',1,'PV_119p8_Object::value'],['../struct_p_v__55p8___object.html#a90618a101c0cc6451af9cd7a889873e3',1,'PV_55p8_Object::value'],['../struct_p_v__str__names___object.html#a6802289a41d89d38302a13569e927c09',1,'PV_str_names_Object::value']]],
+  ['violence_20edition_1',['Power Violence Edition',['../index.html#autotoc_md0',1,'']]]
 ];

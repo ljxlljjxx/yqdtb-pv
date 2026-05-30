@@ -206,31 +206,6 @@ static PyTypeObject PV_num_Type = {
     .tp_methods = PV_num_methods,
 };
 
-static int pv_num_exec(PyObject *m)
-{
-    g_PV_num_Type = &PV_num_Type;
-    *g_type_by_id = &PV_num_Type;
-    PyObject *capsule = PyCapsule_New((void *)register_type, "pv_num.register_type", NULL);
-    PyModule_AddObject(m, "_register_type_capsule", capsule);
-    if (PyType_Ready(&PV_num_Type) < 0) return -1;
-    if (PyModule_AddObject(m, "PV_num", (PyObject *)&PV_num_Type) < 0) return -1;
-#ifdef DEBUG
-    __debug_file = fopen("pv_num_debug.log", "a");
-    capsule = PyCapsule_New((void *)__debug_file, "pv_num.__debug_file", NULL);
-    PyModule_AddObject(m, "__debug_file", capsule);
-#endif
-    if (!m) return -1;
-    return 0;
-}
-
-static PyModuleDef_Slot pv_num_slots[] = {
-    {Py_mod_exec,                  (void *)pv_num_exec},
-#if PY_VERSION_HEX >= 0x030C0000
-    {Py_mod_multiple_interpreters, Py_MOD_MULTIPLE_INTERPRETERS_NOT_SUPPORTED},
-#endif
-    {0, NULL}
-};
-
 static int pv_num_typestr_to_typeint(PyObject *arg)
 {
     /* arg must be a PyUnicode */
@@ -391,7 +366,44 @@ static PyObject *pv_num_typetype_type(PyObject *Py_UNUSED(self), PyObject *const
     return PyLong_FromLong((long)_typetype_type[arg1][arg2]);
 }
 
-static PyMethodDef pv_num_method[] = {
+typedef struct PvNumState {
+    PyObject *overflow_function;
+} PvNumState;
+
+static PvNumState *pv_num_get_state(PyObject *module)
+{
+    return (PvNumState *)PyModule_GetState(module);
+}
+
+static PyObject *pv_num_get_global(PyObject *self, PyObject *Py_UNUSED(ig))
+{
+    PvNumState *state = pv_num_get_state(self);
+    Py_INCREF(state->overflow_function);
+    return state->overflow_function;
+}
+
+static int pv_num_set_global(PyObject *self, PyObject *value)
+{
+    PvNumState *state = pv_num_get_state(self);
+    if (!value)
+    {
+        PyErr_SetString(PyExc_AttributeError, "can not remove the overflow_function");
+        return -1;
+    }
+    if (!PyCallable_Check(value))
+    {
+        PyErr_SetString(PyExc_TypeError, "overflow_function must be callable");
+        return -1;
+    }
+    Py_INCREF(value);
+    Py_DECREF(state->overflow_function);
+    state->overflow_function = value;
+    return 0;
+}
+
+static PyMethodDef pv_num_methods[] = {
+    {"get_overflow_function", pv_num_get_global, METH_NOARGS, "Get overflow_function"},
+    {"set_overflow_function", pv_num_set_global, METH_O, "Set overflow_function"},
     {"typestr_int", (PyCFunction)pv_num_typestr_int, METH_O, "change the str to int"},
     {"typeint_str", (PyCFunction)pv_num_typeint_str, METH_O, "change the int to str"},
     {"type_int", (PyCFunction)pv_num_type_int, METH_O, "change the type to int"},
@@ -401,21 +413,51 @@ static PyMethodDef pv_num_method[] = {
     {NULL, NULL, 0, NULL}
 };
 
-void pv_55p8_free(void *Py_UNUSED(module))
+void pv_num_free(void *module)
 {
 #if DEBUG
     if (__debug_file) fclose(__debug_file);
 #endif
+    PvNumState *state = (PvNumState *)(module);
+    if (state->overflow_function) Py_DECREF(state->overflow_function);
 }
+
+static int pv_num_exec(PyObject *m)
+{
+    g_PV_num_Type = &PV_num_Type;
+    *g_type_by_id = &PV_num_Type;
+    PvNumState *state = pv_num_get_state(m);
+    Py_INCREF(Py_None);
+    state->overflow_function = Py_None;
+    PyObject *capsule = PyCapsule_New((void *)register_type, "pv_num.register_type", NULL);
+    PyModule_AddObject(m, "_register_type_capsule", capsule);
+    if (PyType_Ready(&PV_num_Type) < 0) return -1;
+    if (PyModule_AddObject(m, "PV_num", (PyObject *)&PV_num_Type) < 0) return -1;
+#ifdef DEBUG
+    __debug_file = fopen("pv_num_debug.log", "a");
+    capsule = PyCapsule_New((void *)__debug_file, "pv_num.__debug_file", NULL);
+    PyModule_AddObject(m, "__debug_file", capsule);
+#endif
+    if (!m) return -1;
+    return 0;
+}
+
+static PyModuleDef_Slot pv_num_slots[] = {
+    {Py_mod_exec,                  (void *)pv_num_exec},
+#if PY_VERSION_HEX >= 0x030C0000
+    {Py_mod_multiple_interpreters, Py_MOD_MULTIPLE_INTERPRETERS_NOT_SUPPORTED},
+#endif
+    {0, NULL}
+};
 
 static PyModuleDef pv_num_module = {
     .m_base = PyModuleDef_HEAD_INIT,
     .m_name = "pv_num",
     .m_doc = "A module defines PV_num.",
-    .m_size = 0,
+    .m_size = sizeof(PvNumState),
     .m_slots = pv_num_slots,
-    .m_methods = pv_num_method,
-    .m_free = pv_55p8_free,
+    .m_methods = pv_num_methods,
+    .m_free = pv_num_free,
 };
 
 PyMODINIT_FUNC PyInit_pv_num(void)
