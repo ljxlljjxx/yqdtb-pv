@@ -213,7 +213,7 @@ static int pv_num_exec(PyObject *m)
     PyObject *capsule = PyCapsule_New((void *)register_type, "pv_num.register_type", NULL);
     PyModule_AddObject(m, "_register_type_capsule", capsule);
     if (PyType_Ready(&PV_num_Type) < 0) return -1;
-    if (PyModule_AddObjectRef(m, "PV_num", (PyObject *)&PV_num_Type) < 0) return -1;
+    if (PyModule_AddObject(m, "PV_num", (PyObject *)&PV_num_Type) < 0) return -1;
 #ifdef DEBUG
     __debug_file = fopen("pv_num_debug.log", "a");
     capsule = PyCapsule_New((void *)__debug_file, "pv_num.__debug_file", NULL);
@@ -225,7 +225,9 @@ static int pv_num_exec(PyObject *m)
 
 static PyModuleDef_Slot pv_num_slots[] = {
     {Py_mod_exec,                  (void *)pv_num_exec},
+#if PY_VERSION_HEX >= 0x030C0000
     {Py_mod_multiple_interpreters, Py_MOD_MULTIPLE_INTERPRETERS_NOT_SUPPORTED},
+#endif
     {0, NULL}
 };
 

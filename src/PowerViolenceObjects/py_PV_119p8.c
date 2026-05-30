@@ -190,13 +190,15 @@ static int pv_119p8_exec(PyObject *m)
         return -1;
     }
     if (register_func(PVF_119, &PV_119p8_Type)) return -1;
-    if (PyModule_AddObjectRef(m, "PV_119p8", (PyObject *)&PV_119p8_Type) < 0) return -1;
+    if (PyModule_AddObject(m, "PV_119p8", (PyObject *)&PV_119p8_Type) < 0) return -1;
     return 0;
 }
 
 static PyModuleDef_Slot pv_119p8_slots[] = {
     {Py_mod_exec,                  (void *)pv_119p8_exec},
+#if PY_VERSION_HEX >= 0x030C0000
     {Py_mod_multiple_interpreters, Py_MOD_MULTIPLE_INTERPRETERS_NOT_SUPPORTED},
+#endif
     {0, NULL}
 };
 
