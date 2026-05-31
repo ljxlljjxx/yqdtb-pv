@@ -116,7 +116,7 @@ static int PV_55p8_set__value(PyObject *op, PyObject *value, void *closure)
 static PyObject *PV_55p8_get__value(PyObject *op, void *closure)
 {
     PV_55p8_Object *self = (PV_55p8_Object *)op;
-    return PyLong_FromInt64(self->value._1);
+    return PyLong_FromLongLong((long long)self->value._1);
 }
 
 static PyGetSetDef PV_55p8_getsetters[] = {
