@@ -49,7 +49,7 @@ static int PV_119p8_init(PV_119p8_Object *self, PyObject *args, PyObject *kwds)
                 }
                 ret = TYPE_TRANSFORM_TYPE(self, value, PVF_119);
                 if (!ret) return 0;
-                raise_overflow();
+                raise_overflow(-1);
             }
             else
             {
@@ -140,8 +140,8 @@ static int PV_119p8_set__value(PyObject *op, PyObject *value, void *closure)
     {
         if (PyErr_ExceptionMatches(PyExc_OverflowError))
         {
-            raise_overflow();
             PyErr_Clear();
+            raise_overflow(-1);
         }
         else return -1;
     }
@@ -204,7 +204,9 @@ static int pv_119p8_exec(PyObject *m)
     PyObject *base_module = PyImport_ImportModule("PowerViolenceObjects.pv_num");
     if (!base_module) return -1;
     g_PV_num_Type = (PyTypeObject *)PyObject_GetAttrString(base_module, "PV_num");
-    PyObject *capsule = PyObject_GetAttrString(base_module, "_register_type_capsule");
+    PyObject *capsule = PyObject_GetAttrString(base_module, "_state");
+    pv_num_state = (PvNumState *)PyCapsule_GetPointer(capsule, "pv_num.state");
+    capsule = PyObject_GetAttrString(base_module, "_register_type_capsule");
     register_type_func_t register_func = (register_type_func_t)PyCapsule_GetPointer(capsule, "pv_num.register_type");
 #ifdef DEBUG
     capsule = PyObject_GetAttrString(base_module, "__debug_file");

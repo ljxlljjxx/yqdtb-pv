@@ -366,10 +366,6 @@ static PyObject *pv_num_typetype_type(PyObject *Py_UNUSED(self), PyObject *const
     return PyLong_FromLong((long)_typetype_type[arg1][arg2]);
 }
 
-typedef struct PvNumState {
-    PyObject *overflow_function;
-} PvNumState;
-
 static PvNumState *pv_num_get_state(PyObject *module)
 {
     return (PvNumState *)PyModule_GetState(module);
@@ -382,23 +378,32 @@ static PyObject *pv_num_get_global(PyObject *self, PyObject *Py_UNUSED(ig))
     return state->overflow_function;
 }
 
-static int pv_num_set_global(PyObject *self, PyObject *value)
+static PyObject *pv_num_set_global(PyObject *self, PyObject *value)
 {
     PvNumState *state = pv_num_get_state(self);
     if (!value)
     {
         PyErr_SetString(PyExc_AttributeError, "can not remove the overflow_function");
-        return -1;
+        return NULL;
+    }
+    if (Py_IsNone(value))
+    {
+        Py_INCREF(Py_None);
+        Py_DECREF(state->overflow_function);
+        state->overflow_function = Py_None;
+        Py_RETURN_NONE;
     }
     if (!PyCallable_Check(value))
     {
+        error_puts("set uncallable overflow_function");
         PyErr_SetString(PyExc_TypeError, "overflow_function must be callable");
-        return -1;
+        return NULL;
     }
+    info_puts("set new overflow_function");
     Py_INCREF(value);
     Py_DECREF(state->overflow_function);
     state->overflow_function = value;
-    return 0;
+    Py_RETURN_NONE;
 }
 
 static PyMethodDef pv_num_methods[] = {
@@ -426,10 +431,12 @@ static int pv_num_exec(PyObject *m)
 {
     g_PV_num_Type = &PV_num_Type;
     *g_type_by_id = &PV_num_Type;
-    PvNumState *state = pv_num_get_state(m);
+    pv_num_state = pv_num_get_state(m);
     Py_INCREF(Py_None);
-    state->overflow_function = Py_None;
-    PyObject *capsule = PyCapsule_New((void *)register_type, "pv_num.register_type", NULL);
+    pv_num_state->overflow_function = Py_None;
+    PyObject *capsule = PyCapsule_New((void *)pv_num_state, "pv_num.state", NULL);
+    PyModule_AddObject(m, "_state", capsule);
+    capsule = PyCapsule_New((void *)register_type, "pv_num.register_type", NULL);
     PyModule_AddObject(m, "_register_type_capsule", capsule);
     if (PyType_Ready(&PV_num_Type) < 0) return -1;
     if (PyModule_AddObject(m, "PV_num", (PyObject *)&PV_num_Type) < 0) return -1;

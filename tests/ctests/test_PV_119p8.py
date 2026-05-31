@@ -1,6 +1,6 @@
 import unittest
 from random import randint
-from PowerViolenceObjects import PV_119p8
+from PowerViolenceObjects import *
 
 class TestPv_119p8(unittest.TestCase):
     def test_init(self):
@@ -42,7 +42,12 @@ class TestPv_119p8(unittest.TestCase):
             a._value = '10'
 
         with self.assertRaises(OverflowError):
+            def new_fun():
+                raise OverflowError
+            set_overflow_function(new_fun)
             a._value = 10 ** 100
+        
+        set_overflow_function(None)
 
     def test_strvalue(self):
         a: PV_119p8 = PV_119p8()

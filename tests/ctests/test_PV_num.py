@@ -22,7 +22,7 @@ class TestPv_num(unittest.TestCase):
             set_overflow_function(2)
 
         set_overflow_function(lambda: 5)
-        self.assertEqual(get_overflow_function(), 5)
+        self.assertEqual(get_overflow_function()(), 5)
 
     def test_typename(self):
         a: PV_num = PV_num()
