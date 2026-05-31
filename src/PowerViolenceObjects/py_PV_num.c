@@ -386,7 +386,7 @@ static PyObject *pv_num_set_global(PyObject *self, PyObject *value)
         PyErr_SetString(PyExc_AttributeError, "can not remove the overflow_function");
         return NULL;
     }
-    if (Py_IsNone(value))
+    if (value == Py_None)
     {
         Py_INCREF(Py_None);
         Py_DECREF(state->overflow_function);
