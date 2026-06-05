@@ -109,7 +109,9 @@ static int PV_55p8_set__value(PyObject *op, PyObject *value, void *closure)
         PyErr_Format(PyExc_TypeError, "The 'first' attribute must be an int, not '%.200s'", Py_TYPE(value)->tp_name);
         return -1;
     }
-    if (PyLong_AsInt64(value, &self->value._1)) return -1;
+    long long ret = PyLong_AsLongLong(value);
+    if (PyErr_Occurred() && ret == -1) return -1;
+    self->value._1 = (int64_t)ret;
     return 0;
 }
 
