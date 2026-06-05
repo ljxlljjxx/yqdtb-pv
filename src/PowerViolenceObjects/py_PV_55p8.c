@@ -45,8 +45,7 @@ static int PV_55p8_init(PV_55p8_Object *self, PyObject *args, PyObject *kwds)
                 }
                 ret = TYPE_TRANSFORM_TYPE(self, value, PVF_55P);
                 if (!ret) return 0;
-                if (PyErr_WarnEx(PV_OverflowWarning, "", 1) < 0)
-                    return -1;
+                raise_overflow(-1);
             }
             else
             {
@@ -69,7 +68,7 @@ static PyObject *PV_55p8_richcmp(PyObject *lhs, PyObject *rhs, int op)
         {
             Py_RETURN_RICHCOMPARE(a, b, op);
         }
-        debug_puts("ask PV_num's help");
+        info_puts("ask PV_num's help");
         return g_PV_num_Type->tp_richcompare(lhs, rhs, op);
     }
     Py_RETURN_NOTIMPLEMENTED;
@@ -102,7 +101,7 @@ static int PV_55p8_set__value(PyObject *op, PyObject *value, void *closure)
     PV_55p8_Object *self = (PV_55p8_Object *)op;
     if (value == NULL)
     {
-        PyErr_SetString(PyExc_TypeError, "Cannot delete the _value attribute");
+        PyErr_SetString(PyExc_AttributeError, "Cannot delete the _value attribute");
         return -1;
     }
     if (!PyLong_Check(value))
@@ -110,14 +109,16 @@ static int PV_55p8_set__value(PyObject *op, PyObject *value, void *closure)
         PyErr_Format(PyExc_TypeError, "The 'first' attribute must be an int, not '%.200s'", Py_TYPE(value)->tp_name);
         return -1;
     }
-    if (PyLong_AsInt64(value, &self->value._1)) return -1;
+    long long ret = PyLong_AsLongLong(value);
+    if (PyErr_Occurred() && ret == -1) return -1;
+    self->value._1 = (int64_t)ret;
     return 0;
 }
 
 static PyObject *PV_55p8_get__value(PyObject *op, void *closure)
 {
     PV_55p8_Object *self = (PV_55p8_Object *)op;
-    return PyLong_FromInt64(self->value._1);
+    return PyLong_FromLongLong((long long)self->value._1);
 }
 
 static PyGetSetDef PV_55p8_getsetters[] = {
@@ -223,10 +224,10 @@ static int pv_55p8_exec(PyObject *m)
     PyObject *base_module = PyImport_ImportModule("PowerViolenceObjects.pv_num");
     if (!base_module) return -1;
     g_PV_num_Type = (PyTypeObject *)PyObject_GetAttrString(base_module, "PV_num");
-    PyObject *capsule = PyObject_GetAttrString(base_module, "_register_type_capsule");
+    PyObject *capsule = PyObject_GetAttrString(base_module, "_state");
+    pv_num_state = (PvNumState *)PyCapsule_GetPointer(capsule, "pv_num.state");
+    capsule = PyObject_GetAttrString(base_module, "_register_type_capsule");
     register_type_func_t register_func = (register_type_func_t)PyCapsule_GetPointer(capsule, "pv_num.register_type");
-    capsule = PyObject_GetAttrString(base_module, "_PV_OverflowWarning");
-    PV_OverflowWarning = (PyObject *)PyCapsule_GetPointer(capsule, "pv_num.PV_OverflowWarning");
 #ifdef DEBUG
     capsule = PyObject_GetAttrString(base_module, "__debug_file");
     __debug_file = (PyObject *)PyCapsule_GetPointer(capsule, "pv_num.__debug_file");
@@ -242,13 +243,15 @@ static int pv_55p8_exec(PyObject *m)
     }
 
     if (register_func(PVF_55P, &PV_55p8_Type)) return -1;
-    if (PyModule_AddObjectRef(m, "PV_55p8", (PyObject *)&PV_55p8_Type) < 0) return -1;
+    if (PyModule_AddObject(m, "PV_55p8", (PyObject *)&PV_55p8_Type) < 0) return -1;
     return 0;
 }
 
 static PyModuleDef_Slot pv_55p8_slots[] = {
     {Py_mod_exec,                  (void *)pv_55p8_exec},
+#if PY_VERSION_HEX >= 0x030C0000
     {Py_mod_multiple_interpreters, Py_MOD_MULTIPLE_INTERPRETERS_NOT_SUPPORTED},
+#endif
     {0, NULL}
 };
 

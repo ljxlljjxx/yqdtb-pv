@@ -1,7 +1,7 @@
 import setuptools
 import sys
 
-version = "2.8.0"
+version = "3.0.61"
 DEBUG = False
 
 if DEBUG:
@@ -29,9 +29,28 @@ setuptools.setup(
     package_dir={'': 'src'},
     ext_modules=[
         setuptools.Extension(
+            'PowerViolenceObjects.pv_str',
+            sources=[
+                'src/PowerViolenceObjects/pvc_debug.c',
+                'src/PowerViolenceObjects/py_PV_str.c',
+            ],
+            extra_compile_args=[*extra_compile_args, *debug_args],
+            libraries=[*math_libs],
+        ),
+        setuptools.Extension(
+            'PowerViolenceObjects.pv_str_names',
+            sources=[
+                'src/PowerViolenceObjects/pvc_debug.c',
+                'src/PowerViolenceObjects/py_PV_str_names.c',
+            ],
+            extra_compile_args=[*extra_compile_args, *debug_args],
+            libraries=[*math_libs],
+        ),
+        setuptools.Extension(
             'PowerViolenceObjects.pv_num',
             sources=[
                 'src/PowerViolenceObjects/pvc_PV_num.c',
+                'src/PowerViolenceObjects/pvc_debug.c',
                 'src/PowerViolenceObjects/py_PV_num.c',
             ],
             extra_compile_args=[*extra_compile_args, *debug_args],
@@ -41,6 +60,7 @@ setuptools.setup(
             'PowerViolenceObjects.pv_55p8',
             sources=[
                 'src/PowerViolenceObjects/pvc_PV_num.c',
+                'src/PowerViolenceObjects/pvc_debug.c',
                 'src/PowerViolenceObjects/py_PV_55p8.c',
                 'src/PowerViolenceObjects/pvc_PV_55p8.c',
                 'src/PowerViolenceObjects/pvc_defines.c',
@@ -52,6 +72,7 @@ setuptools.setup(
             'PowerViolenceObjects.pv_119p8',
             sources=[
                 'src/PowerViolenceObjects/pvc_PV_num.c',
+                'src/PowerViolenceObjects/pvc_debug.c',
                 'src/PowerViolenceObjects/py_PV_119p8.c',
                 'src/PowerViolenceObjects/pvc_PV_119p8.c',
                 'src/PowerViolenceObjects/pvc_defines.c',

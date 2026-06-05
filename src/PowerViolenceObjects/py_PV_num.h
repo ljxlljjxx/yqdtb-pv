@@ -37,7 +37,6 @@ typedef struct {
 #define PvNUM_TypeCheck(a, b) (GET_TYPE_ID(a) == (b))
 
 extern PyTypeObject *g_type_by_id[MAX_DERIVED];
-static PyObject *PV_OverflowWarning = NULL;
 
 static PyTypeObject *g_PV_num_Type;
 
@@ -48,5 +47,13 @@ typedef int (*register_type_func_t)(int, PyTypeObject*);
 #define TYPE_TRANSFORM(a, b) (TYPE_TRANSFORM_TYPE((a), (b), GET_TYPE_ID(a)))
 
 #define _GET_RESULT_TYPE_ID(a, b) (_typetype_type[GET_TYPE_ID(a)][GET_TYPE_ID(b)])
+
+typedef struct PvNumState {
+    PyObject *overflow_function;
+} PvNumState;
+
+static PvNumState *pv_num_state;
+
+#define raise_overflow(error_ret) do { pv_deprint_overflow(); if (pv_num_state->overflow_function != Py_None) if (!PyObject_CallFunction(pv_num_state->overflow_function, NULL)) return error_ret; } while (0)
 
 #endif /* _PY_PV_num_H */

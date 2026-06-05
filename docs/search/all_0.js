@@ -7,5 +7,6 @@ var searchData=
   ['_5fdebug_4',['_debug',['../pvc__debug_8h.html#ae1d4190fd8d21a167996d371a8a19ef5',1,'pvc_debug.h']]],
   ['_5fdebug_5fstr_5',['_DEBUG_STR',['../pvc__debug_8h.html#ab26ab8bd340b60b5a8d9be19e28a31d4',1,'pvc_debug.h']]],
   ['_5fdebug_5fstr_5fhelper_6',['_DEBUG_STR_HELPER',['../pvc__debug_8h.html#a100bd0010813a28e34c4162f422c4bc5',1,'pvc_debug.h']]],
-  ['_5fget_5fresult_5ftype_5fid_7',['_GET_RESULT_TYPE_ID',['../py___p_v__num_8h.html#ab4aae897d3f43313ae406c6ed60a9d09',1,'py_PV_num.h']]]
+  ['_5fget_5fresult_5ftype_5fid_7',['_GET_RESULT_TYPE_ID',['../py___p_v__num_8h.html#ab4aae897d3f43313ae406c6ed60a9d09',1,'py_PV_num.h']]],
+  ['_5fpv_5fstr_5fnames_5farray_5fobject_8',['_PV_str_names_array_Object',['../struct___p_v__str__names__array___object.html',1,'']]]
 ];
