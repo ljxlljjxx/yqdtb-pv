@@ -74,7 +74,7 @@ static PyObject *PV_55p8_richcmp(PyObject *lhs, PyObject *rhs, int op)
             case Py_GT: if (a > b) Py_RETURN_TRUE; Py_RETURN_FALSE;
             case Py_LE: if (a <= b) Py_RETURN_TRUE; Py_RETURN_FALSE;
             case Py_GE: if (a >= b) Py_RETURN_TRUE; Py_RETURN_FALSE;
-            default: Py_UNREACHABLE();
+            default: abort();
             }
         }
         info_puts("ask PV_num's help");

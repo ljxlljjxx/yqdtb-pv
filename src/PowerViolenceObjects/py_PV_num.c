@@ -96,7 +96,7 @@ static PyObject *PV_num_richcmp(PyObject *lhs, PyObject *rhs, int op)
         case Py_GT: Py_RETURN_FALSE;
         case Py_LE: Py_RETURN_TRUE;
         case Py_GE: Py_RETURN_TRUE;
-        default: Py_UNREACHABLE();
+        default: abort();
         }
     }
     Py_RETURN_NOTIMPLEMENTED;
