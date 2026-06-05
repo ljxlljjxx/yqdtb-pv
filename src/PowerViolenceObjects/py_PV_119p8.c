@@ -49,8 +49,7 @@ static int PV_119p8_init(PV_119p8_Object *self, PyObject *args, PyObject *kwds)
                 }
                 ret = TYPE_TRANSFORM_TYPE(self, value, PVF_119);
                 if (!ret) return 0;
-                if (PyErr_WarnEx(PV_OverflowWarning, "", 1) < 0)
-                    return -1;
+                raise_overflow(-1);
             }
             else
             {
@@ -67,7 +66,6 @@ static PyObject *PV_119p8_richcmp(PyObject *lhs, PyObject *rhs, int op)
     int64_t a1 = ((PV_119p8_Object *)lhs)->value._1, b1 = ((PV_119p8_Object *)rhs)->value._1;
     int64_t a2 = ((PV_119p8_Object *)lhs)->value._2, b2 = ((PV_119p8_Object *)rhs)->value._2;
     int c = 0;
-    PyObject *result;
     if (!PyObject_TypeCheck(lhs, &PV_119p8_Type) || !PyObject_TypeCheck(rhs, &PV_119p8_Type))
     {
         Py_RETURN_NOTIMPLEMENTED;
@@ -84,8 +82,8 @@ static PyObject *PV_119p8_richcmp(PyObject *lhs, PyObject *rhs, int op)
         PyErr_SetString(PyExc_SystemError, "Unknown op");
         return NULL;
     }
-    result = c ? Py_True : Py_False;
-    return Py_NewRef(result);
+    if (c) Py_RETURN_TRUE;
+    else Py_RETURN_FALSE;
 }
 
 static Py_hash_t PV_119p8_hash(PyObject *op)
@@ -113,11 +111,12 @@ static PyMethodDef PV_119p8_methods[] = {
 static int PV_119p8_set__value(PyObject *op, PyObject *value, void *closure)
 {
     PV_119p8_Object *self = (PV_119p8_Object *)op;
-    unsigned char s[16];
-    uint64_t high, low;
+    PyObject *shift = NULL;
+    PyObject *high_obj = NULL;
+
     if (value == NULL)
     {
-        PyErr_SetString(PyExc_TypeError, "Cannot delete the _value attribute");
+        PyErr_SetString(PyExc_AttributeError, "Cannot delete the _value attribute");
         return -1;
     }
     if (!PyLong_Check(value))
@@ -125,27 +124,57 @@ static int PV_119p8_set__value(PyObject *op, PyObject *value, void *closure)
         PyErr_Format(PyExc_TypeError, "The 'first' attribute must be an int, not '%.200s'", Py_TYPE(value)->tp_name);
         return -1;
     }
-    if (_PyLong_AsByteArray(value, s, 16, 1, 1, 1)) return -1;
-    for (int i = 7; i >= 0; --i)
+
+    self->value._2 = (uint64_t)PyLong_AsUnsignedLongLongMask(value);
+
+    shift = PyLong_FromLong(64);
+    if (!shift) goto error;
+
+    high_obj = PyNumber_Rshift(value, shift);
+    Py_DECREF(shift); shift = NULL;
+    if (!high_obj) goto error;
+
+    self->value._1 = PyLong_AsLongLong(high_obj);
+    Py_DECREF(high_obj);
+    if (self->value._1 == -1 && PyErr_Occurred())
     {
-        low  = (low << 8) | s[i];
-        high = (high << 8) | s[i + 8];
+        if (PyErr_ExceptionMatches(PyExc_OverflowError))
+        {
+            PyErr_Clear();
+            raise_overflow(-1);
+        }
+        else return -1;
     }
-    self->value._1 = (int64_t)high;
-    self->value._2 = low;
     return 0;
+
+error:
+    Py_XDECREF(shift);
+    Py_XDECREF(high_obj);
+    return -1;
 }
 
 static PyObject *PV_119p8_get__value(PyObject *op, void *closure)
 {
     PV_119p8_Object *self = (PV_119p8_Object *)op;
-    unsigned char s[16];
-    for (int i = 0; i < 8; ++i)
-    {
-        s[i]     = self->value._2 >> (i << 3) & 0xFF;
-        s[i + 8] = self->value._1 >> (i << 3) & 0xFF;
-    }
-    return _PyLong_FromByteArray(s, 16, 1, 1);
+    PyObject *PV_64 = NULL, *low = NULL, *high = NULL, *result = NULL;
+    if (!(PV_64 = PyLong_FromLong(64l))) goto error;
+    if (!(high = PyLong_FromLongLong((long long)self->value._1))) goto error;
+    result = PyNumber_Lshift(high, PV_64);
+    if (!result) goto error;
+    Py_DECREF(high); high = NULL;
+    Py_DECREF(PV_64); PV_64 = NULL;
+    if (!(low = PyLong_FromUnsignedLongLong((unsigned long long)self->value._2))) goto error;
+    high = PyNumber_Or(result, low);
+    if (!high) goto error;
+    Py_DECREF(result); result = NULL;
+    Py_DECREF(low);
+    return high;
+error:
+    if (PV_64) Py_DECREF(PV_64);
+    if (low) Py_DECREF(low);
+    if (high) Py_DECREF(high);
+    if (result) Py_DECREF(result);
+    return NULL;
 }
 
 static PyGetSetDef PV_119p8_getsetters[] = {
@@ -172,14 +201,13 @@ static PyTypeObject PV_119p8_Type = {
 
 static int pv_119p8_exec(PyObject *m)
 {
-    
     PyObject *base_module = PyImport_ImportModule("PowerViolenceObjects.pv_num");
     if (!base_module) return -1;
     g_PV_num_Type = (PyTypeObject *)PyObject_GetAttrString(base_module, "PV_num");
-    PyObject *capsule = PyObject_GetAttrString(base_module, "_register_type_capsule");
+    PyObject *capsule = PyObject_GetAttrString(base_module, "_state");
+    pv_num_state = (PvNumState *)PyCapsule_GetPointer(capsule, "pv_num.state");
+    capsule = PyObject_GetAttrString(base_module, "_register_type_capsule");
     register_type_func_t register_func = (register_type_func_t)PyCapsule_GetPointer(capsule, "pv_num.register_type");
-    capsule = PyObject_GetAttrString(base_module, "_PV_OverflowWarning");
-    PV_OverflowWarning = (PyObject *)PyCapsule_GetPointer(capsule, "pv_num.PV_OverflowWarning");
 #ifdef DEBUG
     capsule = PyObject_GetAttrString(base_module, "__debug_file");
     __debug_file = (PyObject *)PyCapsule_GetPointer(capsule, "pv_num.__debug_file");
@@ -193,15 +221,16 @@ static int pv_119p8_exec(PyObject *m)
         Py_DECREF(g_PV_num_Type);
         return -1;
     }
-
     if (register_func(PVF_119, &PV_119p8_Type)) return -1;
-    if (PyModule_AddObjectRef(m, "PV_119p8", (PyObject *)&PV_119p8_Type) < 0) return -1;
+    if (PyModule_AddObject(m, "PV_119p8", (PyObject *)&PV_119p8_Type) < 0) return -1;
     return 0;
 }
 
 static PyModuleDef_Slot pv_119p8_slots[] = {
     {Py_mod_exec,                  (void *)pv_119p8_exec},
+#if PY_VERSION_HEX >= 0x030C0000
     {Py_mod_multiple_interpreters, Py_MOD_MULTIPLE_INTERPRETERS_NOT_SUPPORTED},
+#endif
     {0, NULL}
 };
 
@@ -225,24 +254,5 @@ static PyModuleDef pv_119p8 = {
 
 PyMODINIT_FUNC PyInit_pv_119p8(void)
 {
-    PyObject *base_module = PyImport_ImportModule("PowerViolenceObjects.pv_num");
-    if (!base_module) return NULL;
-    g_PV_num_Type = (PyTypeObject *)PyObject_GetAttrString(base_module, "PV_num");
-    PyObject *capsule = PyObject_GetAttrString(base_module, "_register_type_capsule");
-    register_type_func_t register_func = (register_type_func_t)PyCapsule_GetPointer(capsule, "pv_num.register_type");
-    capsule = PyObject_GetAttrString(base_module, "_PV_OverflowWarning");
-    PV_OverflowWarning = (PyObject *)PyCapsule_GetPointer(capsule, "pv_num.PV_OverflowWarning");
-    Py_DECREF(base_module);
-    if (!g_PV_num_Type || !register_func) return NULL;
-
-    (&PV_119p8_Type)->tp_base = g_PV_num_Type;
-    if (PyType_Ready(&PV_119p8_Type) < 0)
-    {
-        Py_DECREF(g_PV_num_Type);
-        return NULL;
-    }
-
-    if (register_func(PVF_119, &PV_119p8_Type)) return NULL;
-
     return PyModuleDef_Init(&pv_119p8);
 }

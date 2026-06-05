@@ -1,3 +1,9 @@
+from typing import Callable
+
+
+def get_overflow_function() -> Callable | None: pass
+def set_overflow_function(new_func: Callable, /) -> None: pass
+
 def get_type(arg: int | str, /) -> type: pass
 def typestr_int(arg: str, /) -> int: pass
 def typeint_str(arg: int, /) -> str: pass
@@ -56,7 +62,3 @@ class PV_num:
 
     def typename(self) -> str: pass
     def typename_int(self) -> int: pass
-
-
-class PV_OverflowWarning(Warning):
-    pass

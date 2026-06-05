@@ -92,6 +92,8 @@ $(function() {
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_p_v__num___object.html">PV_num_Object</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_pv_num_state.html">PvNumState</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
@@ -147,11 +149,15 @@ Macros</h2></td></tr>
 <tr class="separator:a1219bd8001ee2e8e0233f3c5f3de6c82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4aae897d3f43313ae406c6ed60a9d09" id="r_ab4aae897d3f43313ae406c6ed60a9d09"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#ab4aae897d3f43313ae406c6ed60a9d09">_GET_RESULT_TYPE_ID</a>(a,  b)&#160;&#160;&#160;(_typetype_type[<a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(a)][<a class="el" href="py___p_v__num_8h.html#a08e62615c9aaf3226418fe0791afa3f8">GET_TYPE_ID</a>(b)])</td></tr>
 <tr class="separator:ab4aae897d3f43313ae406c6ed60a9d09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adae4e6811246fa5cb7e18641ed42efc3" id="r_adae4e6811246fa5cb7e18641ed42efc3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#adae4e6811246fa5cb7e18641ed42efc3">raise_overflow</a>(error_ret)&#160;&#160;&#160;do { <a class="el" href="pvc__debug_8h.html#a49926ee657e452356c0c961ea8b0ca28">pv_deprint_overflow</a>(); if (pv_num_state-&gt;overflow_function != Py_None) if (!PyObject_CallFunction(pv_num_state-&gt;overflow_function, NULL)) return error_ret; } while (0)</td></tr>
+<tr class="separator:adae4e6811246fa5cb7e18641ed42efc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a902812d733b4dd519ed93434339644ae" id="r_a902812d733b4dd519ed93434339644ae"><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a902812d733b4dd519ed93434339644ae">register_type_func_t</a>) (int, PyTypeObject *)</td></tr>
 <tr class="separator:a902812d733b4dd519ed93434339644ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9441dcd848e990b7129e1f29e3ae2c21" id="r_a9441dcd848e990b7129e1f29e3ae2c21"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_pv_num_state.html">PvNumState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a9441dcd848e990b7129e1f29e3ae2c21">PvNumState</a></td></tr>
+<tr class="separator:a9441dcd848e990b7129e1f29e3ae2c21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -513,6 +519,24 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="adae4e6811246fa5cb7e18641ed42efc3" name="adae4e6811246fa5cb7e18641ed42efc3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adae4e6811246fa5cb7e18641ed42efc3">&#9670;&#160;</a></span>raise_overflow</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define raise_overflow</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">error_ret</td><td>)</td>
+          <td>&#160;&#160;&#160;do { <a class="el" href="pvc__debug_8h.html#a49926ee657e452356c0c961ea8b0ca28">pv_deprint_overflow</a>(); if (pv_num_state-&gt;overflow_function != Py_None) if (!PyObject_CallFunction(pv_num_state-&gt;overflow_function, NULL)) return error_ret; } while (0)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a1219bd8001ee2e8e0233f3c5f3de6c82" name="a1219bd8001ee2e8e0233f3c5f3de6c82"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1219bd8001ee2e8e0233f3c5f3de6c82">&#9670;&#160;</a></span>TYPE_TRANSFORM</h2>
 
@@ -604,6 +628,20 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Typedef Documentation</h2>
+<a id="a9441dcd848e990b7129e1f29e3ae2c21" name="a9441dcd848e990b7129e1f29e3ae2c21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9441dcd848e990b7129e1f29e3ae2c21">&#9670;&#160;</a></span>PvNumState</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="struct_pv_num_state.html">PvNumState</a> <a class="el" href="struct_pv_num_state.html">PvNumState</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a902812d733b4dd519ed93434339644ae" name="a902812d733b4dd519ed93434339644ae"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a902812d733b4dd519ed93434339644ae">&#9670;&#160;</a></span>register_type_func_t</h2>
 

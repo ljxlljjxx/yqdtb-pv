@@ -1,16 +1,8 @@
 import unittest
-from PowerViolenceObjects import PV_num
+from PowerViolenceObjects import *
 import PowerViolenceObjects as PVOs
 
 class TestPv_num(unittest.TestCase):
-    def test_warning(self):
-        from PowerViolenceObjects import PV_OverflowWarning
-        import warnings
-        with self.assertWarns(PV_OverflowWarning):
-            warnings.warn('114514', PV_OverflowWarning)
-        with self.assertRaises(PV_OverflowWarning):
-            raise PV_OverflowWarning('114514')
-
     def test_init(self):
         PV_num()
 
@@ -22,6 +14,15 @@ class TestPv_num(unittest.TestCase):
         with self.assertRaises(TypeError): int(a)
         with self.assertRaises(TypeError): pow(a, 100)
         with self.assertRaises(TypeError): a *= 2
+
+    def test_overflow_function(self):
+        self.assertIsNone(get_overflow_function())
+        
+        with self.assertRaises(TypeError):
+            set_overflow_function(2)
+
+        set_overflow_function(lambda: 5)
+        self.assertEqual(get_overflow_function()(), 5)
 
     def test_typename(self):
         a: PV_num = PV_num()
@@ -38,7 +39,7 @@ class TestPv_num(unittest.TestCase):
         self.assertFalse(a > b)
         self.assertFalse(a < b)
 
-        c: PVOs.PV_55p8 = PVOs.PV_55p8()
+        c: PV_55p8 = PV_55p8()
         with self.assertRaises(TypeError):
             a >= c
 
