@@ -210,7 +210,7 @@ static int pv_119p8_exec(PyObject *m)
     register_type_func_t register_func = (register_type_func_t)PyCapsule_GetPointer(capsule, "pv_num.register_type");
 #ifdef DEBUG
     capsule = PyObject_GetAttrString(base_module, "__debug_file");
-    __debug_file = (PyObject *)PyCapsule_GetPointer(capsule, "pv_num.__debug_file");
+    __debug_file = (FILE *)PyCapsule_GetPointer(capsule, "pv_num.__debug_file");
 #endif
     Py_DECREF(base_module);
     if (!g_PV_num_Type || !register_func) return -1;
