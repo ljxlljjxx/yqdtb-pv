@@ -66,7 +66,16 @@ static PyObject *PV_55p8_richcmp(PyObject *lhs, PyObject *rhs, int op)
     {
         if (PvNUM_TypeCheck(lhs, PVF_55P) && PvNUM_TypeCheck(rhs, PVF_55P))
         {
-            Py_RETURN_RICHCOMPARE(a, b, op);
+            switch (op)
+            {
+            case Py_EQ: if (a == b) Py_RETURN_TRUE; Py_RETURN_FALSE;
+            case Py_NE: if (a != b) Py_RETURN_TRUE; Py_RETURN_FALSE;
+            case Py_LT: if (a < b) Py_RETURN_TRUE; Py_RETURN_FALSE;
+            case Py_GT: if (a > b) Py_RETURN_TRUE; Py_RETURN_FALSE;
+            case Py_LE: if (a <= b) Py_RETURN_TRUE; Py_RETURN_FALSE;
+            case Py_GE: if (a >= b) Py_RETURN_TRUE; Py_RETURN_FALSE;
+            default: Py_UNREACHABLE();
+            }
         }
         info_puts("ask PV_num's help");
         return g_PV_num_Type->tp_richcompare(lhs, rhs, op);
