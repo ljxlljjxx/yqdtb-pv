@@ -88,7 +88,16 @@ static PyObject *PV_num_richcmp(PyObject *lhs, PyObject *rhs, int op)
             PyErr_SetString(PyExc_TypeError, "No compare with PV_num");
             return NULL;
         }
-        Py_RETURN_RICHCOMPARE(0, 0, op);
+        switch (op)
+        {
+        case Py_EQ: Py_RETURN_TRUE;
+        case Py_NE: Py_RETURN_FALSE;
+        case Py_LT: Py_RETURN_FALSE;
+        case Py_GT: Py_RETURN_FALSE;
+        case Py_LE: Py_RETURN_TRUE;
+        case Py_GE: Py_RETURN_TRUE;
+        default: abort();
+        }
     }
     Py_RETURN_NOTIMPLEMENTED;
 }

@@ -5,20 +5,23 @@ rm *-macos
 
 echo '更改vertion'
 python -c '
-with open("setup.py") as f:
-    a = f.read().splitlines()
-b = []
-for i in a:
-    if i.startswith("version = "):
-        x = int(i.split(".")[-1][:-1])
-        x += 1
-        b.append(".".join(i.split(".")[:-1]) + "." + str(x) + "\"")
-    elif i.startswith("DEBUG = "):
-        b.append("DEBUG = True")
-    else:
-        b.append(i)
-with open("setup.py", "w") as f:
-    f.write("\n".join(b))
+def change_file(file_name):
+    with open(file_name) as f:
+        a = f.read().splitlines()
+    b = []
+    for i in a:
+        if i.startswith("version = ") or i.startswith("__version__ = "):
+            x = int(i.split(".")[-1][:-1])
+            x += 1
+            b.append(".".join(i.split(".")[:-1]) + "." + str(x) + "\"")
+        elif i.startswith("DEBUG = "):
+            b.append("DEBUG = True")
+        else:
+            b.append(i)
+    with open(file_name, "w") as f:
+        f.write("\n".join(b))
+change_file("setup.py")
+change_file("src/PowerViolenceObjects/__init__.py")
 '
 
 echo 'Python tests'

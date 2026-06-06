@@ -66,7 +66,16 @@ static PyObject *PV_55p8_richcmp(PyObject *lhs, PyObject *rhs, int op)
     {
         if (PvNUM_TypeCheck(lhs, PVF_55P) && PvNUM_TypeCheck(rhs, PVF_55P))
         {
-            Py_RETURN_RICHCOMPARE(a, b, op);
+            switch (op)
+            {
+            case Py_EQ: if (a == b) Py_RETURN_TRUE; Py_RETURN_FALSE;
+            case Py_NE: if (a != b) Py_RETURN_TRUE; Py_RETURN_FALSE;
+            case Py_LT: if (a < b) Py_RETURN_TRUE; Py_RETURN_FALSE;
+            case Py_GT: if (a > b) Py_RETURN_TRUE; Py_RETURN_FALSE;
+            case Py_LE: if (a <= b) Py_RETURN_TRUE; Py_RETURN_FALSE;
+            case Py_GE: if (a >= b) Py_RETURN_TRUE; Py_RETURN_FALSE;
+            default: abort();
+            }
         }
         info_puts("ask PV_num's help");
         return g_PV_num_Type->tp_richcompare(lhs, rhs, op);
@@ -230,7 +239,7 @@ static int pv_55p8_exec(PyObject *m)
     register_type_func_t register_func = (register_type_func_t)PyCapsule_GetPointer(capsule, "pv_num.register_type");
 #ifdef DEBUG
     capsule = PyObject_GetAttrString(base_module, "__debug_file");
-    __debug_file = (PyObject *)PyCapsule_GetPointer(capsule, "pv_num.__debug_file");
+    __debug_file = (FILE *)PyCapsule_GetPointer(capsule, "pv_num.__debug_file");
 #endif
     Py_DECREF(base_module);
     if (!g_PV_num_Type || !register_func) return -1;
