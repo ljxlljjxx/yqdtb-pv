@@ -154,8 +154,10 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a902812d733b4dd519ed93434339644ae" id="r_a902812d733b4dd519ed93434339644ae"><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a902812d733b4dd519ed93434339644ae">register_type_func_t</a>) (int, PyTypeObject *)</td></tr>
-<tr class="separator:a902812d733b4dd519ed93434339644ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cea2353d581010007873343856b662e" id="r_a1cea2353d581010007873343856b662e"><td class="memItemLeft" align="right" valign="top">typedef PyObject *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a1cea2353d581010007873343856b662e">PvNum_TypeMake</a>) (void *)</td></tr>
+<tr class="separator:a1cea2353d581010007873343856b662e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cf81af8c0c9ce26aab681c29134a1ef" id="r_a0cf81af8c0c9ce26aab681c29134a1ef"><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a0cf81af8c0c9ce26aab681c29134a1ef">register_type_func_t</a>) (int, PyTypeObject *, <a class="el" href="py___p_v__num_8h.html#a1cea2353d581010007873343856b662e">PvNum_TypeMake</a>)</td></tr>
+<tr class="separator:a0cf81af8c0c9ce26aab681c29134a1ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9441dcd848e990b7129e1f29e3ae2c21" id="r_a9441dcd848e990b7129e1f29e3ae2c21"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_pv_num_state.html">PvNumState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a9441dcd848e990b7129e1f29e3ae2c21">PvNumState</a></td></tr>
 <tr class="separator:a9441dcd848e990b7129e1f29e3ae2c21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -163,6 +165,8 @@ Typedefs</h2></td></tr>
 Variables</h2></td></tr>
 <tr class="memitem:a777162a35d6873d620e3babdb89f7d1a" id="r_a777162a35d6873d620e3babdb89f7d1a"><td class="memItemLeft" align="right" valign="top">PyTypeObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#a777162a35d6873d620e3babdb89f7d1a">g_type_by_id</a> [<a class="el" href="pvc___p_v__num_8h.html#a71f88afd1f703a9fc8d19337a5165b4a">MAX_DERIVED</a>]</td></tr>
 <tr class="separator:a777162a35d6873d620e3babdb89f7d1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afefdc1a9ca830d198e2ae7aa115438b4" id="r_afefdc1a9ca830d198e2ae7aa115438b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="py___p_v__num_8h.html#a1cea2353d581010007873343856b662e">PvNum_TypeMake</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="py___p_v__num_8h.html#afefdc1a9ca830d198e2ae7aa115438b4">g_type_make</a> [<a class="el" href="pvc___p_v__num_8h.html#a71f88afd1f703a9fc8d19337a5165b4a">MAX_DERIVED</a>]</td></tr>
+<tr class="separator:afefdc1a9ca830d198e2ae7aa115438b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="ab4aae897d3f43313ae406c6ed60a9d09" name="ab4aae897d3f43313ae406c6ed60a9d09"></a>
@@ -628,6 +632,20 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Typedef Documentation</h2>
+<a id="a1cea2353d581010007873343856b662e" name="a1cea2353d581010007873343856b662e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cea2353d581010007873343856b662e">&#9670;&#160;</a></span>PvNum_TypeMake</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef PyObject *(* PvNum_TypeMake) (void *)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a9441dcd848e990b7129e1f29e3ae2c21" name="a9441dcd848e990b7129e1f29e3ae2c21"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9441dcd848e990b7129e1f29e3ae2c21">&#9670;&#160;</a></span>PvNumState</h2>
 
@@ -642,14 +660,14 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a902812d733b4dd519ed93434339644ae" name="a902812d733b4dd519ed93434339644ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a902812d733b4dd519ed93434339644ae">&#9670;&#160;</a></span>register_type_func_t</h2>
+<a id="a0cf81af8c0c9ce26aab681c29134a1ef" name="a0cf81af8c0c9ce26aab681c29134a1ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0cf81af8c0c9ce26aab681c29134a1ef">&#9670;&#160;</a></span>register_type_func_t</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef int(* register_type_func_t) (int, PyTypeObject *)</td>
+          <td class="memname">typedef int(* register_type_func_t) (int, PyTypeObject *, <a class="el" href="py___p_v__num_8h.html#a1cea2353d581010007873343856b662e">PvNum_TypeMake</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -668,6 +686,28 @@ Variables</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">PyTypeObject* g_type_by_id[<a class="el" href="pvc___p_v__num_8h.html#a71f88afd1f703a9fc8d19337a5165b4a">MAX_DERIVED</a>]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afefdc1a9ca830d198e2ae7aa115438b4" name="afefdc1a9ca830d198e2ae7aa115438b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afefdc1a9ca830d198e2ae7aa115438b4">&#9670;&#160;</a></span>g_type_make</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="py___p_v__num_8h.html#a1cea2353d581010007873343856b662e">PvNum_TypeMake</a> g_type_make[<a class="el" href="pvc___p_v__num_8h.html#a71f88afd1f703a9fc8d19337a5165b4a">MAX_DERIVED</a>]</td>
         </tr>
       </table>
   </td>
