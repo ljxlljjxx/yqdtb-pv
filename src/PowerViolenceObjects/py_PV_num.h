@@ -36,11 +36,14 @@ typedef struct {
 #define GET_TYPE_ID(a) (((PV_num_Object *)(a))->type_id)
 #define PvNUM_TypeCheck(a, b) (GET_TYPE_ID(a) == (b))
 
+typedef PyObject *(*PvNum_TypeMake)(void *);
+
 extern PyTypeObject *g_type_by_id[MAX_DERIVED];
+extern PvNum_TypeMake g_type_make[MAX_DERIVED];
 
 static PyTypeObject *g_PV_num_Type;
 
-typedef int (*register_type_func_t)(int, PyTypeObject*);
+typedef int (*register_type_func_t)(int, PyTypeObject *, PvNum_TypeMake);
 
 #define TYPE_TRANSFORM_CHECK(typea, typeb) (!pvc_type_trans_func[typea][typeb])
 #define TYPE_TRANSFORM_TYPE(a, b, type) (pvc_type_trans_func[type][GET_TYPE_ID(b)](((int8_t *)(a) + sizeof(PV_num_Object)), ((int8_t *)(b) + sizeof(PV_num_Object))))

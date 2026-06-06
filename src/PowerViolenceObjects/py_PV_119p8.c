@@ -61,29 +61,42 @@ static int PV_119p8_init(PV_119p8_Object *self, PyObject *args, PyObject *kwds)
     return 0;
 }
 
+static PyObject *_PV_119p8_FromValue(pvc_PV_119p8 *val)
+{
+    PV_119p8_Object *obj;
+    obj = (PV_119p8_Object *)PV_119p8_Type.tp_alloc(&PV_119p8_Type, 0);
+    if (obj == NULL) return NULL;
+    obj->base.type_id = PVF_119;
+    if (val) obj->value = *val;
+    else obj->value._1 = 0ll, obj->value._2 = 0ull;
+    return (PyObject *)obj;
+}
+
 static PyObject *PV_119p8_richcmp(PyObject *lhs, PyObject *rhs, int op)
 {
     int64_t a1 = ((PV_119p8_Object *)lhs)->value._1, b1 = ((PV_119p8_Object *)rhs)->value._1;
     int64_t a2 = ((PV_119p8_Object *)lhs)->value._2, b2 = ((PV_119p8_Object *)rhs)->value._2;
     int c = 0;
-    if (!PyObject_TypeCheck(lhs, &PV_119p8_Type) || !PyObject_TypeCheck(rhs, &PV_119p8_Type))
+    PyObject *result;
+    if (PyObject_TypeCheck(lhs, g_PV_num_Type) && PyObject_TypeCheck(rhs, g_PV_num_Type))
     {
-        Py_RETURN_NOTIMPLEMENTED;
+        if (PvNUM_TypeCheck(lhs, PVF_119) && PvNUM_TypeCheck(rhs, PVF_119))
+        {
+            switch (op)
+            {
+            case Py_LT: if (a1 < b1 || (a1 == b1 && a2 < b2)) Py_RETURN_TRUE; Py_RETURN_FALSE;
+            case Py_LE: if (a1 < b1 || (a1 == b1 && a2 <= b2)) Py_RETURN_TRUE; Py_RETURN_FALSE;
+            case Py_EQ: if (a1 == b1 && a2 == b2) Py_RETURN_TRUE; Py_RETURN_FALSE;
+            case Py_NE: if (a1 != b1 || a2 != b2) Py_RETURN_TRUE; Py_RETURN_FALSE;
+            case Py_GE: if (a1 > b1 || (a1 == b1 && a2 >= b2)) Py_RETURN_TRUE; Py_RETURN_FALSE;
+            case Py_GT: if (a1 > b1 || (a1 == b1 && a2 > b2)) Py_RETURN_TRUE; Py_RETURN_FALSE;
+            default: abort();
+            }
+        }
+        info_printf("PV_119p8_richcmp ask PV_num's help (type1: %d, type2: %d)\n", GET_TYPE_ID(lhs), GET_TYPE_ID(rhs));
+        return g_PV_num_Type->tp_richcompare(lhs, rhs, op);
     }
-    switch (op)
-    {
-    case Py_LT: c = a1 < b1 || (a1 == b1 && a2 < b2); break;
-    case Py_LE: c = a1 < b1 || (a1 == b1 && a2 <= b2); break;
-    case Py_EQ: c = a1 == b1 && a2 == b2; break;
-    case Py_NE: c = a1 != b1 || a2 != b2; break;
-    case Py_GE: c = a1 > b1 || (a1 == b1 && a2 >= b2); break;
-    case Py_GT: c = a1 > b1 || (a1 == b1 && a2 > b2); break;
-    default: 
-        PyErr_SetString(PyExc_SystemError, "Unknown op");
-        return NULL;
-    }
-    if (c) Py_RETURN_TRUE;
-    else Py_RETURN_FALSE;
+    Py_RETURN_NOTIMPLEMENTED;
 }
 
 static Py_hash_t PV_119p8_hash(PyObject *op)
@@ -221,7 +234,7 @@ static int pv_119p8_exec(PyObject *m)
         Py_DECREF(g_PV_num_Type);
         return -1;
     }
-    if (register_func(PVF_119, &PV_119p8_Type)) return -1;
+    if (register_func(PVF_119, &PV_119p8_Type, (PvNum_TypeMake)_PV_119p8_FromValue)) return -1;
     if (PyModule_AddObject(m, "PV_119p8", (PyObject *)&PV_119p8_Type) < 0) return -1;
     return 0;
 }
