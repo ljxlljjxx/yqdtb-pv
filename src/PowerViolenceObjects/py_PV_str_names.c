@@ -35,7 +35,7 @@ static int pv_str_names_exec(PyObject *m)
     if (PyModule_AddObject(m, "PV_str_names", (PyObject *)&PV_str_names_Type) < 0) return -1;
 #ifdef DEBUG
     PyObject *capsule = PyObject_GetAttrString(base_module, "__debug_file");
-    __debug_file = (PyObject *)PyCapsule_GetPointer(capsule, "pv_str.__debug_file");
+    __debug_file = (FILE *)PyCapsule_GetPointer(capsule, "pv_str.__debug_file");
 #endif
     if (!m) return -1;
     return 0;

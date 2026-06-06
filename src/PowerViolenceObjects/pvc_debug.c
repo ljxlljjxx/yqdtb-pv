@@ -37,7 +37,7 @@ char *format_microsecond_time(char *buffer, size_t size)
     if (localtime_s(&tm_buf, &sec) != 0) return NULL;
     tm_info = &tm_buf;
 
-    int len = strftime(buffer, size, "%Y-%m-%d %H:%M:%S", tm_info);
+    size_t len = strftime(buffer, size, "%Y-%m-%d %H:%M:%S", tm_info);
     if (len == 0) return NULL;
     snprintf(buffer + len, size - len, ".%06ld", usec);
     return buffer;
