@@ -5,8 +5,8 @@ rm *-macos
 
 echo 'C Test pvc_add_overflow'
 
-gcc -Wformat=2 -Wconversion -Wreturn-type -Wshadow -Wnull-dereference -Wpointer-arith -Wfloat-equal -Wswitch-default -Wswitch-enum -Wall -Wextra -Werror -c src/PowerViolenceObjects/pvc_defines.c -o pvc_defines-macos.o
-gcc -Wformat=2 -Wconversion -Wreturn-type -Wshadow -Wnull-dereference -Wpointer-arith -Wfloat-equal -Wswitch-default -Wswitch-enum -Wall -Wextra -Werror -c tests/ctests/ct_pvc_add_overflow.c -o ct_pvc_add_overflow-macos.o -Isrc/PowerViolenceObjects
+gcc -std=c11 -Wformat=2 -Wconversion -Wreturn-type -Wshadow -Wnull-dereference -Wpointer-arith -Wfloat-equal -Wswitch-default -Wswitch-enum -Wall -Wextra -Werror -c src/PowerViolenceObjects/pvc_defines.c -o pvc_defines-macos.o
+gcc -std=c11 -Wformat=2 -Wconversion -Wreturn-type -Wshadow -Wnull-dereference -Wpointer-arith -Wfloat-equal -Wswitch-default -Wswitch-enum -Wall -Wextra -Werror -c tests/ctests/ct_pvc_add_overflow.c -o ct_pvc_add_overflow-macos.o -Isrc/PowerViolenceObjects
 gcc ct_pvc_add_overflow-macos.o pvc_defines-macos.o -o ct_pvc_add_overflow-macos
 if [ $? -eq 1 ]; then
     return_val=1;
