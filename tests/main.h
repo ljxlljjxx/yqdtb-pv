@@ -17,8 +17,9 @@
         LARGE_INTEGER freq, count;
         QueryPerformanceFrequency(&freq);
         QueryPerformanceCounter(&count);
-        // 返回纳秒：count * 1e9 / freq
-        return (unsigned long long)((count.QuadPart * 1000000ULL) / freq.QuadPart);
+        unsigned long long freq_ull = (unsigned long long)freq.QuadPart;
+        unsigned long long count_ull = (unsigned long long)count.QuadPart;
+        return (count_ull * 1000000ULL) / freq_ull;
     }
     #define got_time() (uint64_t)get_time_ns()
 #else
