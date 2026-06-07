@@ -8,6 +8,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdint.h>
 
 #ifdef _WIN32
     #include <windows.h>
