@@ -34,11 +34,11 @@ typedef struct Test
 
 #define useful_functest(ans, func, ...) \
     do { \
-        clock_t start, end; \
-        start = clock(); \
+        uint64_t start, end; \
+        start = (uint64_t)clock(); \
         ans = func(__VA_ARGS__); \
-        end = clock(); \
-        if ((end - start) * 1000000 > __time_max * CLOCKS_PER_SEC) \
+        end = (uint64_t)clock(); \
+        if ((double)(end - start) * 1000000 > __time_max * CLOCKS_PER_SEC) \
         { \
             sprintf(test_temp_buffer, "in line %u useful_functest: TLE: %.0lfμs > %.0lfμs", __LINE__, (double)(end - start) * 1000000 / CLOCKS_PER_SEC, __time_max); \
             strcat(test_format_buffer, test_temp_buffer); \
@@ -60,7 +60,7 @@ typedef struct Test
         } \
     } while (0)
 
-#define test_start(_time_max) double __time_max = _time_max;
+#define test_start(_time_max) double __time_max = _time_max
 #define test_end() return true
 #define assert_equal(a, b) \
     do \
@@ -150,6 +150,7 @@ int test_runner(const Test *now)
 {
     const TestFunc *test_func;
     clock_t start, end;
+    int ret_val;
     int count_fail = 0, count_ok = 0;
     printf("running: \033[0m%s\n", now->file_name);
     if (now->init_func) now->init_func();
@@ -159,25 +160,25 @@ int test_runner(const Test *now)
         test_format_buffer[0] = 0;
         if (test_func->state == TestFuncState_disable) goto increase;
         start = clock();
-        if (!test_func->func())
+        ret_val = test_func->func();
+        end = clock();
+        if (!ret_val)
         {
-            end = clock();
             count_fail++;
             printf(
-                "\033[91m%s failed: (used %lu μs)\n    \033[1m%s\n\033[0m", 
+                "\033[91m%s failed: (used %llu μs)\n    \033[1m%s\n\033[0m", 
                 test_func->name, 
-                (end - start) * 1000000 / CLOCKS_PER_SEC, 
+                (end - start) * 1000000ll / CLOCKS_PER_SEC, 
                 test_format_buffer
             );
         }
         else
         {
-            end = clock();
             count_ok++;
             printf(
-                "\033[92m%-40s Accepted (used %lu μs)\n\033[0m", 
+                "\033[92m%-40s Accepted (used %llu μs)\n\033[0m", 
                 test_func->name, 
-                (end - start) * 1000000 / CLOCKS_PER_SEC
+                (end - start) * 1000000ll / CLOCKS_PER_SEC
             );
         }
     increase:

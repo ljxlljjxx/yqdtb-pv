@@ -14,7 +14,7 @@ bool test_pvc_PV_55p8_add(void)
 {
     pvc_PV_55p8 a, b, res;
     bool s;
-    test_start(10);
+    test_start(15);
 
     // 1. 零 + 零
     a._1 = 0;
@@ -2396,7 +2396,7 @@ bool test_pvc_PV_55p8_null(void)
     char s[1000];
     char *s2;
     int ans, format_length;
-    test_start(5);
+    test_start(10);
 
     s2 = pvc_PV_55p8_tostring(NULL);
     assert_string_equal(s2, "(null)");
