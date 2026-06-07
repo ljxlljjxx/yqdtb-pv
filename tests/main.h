@@ -12,16 +12,15 @@
 
 #ifdef _WIN32
     #include <windows.h>
-    unsigned long long __windows_get_time_us(void)
+    unsigned long long get_time_ns(void)
     {
-        FILETIME ft;
-        GetSystemTimePreciseAsFileTime(&ft);
-        ULARGE_INTEGER uli;
-        uli.LowPart = ft.dwLowDateTime;
-        uli.HighPart = ft.dwHighDateTime;
-        return uli.QuadPart / 10;
+        LARGE_INTEGER freq, count;
+        QueryPerformanceFrequency(&freq);
+        QueryPerformanceCounter(&count);
+        // 返回纳秒：count * 1e9 / freq
+        return (unsigned long long)((count.QuadPart * 1000000ULL) / freq.QuadPart);
     }
-    #define got_time() (uint64_t)__windows_get_time_us()
+    #define got_time() (uint64_t)get_time_ns()
 #else
     #define got_time() (uint64_t)clock();
 #endif
