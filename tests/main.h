@@ -11,17 +11,7 @@
 #include <stdint.h>
 
 #ifdef _WIN32
-    #include <windows.h>
-    unsigned long long get_time_ns(void)
-    {
-        LARGE_INTEGER freq, count;
-        QueryPerformanceFrequency(&freq);
-        QueryPerformanceCounter(&count);
-        unsigned long long freq_ull = (unsigned long long)freq.QuadPart;
-        unsigned long long count_ull = (unsigned long long)count.QuadPart;
-        return (count_ull * 1000000ULL) / freq_ull;
-    }
-    #define got_time() (uint64_t)get_time_ns()
+    #define got_time() (uint64_t)0ULL
 #else
     #define got_time() (uint64_t)clock();
 #endif
