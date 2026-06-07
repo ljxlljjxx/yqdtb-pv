@@ -9,6 +9,20 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#ifdef _WIN32
+    #include <windows.h>
+    unsigned long long __windows_get_time_us(void)
+    {
+        LARGE_INTEGER freq, count;
+        if (!QueryPerformanceFrequency(&freq)) return 0;
+        QueryPerformanceCounter(&count);
+        return (unsigned long long)((double)count.QuadPart * 1000000.0 / (double)freq.QuadPart);
+    }
+    #define got_time() (uint64_t)__windows_get_time_us()
+#else
+    #define got_time() (uint64_t)clock();
+#endif
+
 #define TestFuncState_enable  1
 #define TestFuncState_disable 0
 
@@ -35,9 +49,9 @@ typedef struct Test
 #define useful_functest(ans, func, ...) \
     do { \
         uint64_t start, end; \
-        start = (uint64_t)clock(); \
+        start = got_time(); \
         ans = func(__VA_ARGS__); \
-        end = (uint64_t)clock(); \
+        end = got_time(); \
         if ((double)(end - start) * 1000000 > __time_max * CLOCKS_PER_SEC) \
         { \
             sprintf(test_temp_buffer, "in line %u useful_functest: TLE: %.0lfμs > %.0lfμs", __LINE__, (double)(end - start) * 1000000 / CLOCKS_PER_SEC, __time_max); \
@@ -48,10 +62,10 @@ typedef struct Test
 
 #define useful_functest_noreturnvalue(func, ...) \
     do { \
-        clock_t start, end; \
-        start = clock(); \
+        uint64_t start, end; \
+        start = got_time(); \
         func(__VA_ARGS__); \
-        end = clock(); \
+        end = got_time(); \
         if ((end - start) * 1000000 > __time_max * CLOCKS_PER_SEC) \
         { \
             sprintf(test_temp_buffer, "in line %u useful_functest: TLE: %.0lfμs > %.0lfμs", __LINE__, (double)(end - start) * 1000000 / CLOCKS_PER_SEC, __time_max); \
@@ -149,7 +163,7 @@ static int _ctest_sprintf(int s, ...)
 int test_runner(const Test *now)
 {
     const TestFunc *test_func;
-    clock_t start, end;
+    uint64_t start, end;
     int ret_val;
     int count_fail = 0, count_ok = 0;
     printf("running: \033[0m%s\n", now->file_name);
@@ -159,9 +173,9 @@ int test_runner(const Test *now)
     {
         test_format_buffer[0] = 0;
         if (test_func->state == TestFuncState_disable) goto increase;
-        start = clock();
+        start = got_time();
         ret_val = test_func->func();
-        end = clock();
+        end = got_time();
         if (!ret_val)
         {
             count_fail++;
@@ -213,13 +227,13 @@ int test_runner(const Test *now)
     do {\
         fflush(stdout); \
         int orig_stdout = dup(fileno(stdout)); \
-        clock_t start, end; \
+        uint64_t start, end; \
         if (orig_stdout == -1) return NULL; \
         FILE *temp = tmpfile(); \
         dup2(fileno(temp), fileno(stdout)); \
-        start = clock(); \
+        start = got_time(); \
         ans = func(__VA_ARGS__); \
-        end = clock(); \
+        end = got_time(); \
         fflush(stdout); \
         dup2(orig_stdout, fileno(stdout)); \
         close(orig_stdout); \
