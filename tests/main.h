@@ -14,10 +14,12 @@
     #include <windows.h>
     unsigned long long __windows_get_time_us(void)
     {
-        LARGE_INTEGER freq, count;
-        if (!QueryPerformanceFrequency(&freq)) return 0;
-        QueryPerformanceCounter(&count);
-        return (unsigned long long)((double)count.QuadPart * 1000000.0 / (double)freq.QuadPart);
+        FILETIME ft;
+        GetSystemTimePreciseAsFileTime(&ft);
+        ULARGE_INTEGER uli;
+        uli.LowPart = ft.dwLowDateTime;
+        uli.HighPart = ft.dwHighDateTime;
+        return uli.QuadPart / 10;
     }
     #define got_time() (uint64_t)__windows_get_time_us()
 #else
