@@ -32,7 +32,35 @@ typedef struct Test
     int (*const end_func)(void);
 } Test;
 
-#define test_start()
+#define useful_functest(ans, func, ...) \
+    do { \
+        clock_t start, end; \
+        start = clock(); \
+        ans = func(__VA_ARGS__); \
+        end = clock(); \
+        if ((end - start) * 1000000 > __time_max * CLOCKS_PER_SEC) \
+        { \
+            sprintf(test_temp_buffer, "in line %u useful_functest: TLE: %.0lfμs > %.0lfμs", __LINE__, (double)(end - start) * 1000000 / CLOCKS_PER_SEC, __time_max); \
+            strcat(test_format_buffer, test_temp_buffer); \
+            return false; \
+        } \
+    } while (0)
+
+#define useful_functest_noreturnvalue(func, ...) \
+    do { \
+        clock_t start, end; \
+        start = clock(); \
+        func(__VA_ARGS__); \
+        end = clock(); \
+        if ((end - start) * 1000000 > __time_max * CLOCKS_PER_SEC) \
+        { \
+            sprintf(test_temp_buffer, "in line %u useful_functest: TLE: %.0lfμs > %.0lfμs", __LINE__, (double)(end - start) * 1000000 / CLOCKS_PER_SEC, __time_max); \
+            strcat(test_format_buffer, test_temp_buffer); \
+            return false; \
+        } \
+    } while (0)
+
+#define test_start(_time_max) double __time_max = _time_max;
 #define test_end() return true
 #define assert_equal(a, b) \
     do \
@@ -147,7 +175,7 @@ int test_runner(const Test *now)
             end = clock();
             count_ok++;
             printf(
-                "\033[92m%-40s ok (used %lu μs)\n\033[0m", 
+                "\033[92m%-40s Accepted (used %lu μs)\n\033[0m", 
                 test_func->name, 
                 (end - start) * 1000000 / CLOCKS_PER_SEC
             );
@@ -178,6 +206,35 @@ int test_runner(const Test *now)
         size_t read_size = fread(buffer, 1, (size_t)size, temp); \
         buffer[read_size] = '\0'; \
         fclose(temp);  \
+    } while (0);
+
+#define CAPTURE_STROUT_functest(buffer, ans, func, ...) \
+    do {\
+        fflush(stdout); \
+        int orig_stdout = dup(fileno(stdout)); \
+        clock_t start, end; \
+        if (orig_stdout == -1) return NULL; \
+        FILE *temp = tmpfile(); \
+        dup2(fileno(temp), fileno(stdout)); \
+        start = clock(); \
+        ans = func(__VA_ARGS__); \
+        end = clock(); \
+        fflush(stdout); \
+        dup2(orig_stdout, fileno(stdout)); \
+        close(orig_stdout); \
+        rewind(temp); \
+        fseek(temp, 0, SEEK_END); \
+        long size = ftell(temp); \
+        rewind(temp); \
+        size_t read_size = fread(buffer, 1, (size_t)size, temp); \
+        buffer[read_size] = '\0'; \
+        fclose(temp);  \
+        if ((end - start) * 1000000 > __time_max * CLOCKS_PER_SEC) \
+        { \
+            sprintf(test_temp_buffer, "in line %u useful_functest: TLE: %.0lfμs > %.0lfμs", __LINE__, (double)(end - start) * 1000000 / CLOCKS_PER_SEC, __time_max); \
+            strcat(test_format_buffer, test_temp_buffer); \
+            return false; \
+        } \
     } while (0);
 
 #endif /* _CTESTS_MAIN_H */
