@@ -10,7 +10,7 @@ gcc pvc_add_overflow-macos.o ct_pvc_add_overflow-macos.o pvc_defines-macos.o -o 
 #include "../main.h"
 #include "pvc_defines.h"
 
-bool test_addi64_overflow(void)
+int test_addi64_overflow(void)
 {
     int64_t a, b, res;
     bool ans;
@@ -59,7 +59,7 @@ bool test_addi64_overflow(void)
     test_end();
 }
 
-bool test_addu64_overflow(void)
+int test_addu64_overflow(void)
 {
     uint64_t a, b, res;
     bool ans;
