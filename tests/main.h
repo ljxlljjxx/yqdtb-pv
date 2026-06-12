@@ -13,7 +13,7 @@
 #ifdef _WIN32
     #define got_time() (uint64_t)0ULL
 #else
-    #define got_time() (uint64_t)clock();
+    #define got_time() (uint64_t)clock()
 #endif
 
 #define TestFuncState_enable  1
