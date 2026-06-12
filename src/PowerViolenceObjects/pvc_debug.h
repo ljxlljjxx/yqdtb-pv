@@ -18,14 +18,14 @@ char *format_microsecond_time(char *, size_t);
     static FILE *__debug_file;
     static char __debug_time_buf[64];
 
-    #define pv_deprint_forstr_info    "\033[92mInfo\033[0m"
-    #define pv_deprint_forstr_debug   "\033[94mDebug\033[0m"
-    #define pv_deprint_forstr_warning "\033[93mWarn\033[0m"
-    #define pv_deprint_forstr_error   "\033[91mError\033[0m"
+    #define pv_deprint_forstr_info    "\033[92m[Info\033[0m ]"
+    #define pv_deprint_forstr_debug   "\033[94m[Debug\033[0m]"
+    #define pv_deprint_forstr_warning "\033[93m[Warn\033[0m ]"
+    #define pv_deprint_forstr_error   "\033[91m[Error\033[0m]"
 
     #define pv_deprint_gettime() format_microsecond_time(__debug_time_buf, get_microseconds())
 
-    #define pv_deprint_defo(string) fprintf(__debug_file, "[%s] %s : " __FILE__ ", Line %d: ", string, pv_deprint_gettime(), __LINE__)
+    #define pv_deprint_defo(string) fprintf(__debug_file, "%s \033[95m%s\033[0m: \033[93m%-40s\033[0m , Line% -5d(\033[93m%-20s\033[0m): ", string, pv_deprint_gettime(), __FILE__, __LINE__, __func__)
 
     #define pv_deprint_getformat(a) _Generic((a),                   \
             int:                #a " = %d\n",                       \
