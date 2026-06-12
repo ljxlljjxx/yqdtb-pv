@@ -102,14 +102,14 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keyword">static</span> FILE *__debug_file;</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keyword">static</span> <span class="keywordtype">char</span> __debug_time_buf[64];</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">    #define pv_deprint_forstr_info    &quot;\033[92mInfo\033[0m&quot;</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">    #define pv_deprint_forstr_debug   &quot;\033[94mDebug\033[0m&quot;</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">    #define pv_deprint_forstr_warning &quot;\033[93mWarn\033[0m&quot;</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">    #define pv_deprint_forstr_error   &quot;\033[91mError\033[0m&quot;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">    #define pv_deprint_forstr_info    &quot;\033[92m[Info\033[0m ]&quot;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">    #define pv_deprint_forstr_debug   &quot;\033[94m[Debug\033[0m]&quot;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">    #define pv_deprint_forstr_warning &quot;\033[93m[Warn\033[0m ]&quot;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">    #define pv_deprint_forstr_error   &quot;\033[91m[Error\033[0m]&quot;</span></div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">    #define pv_deprint_gettime() format_microsecond_time(__debug_time_buf, get_microseconds())</span></div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">    #define pv_deprint_defo(string) fprintf(__debug_file, &quot;[%s] %s : &quot; __FILE__ &quot;, Line %d: &quot;, string, pv_deprint_gettime(), __LINE__)</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">    #define pv_deprint_defo(string) fprintf(__debug_file, &quot;%s \033[95m%s\033[0m: \033[93m%-40s\033[0m , Line% -5d(\033[93m%-20s\033[0m): &quot;, string, pv_deprint_gettime(), __FILE__, __LINE__, __func__)</span></div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor">    #define pv_deprint_getformat(a) _Generic((a),                   \</span></div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">            int:                #a &quot; = %d\n&quot;,                       \</span></div>
