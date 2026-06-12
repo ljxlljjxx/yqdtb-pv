@@ -10,7 +10,7 @@ gcc pvc_PV_55p8-macos.o ct_pvc_PV_55p8-macos.o pvc_defines-macos.o -o ct_pvc_PV_
 #include "../main.h"
 #include "pvc_PV_55p8.h"
 
-bool test_pvc_PV_55p8_add(void)
+int test_pvc_PV_55p8_add(void)
 {
     pvc_PV_55p8 a, b, res;
     bool s;
@@ -103,7 +103,7 @@ bool test_pvc_PV_55p8_add(void)
     test_end();
 }
 
-bool test_pvc_PV_55p8_neg(void)
+int test_pvc_PV_55p8_neg(void)
 {
     pvc_PV_55p8 a;
     bool ans;
@@ -137,7 +137,7 @@ bool test_pvc_PV_55p8_neg(void)
     test_end();
 }
 
-bool test_pvc_PV_55p8_tostring(void)
+int test_pvc_PV_55p8_tostring(void)
 {
     pvc_PV_55p8 a;
     char *s;
@@ -166,7 +166,7 @@ bool test_pvc_PV_55p8_tostring(void)
     test_end();
 }
 
-bool test_pvc_PV_55p8_format_normal_1(void)
+int test_pvc_PV_55p8_format_normal_1(void)
 {
     pvc_PV_55p8 a;
     int ans, format_length;
@@ -219,7 +219,7 @@ bool test_pvc_PV_55p8_format_normal_1(void)
     test_end();
 }
 
-bool test_pvc_PV_55p8_format_normal_2(void)
+int test_pvc_PV_55p8_format_normal_2(void)
 {
     pvc_PV_55p8 a;
     int ans, format_length;
@@ -272,7 +272,7 @@ bool test_pvc_PV_55p8_format_normal_2(void)
     test_end();
 }
 
-bool test_pvc_PV_55p8_format_pointf(void)
+int test_pvc_PV_55p8_format_pointf(void)
 {
     pvc_PV_55p8 a;
     int ans, format_length;
@@ -481,7 +481,7 @@ bool test_pvc_PV_55p8_format_pointf(void)
     test_end();
 }
 
-bool test_pvc_PV_55p8_format_starf(void)
+int test_pvc_PV_55p8_format_starf(void)
 {
     pvc_PV_55p8 a;
     int ans, format_length;
@@ -690,7 +690,7 @@ bool test_pvc_PV_55p8_format_starf(void)
     test_end();
 }
 
-bool test_pvc_PV_55p8_format_negf(void)
+int test_pvc_PV_55p8_format_negf(void)
 {
     pvc_PV_55p8 a;
     int ans, format_length;
@@ -949,7 +949,7 @@ bool test_pvc_PV_55p8_format_negf(void)
     test_end();
 }
 
-bool test_pvc_PV_55p8_format_pointe(void)
+int test_pvc_PV_55p8_format_pointe(void)
 {
     pvc_PV_55p8 a;
     int ans, format_length;
@@ -1158,7 +1158,7 @@ bool test_pvc_PV_55p8_format_pointe(void)
     test_end();
 }
 
-bool test_pvc_PV_55p8_format_stare(void)
+int test_pvc_PV_55p8_format_stare(void)
 {
     pvc_PV_55p8 a;
     int ans, format_length;
@@ -1367,7 +1367,7 @@ bool test_pvc_PV_55p8_format_stare(void)
     test_end();
 }
 
-bool test_pvc_PV_55p8_format_pointE(void)
+int test_pvc_PV_55p8_format_pointE(void)
 {
     pvc_PV_55p8 a;
     int ans, format_length;
@@ -1576,7 +1576,7 @@ bool test_pvc_PV_55p8_format_pointE(void)
     test_end();
 }
 
-bool test_pvc_PV_55p8_format_starE(void)
+int test_pvc_PV_55p8_format_starE(void)
 {
     pvc_PV_55p8 a;
     int ans, format_length;
@@ -1785,7 +1785,7 @@ bool test_pvc_PV_55p8_format_starE(void)
     test_end();
 }
 
-bool test_pvc_PV_55p8_format_littlenumber(void)
+int test_pvc_PV_55p8_format_littlenumber(void)
 {
     pvc_PV_55p8 a;
     int ans, format_length;
@@ -2272,7 +2272,7 @@ bool test_pvc_PV_55p8_format_littlenumber(void)
     test_end();
 }
 
-bool test_pvc_PV_55p8_format_g(void)
+int test_pvc_PV_55p8_format_g(void)
 {
     pvc_PV_55p8 a;
     int ans, format_length;
@@ -2360,7 +2360,7 @@ bool test_pvc_PV_55p8_format_g(void)
     test_end();
 }
 
-bool test_pvc_PV_55p8_print(void)
+int test_pvc_PV_55p8_print(void)
 {
     pvc_PV_55p8 a;
     char s[1000];
@@ -2390,7 +2390,7 @@ bool test_pvc_PV_55p8_print(void)
     test_end();
 }
 
-bool test_pvc_PV_55p8_null(void)
+int test_pvc_PV_55p8_null(void)
 {
     pvc_PV_55p8 a;
     char s[1000];

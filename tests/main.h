@@ -22,7 +22,7 @@
 char test_format_buffer[100000];
 char test_temp_buffer[100000];
 
-typedef bool (*const testfunc_type)(void);
+typedef int (*const testfunc_type)(void);
 
 typedef struct
 {
@@ -49,7 +49,7 @@ typedef struct Test
         { \
             sprintf(test_temp_buffer, "in line %u useful_functest: TLE: %.0lfμs > %.0lfμs", __LINE__, (double)(end - start) * 1000000 / CLOCKS_PER_SEC, __time_max); \
             strcat(test_format_buffer, test_temp_buffer); \
-            return false; \
+            return 2; \
         } \
     } while (0)
 
@@ -63,7 +63,7 @@ typedef struct Test
         { \
             sprintf(test_temp_buffer, "in line %u useful_functest: TLE: %.0lfμs > %.0lfμs", __LINE__, (double)(end - start) * 1000000 / CLOCKS_PER_SEC, __time_max); \
             strcat(test_format_buffer, test_temp_buffer); \
-            return false; \
+            return 2; \
         } \
     } while (0)
 
@@ -158,7 +158,7 @@ int test_runner(const Test *now)
     const TestFunc *test_func;
     uint64_t start, end;
     int ret_val;
-    int count_fail = 0, count_ok = 0;
+    int count_fail = 0, count_ok = 0, count_tle = 0;
     printf("running: \033[0m%s\n", now->file_name);
     if (now->init_func) now->init_func();
     test_func = now->test_funcs;
@@ -179,7 +179,7 @@ int test_runner(const Test *now)
                 test_format_buffer
             );
         }
-        else
+        else if (ret_val == 1)
         {
             count_ok++;
             printf(
@@ -188,11 +188,21 @@ int test_runner(const Test *now)
                 (end - start) * 1000000ll / CLOCKS_PER_SEC
             );
         }
+        else
+        {
+            count_tle++;
+            printf(
+                "\033[93m%-40s TLE (used %llu μs)\n    \033[1m%s\n\033[0m", 
+                test_func->name, 
+                (end - start) * 1000000ll / CLOCKS_PER_SEC, 
+                test_format_buffer
+            );
+        }
     increase:
         test_func++;
     }
     if (now->end_func) now->end_func();
-    printf("\033[91m%d failed\033[0m, \033[92m%d ok\n\033[0m", count_fail, count_ok);
+    printf("\033[91m%d failed\033[0m, \033[93m%d TLE\033[0m, \033[92m%d ok\n\033[0m", count_fail, count_tle, count_ok);
     return count_fail;
 }
 
@@ -200,7 +210,7 @@ int test_runner(const Test *now)
     do {\
         fflush(stdout); \
         int orig_stdout = dup(fileno(stdout)); \
-        if (orig_stdout == -1) return NULL; \
+        if (orig_stdout == -1) return false; \
         FILE *temp = tmpfile(); \
         dup2(fileno(temp), fileno(stdout)); \
         sentence; \
@@ -221,7 +231,7 @@ int test_runner(const Test *now)
         fflush(stdout); \
         int orig_stdout = dup(fileno(stdout)); \
         uint64_t start, end; \
-        if (orig_stdout == -1) return NULL; \
+        if (orig_stdout == -1) return false; \
         FILE *temp = tmpfile(); \
         dup2(fileno(temp), fileno(stdout)); \
         start = got_time(); \
@@ -241,7 +251,7 @@ int test_runner(const Test *now)
         { \
             sprintf(test_temp_buffer, "in line %u useful_functest: TLE: %.0lfμs > %.0lfμs", __LINE__, (double)(end - start) * 1000000 / CLOCKS_PER_SEC, __time_max); \
             strcat(test_format_buffer, test_temp_buffer); \
-            return false; \
+            return 2; \
         } \
     } while (0);
 
