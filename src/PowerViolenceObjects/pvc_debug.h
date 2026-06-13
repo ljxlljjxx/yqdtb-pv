@@ -18,9 +18,11 @@ char *format_microsecond_time(char *, size_t);
     static FILE *__debug_file;
     static char __debug_time_buf[64];
 
-    #define pv_deprint_forstr_info    "\033[92m[Info\033[0m ]"
+    #define __debug_file_open_mode "w"
+
+    #define pv_deprint_forstr_info    "\033[92m[Info\033[0m] "
     #define pv_deprint_forstr_debug   "\033[94m[Debug\033[0m]"
-    #define pv_deprint_forstr_warning "\033[93m[Warn\033[0m ]"
+    #define pv_deprint_forstr_warning "\033[93m[Warn\033[0m] "
     #define pv_deprint_forstr_error   "\033[91m[Error\033[0m]"
 
     #define pv_deprint_gettime() format_microsecond_time(__debug_time_buf, get_microseconds())

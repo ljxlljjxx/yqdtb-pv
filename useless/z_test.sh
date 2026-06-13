@@ -1,4 +1,4 @@
-PV='/Users/ljx/Desktop/P/github/PowerViolence'
+PV=$PV_PATH
 return_val=0
 cd $PV
 rm *-macos

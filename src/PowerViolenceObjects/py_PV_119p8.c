@@ -195,6 +195,107 @@ static PyGetSetDef PV_119p8_getsetters[] = {
     {NULL, NULL, NULL, NULL, NULL}
 };
 
+static PyObject *PV_119p8_add(PyObject *_lhs, PyObject *_rhs)
+{
+    PV_119p8_Object *lhs = (PV_119p8_Object *)_lhs;
+    PV_119p8_Object *rhs = (PV_119p8_Object *)_rhs;
+    pvc_PV_119p8 result;
+    PV_119p8_Object *ans;
+    if (PyObject_TypeCheck(_lhs, g_PV_num_Type) && PyObject_TypeCheck(_rhs, g_PV_num_Type))
+    {
+        if (PvNUM_TypeCheck(_lhs, PVF_119) && PvNUM_TypeCheck(_rhs, PVF_119))
+        {
+            if (pvc_PV_119p8_add(&lhs->value, &rhs->value, &result))
+                raise_overflow(NULL);
+            ans = _PV_119p8_FromValue(&result);
+            return ans;
+        }
+        info_puts("PV_119p8_add ask PV_num's help");
+        return g_PV_num_Type->tp_as_number->nb_add(_lhs, _rhs);
+    }
+    Py_RETURN_NOTIMPLEMENTED; 
+}
+
+static PyObject *PV_119p8_sub(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_mul(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_mod(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_pow(PyObject *a, PyObject *b, PyObject *c) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_divmod(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_truediv(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_floordiv(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_neg(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_pos(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_abs(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+
+int PV_119p8_bool(PyObject *a)
+{
+    PV_119p8_Object *hs = (PV_119p8_Object *)a;
+    return hs->value._1 || hs->value._2 ? 1 : 0;
+}
+
+static PyObject *PV_119p8_invert(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_int(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_float(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_lshift(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_rshift(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_and(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_xor(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_or(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+
+static PyObject *PV_119p8_iadd(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_isub(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_imul(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_imod(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_ipow(PyObject *a, PyObject *b, PyObject *c) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_itruediv(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_ifloordiv(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_ilshift(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_irshift(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_iand(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_ixor(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_ior(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+
+static PyObject *PV_119p8_index(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+
+static PyNumberMethods PV_119p8_as_number = {
+    .nb_add = (binaryfunc)PV_119p8_add,
+    .nb_subtract = (binaryfunc)PV_119p8_sub,
+    .nb_multiply = (binaryfunc)PV_119p8_mul,
+    .nb_remainder = (binaryfunc)PV_119p8_mod,
+    .nb_divmod = (binaryfunc)PV_119p8_divmod,
+    .nb_power = (ternaryfunc)PV_119p8_pow,
+    .nb_negative = (unaryfunc)PV_119p8_neg,
+    .nb_positive = (unaryfunc)PV_119p8_pos,
+    .nb_absolute = (unaryfunc)PV_119p8_abs,
+    .nb_bool = (inquiry)PV_119p8_bool,
+    .nb_invert = (unaryfunc)PV_119p8_invert,
+    .nb_int = (unaryfunc)PV_119p8_int,
+    .nb_float = (unaryfunc)PV_119p8_float,
+    .nb_lshift = (binaryfunc)PV_119p8_lshift,
+    .nb_rshift = (binaryfunc)PV_119p8_rshift,
+    .nb_and = (binaryfunc)PV_119p8_and,
+    .nb_xor = (binaryfunc)PV_119p8_xor,
+    .nb_or = (binaryfunc)PV_119p8_or,
+
+    .nb_inplace_add = (binaryfunc)PV_119p8_iadd,
+    .nb_inplace_subtract = (binaryfunc)PV_119p8_isub,
+    .nb_inplace_multiply = (binaryfunc)PV_119p8_imul,
+    .nb_inplace_remainder = (binaryfunc)PV_119p8_imod,
+    .nb_inplace_power = (ternaryfunc)PV_119p8_ipow,
+    .nb_inplace_lshift = (binaryfunc)PV_119p8_ilshift,
+    .nb_inplace_rshift = (binaryfunc)PV_119p8_irshift,
+    .nb_inplace_and = (binaryfunc)PV_119p8_iand,
+    .nb_inplace_xor = (binaryfunc)PV_119p8_ixor,
+    .nb_inplace_or = (binaryfunc)PV_119p8_ior,
+
+    .nb_true_divide = (binaryfunc)PV_119p8_truediv,
+    .nb_floor_divide = (binaryfunc)PV_119p8_floordiv,
+    .nb_inplace_true_divide = (binaryfunc)PV_119p8_itruediv,
+    .nb_inplace_floor_divide = (binaryfunc)PV_119p8_ifloordiv,
+
+    .nb_index = (unaryfunc)PV_119p8_index,
+};
+
 static PyTypeObject PV_119p8_Type = {
     .ob_base = PyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "pv_119p8.PV_119p8",
@@ -210,6 +311,7 @@ static PyTypeObject PV_119p8_Type = {
     .tp_dealloc = (destructor)PV_119p8_dealloc,
     .tp_methods = PV_119p8_methods,
     .tp_getset = PV_119p8_getsetters,
+    .tp_as_number = &PV_119p8_as_number,
 };
 
 static int pv_119p8_exec(PyObject *m)

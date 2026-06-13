@@ -151,15 +151,17 @@ static PyObject *PV_55p8_add(PyObject *_lhs, PyObject *_rhs)
     PV_55p8_Object *lhs = (PV_55p8_Object *)_lhs;
     PV_55p8_Object *rhs = (PV_55p8_Object *)_rhs;
     pvc_PV_55p8 result;
-    PV_55p8_Object ans;
+    PV_55p8_Object *ans;
     if (PyObject_TypeCheck(_lhs, g_PV_num_Type) && PyObject_TypeCheck(_rhs, g_PV_num_Type))
     {
         if (PvNUM_TypeCheck(_lhs, PVF_55P) && PvNUM_TypeCheck(_rhs, PVF_55P))
         {
-            pvc_PV_55p8_add(&lhs->value, &rhs->value, &result);
-
+            if (pvc_PV_55p8_add(&lhs->value, &rhs->value, &result))
+                raise_overflow(NULL);
+            ans = _PV_55p8_FromValue(&result);
+            return ans;
         }
-        info_puts("PV_55p8_richcmp ask PV_num's help");
+        info_puts("PV_55p8_add ask PV_num's help");
         return g_PV_num_Type->tp_as_number->nb_add(_lhs, _rhs);
     }
     Py_RETURN_NOTIMPLEMENTED; 
