@@ -175,7 +175,13 @@ static PyObject *PV_55p8_floordiv(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLE
 static PyObject *PV_55p8_neg(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_55p8_pos(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_55p8_abs(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
-// int PV_num_bool(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+
+int PV_55p8_bool(PyObject *a)
+{
+    PV_55p8_Object *hs = (PV_55p8_Object *)a;
+    return hs->value._1 ? 1 : 0;
+}
+
 static PyObject *PV_55p8_invert(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_55p8_int(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_55p8_float(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
@@ -210,7 +216,7 @@ static PyNumberMethods PV_55p8_as_number = {
     .nb_negative = (unaryfunc)PV_55p8_neg,
     .nb_positive = (unaryfunc)PV_55p8_pos,
     .nb_absolute = (unaryfunc)PV_55p8_abs,
-    // .nb_bool = (inquiry)PV_55p8_bool,
+    .nb_bool = (inquiry)PV_55p8_bool,
     .nb_invert = (unaryfunc)PV_55p8_invert,
     .nb_int = (unaryfunc)PV_55p8_int,
     .nb_float = (unaryfunc)PV_55p8_float,

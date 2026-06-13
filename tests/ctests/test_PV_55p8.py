@@ -131,5 +131,24 @@ class TestPv_55p8(unittest.TestCase):
         self.assertTrue(issubclass(PV_55p8, PV_num))
 
 
+class TestPv_55p8_as_number(unittest.TestCase):
+    def test_bool(self):
+        a = PV_55p8()
+        self.assertFalse(a)
+
+        a = PV_55p8(10000.0)
+        self.assertTrue(a)
+
+        a = PV_55p8(-10000.0)
+        self.assertTrue(a)
+
+        for i in range(10000):
+            a._value = randint(-2**63, 2**63-1)
+            if a._value:
+                self.assertTrue(a)
+            else:
+                self.assertFalse(a)
+
+
 if __name__ == '__main__':
     unittest.main()
