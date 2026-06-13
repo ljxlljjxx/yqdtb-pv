@@ -47,9 +47,9 @@ typedef struct Test
         end = got_time(); \
         if ((double)(end - start) * 1000000 > __time_max * CLOCKS_PER_SEC) \
         { \
-            sprintf(test_temp_buffer, "in line %u useful_functest: TLE: %.0lfμs > %.0lfμs", __LINE__, (double)(end - start) * 1000000 / CLOCKS_PER_SEC, __time_max); \
+            sprintf(test_temp_buffer, "    in line %u useful_functest: TLE: %.0lfμs > %.0lfμs\n", __LINE__, (double)(end - start) * 1000000 / CLOCKS_PER_SEC, __time_max); \
             strcat(test_format_buffer, test_temp_buffer); \
-            return 2; \
+            __return_val = 2; \
         } \
     } while (0)
 
@@ -61,24 +61,25 @@ typedef struct Test
         end = got_time(); \
         if ((end - start) * 1000000 > __time_max * CLOCKS_PER_SEC) \
         { \
-            sprintf(test_temp_buffer, "in line %u useful_functest: TLE: %.0lfμs > %.0lfμs", __LINE__, (double)(end - start) * 1000000 / CLOCKS_PER_SEC, __time_max); \
+            sprintf(test_temp_buffer, "    in line %u useful_functest: TLE: %.0lfμs > %.0lfμs\n", __LINE__, (double)(end - start) * 1000000 / CLOCKS_PER_SEC, __time_max); \
             strcat(test_format_buffer, test_temp_buffer); \
-            return 2; \
+            __return_val = 2; \
         } \
     } while (0)
 
-#define test_start(_time_max) double __time_max = _time_max
-#define test_end() return true
+#define test_start(_time_max) double __time_max = _time_max; int __return_val = 1
+#define test_end() return __return_val
 #define assert_equal(a, b) \
     do \
     { \
         if (a != b) \
         { \
-            sprintf(test_temp_buffer, "in line %u assert_equal: ", __LINE__); \
+            sprintf(test_temp_buffer, "    in line %u assert_equal: ", __LINE__); \
             strcat(test_format_buffer, test_temp_buffer); \
             print(a); \
             strcat(test_format_buffer, " is not "); \
             print(b); \
+            strcat(test_format_buffer, "\n"); \
             return false; \
         } \
     } while (0)
@@ -88,12 +89,12 @@ typedef struct Test
     { \
         if (strcmp(a, b)) \
         { \
-            sprintf(test_temp_buffer, "in line %u assert_string_equal: `", __LINE__); \
+            sprintf(test_temp_buffer, "    in line %u assert_string_equal: `", __LINE__); \
             strcat(test_format_buffer, test_temp_buffer); \
             strcat(test_format_buffer, a); \
             strcat(test_format_buffer, "` is not `"); \
             strcat(test_format_buffer, b); \
-            strcat(test_format_buffer, "`"); \
+            strcat(test_format_buffer, "`\n"); \
             return false; \
         } \
     } while (0)
@@ -136,7 +137,7 @@ static int _ctest_sprintf(int s, ...)
 }
 
 #define print(a) do { \
-    strcat(test_format_buffer, #a "("); \
+    strcat(test_format_buffer, "    " #a "("); \
     _Generic((a), \
         bool:      _ctest_sprintf('b', a), \
         int:       _ctest_sprintf('i', a),  unsigned:           _ctest_sprintf('u', a), \
@@ -150,7 +151,7 @@ static int _ctest_sprintf(int s, ...)
         default:   _ctest_sprintf('?', a) \
     ); \
     strcat(test_format_buffer, test_temp_buffer); \
-    strcat(test_format_buffer, ")"); \
+    strcat(test_format_buffer, ")\n"); \
 } while (0)
 
 int test_runner(const Test *now)
@@ -173,7 +174,7 @@ int test_runner(const Test *now)
         {
             count_fail++;
             printf(
-                "\033[91m%s failed: (used %llu μs)\n    \033[1m%s\n\033[0m", 
+                "\033[91m%s failed: (used %llu μs)\n\033[1m%s\033[0m", 
                 test_func->name, 
                 (end - start) * 1000000ll / CLOCKS_PER_SEC, 
                 test_format_buffer
@@ -192,7 +193,7 @@ int test_runner(const Test *now)
         {
             count_tle++;
             printf(
-                "\033[93m%-40s TLE (used %llu μs)\n    \033[1m%s\n\033[0m", 
+                "\033[93m%-40s TLE (used %llu μs)\n\033[1m%s\033[0m", 
                 test_func->name, 
                 (end - start) * 1000000ll / CLOCKS_PER_SEC, 
                 test_format_buffer
@@ -249,9 +250,9 @@ int test_runner(const Test *now)
         fclose(temp);  \
         if ((end - start) * 1000000 > __time_max * CLOCKS_PER_SEC) \
         { \
-            sprintf(test_temp_buffer, "in line %u useful_functest: TLE: %.0lfμs > %.0lfμs", __LINE__, (double)(end - start) * 1000000 / CLOCKS_PER_SEC, __time_max); \
+            sprintf(test_temp_buffer, "    in line %u useful_functest: TLE: %.0lfμs > %.0lfμs\n", __LINE__, (double)(end - start) * 1000000 / CLOCKS_PER_SEC, __time_max); \
             strcat(test_format_buffer, test_temp_buffer); \
-            return 2; \
+            __return_val = 2; \
         } \
     } while (0);
 
