@@ -25,8 +25,9 @@ PowerViolenceObjects:
 |_  PV_struct
 """
 
-__version__ = "3.1.80"
+__version__ = "3.1.81"
 
+from ctypes import Union
 from .pv_str import PV_str  # type: ignore
 from .pv_str_names import PV_str_names  # type: ignore
 
@@ -35,7 +36,7 @@ from .pv_55p8 import PV_55p8  # type: ignore
 from .pv_119p8 import PV_119p8  # type: ignore
 
 class _Constant:
-    def __getattribute__(self, __name: str) -> type | int | float:
+    def __getattribute__(self, __name: str) -> Union[type, int, float]:
         name: list[str] = __name.lower().split('__')
         if len(name) != 2:
             return AttributeError
