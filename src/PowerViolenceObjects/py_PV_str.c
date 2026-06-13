@@ -28,7 +28,7 @@ static int pv_str_exec(PyObject *m)
     if (PyType_Ready(&PV_str_Type) < 0) return -1;
     if (PyModule_AddObject(m, "PV_str", (PyObject *)&PV_str_Type) < 0) return -1;
 #ifdef DEBUG
-    __debug_file = fopen("pv_str_debug.log", "a");
+    __debug_file = fopen("pv_str_debug.log", __debug_file_open_mode);
     PyObject *capsule = PyCapsule_New((void *)__debug_file, "pv_str.__debug_file", NULL);
     PyModule_AddObject(m, "__debug_file", capsule);
 #endif

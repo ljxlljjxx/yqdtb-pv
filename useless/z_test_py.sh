@@ -1,4 +1,4 @@
-PV='/Users/ljx/Desktop/P/github/PowerViolence'
+PV=$PV_PATH
 return_val=0
 cd $PV
 rm *-macos
@@ -14,7 +14,6 @@ pip install --no-cache-dir .
 if [ $? -eq 1 ]; then
     return_val=1;
 else
-    echo 'Python test'
     python -m unittest discover tests
     if [[ $? > 0 ]]; then
         return_val=1;

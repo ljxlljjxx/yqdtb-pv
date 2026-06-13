@@ -1,4 +1,4 @@
-PV='/Users/ljx/Desktop/P/github/PowerViolence'
+PV=$PV_PATH
 
 cd $PV
 
