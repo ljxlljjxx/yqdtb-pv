@@ -60,16 +60,16 @@ typedef struct Test
         __tests_count++; \
     } while (0)
 
-#define test_start(_time_max) __time_max = _time_max; double __used_time = 0; int __tests_count = 0
-#define test_end() if (__used_time * 1000000 > __time_max * CLOCKS_PER_SEC * __tests_count) \
+#define test_start(_time_max) __time_max = _time_max; int64_t __used_time = 0; int __tests_count = 0
+#define test_end() if ((double)__used_time * 1000000 > __time_max * CLOCKS_PER_SEC * __tests_count) \
         { \
-            sprintf(test_temp_buffer, "    in line %u (%s): TLE: average %.3lfμs > %.0lfμs\n", __LINE__, __func__, __used_time * 1000000 / CLOCKS_PER_SEC / __tests_count, __time_max); \
+            sprintf(test_temp_buffer, "    in line %u (%s): TLE: average %.3lfμs > %.0lfμs\n", __LINE__, __func__, (double)__used_time * 1000000 / CLOCKS_PER_SEC / __tests_count, __time_max); \
             strcat(test_format_buffer, test_temp_buffer); \
             return 2; \
         } \
         else \
         { \
-            ok_time_use = __used_time * 1000000 / __tests_count / CLOCKS_PER_SEC; \
+            ok_time_use = (double)__used_time * 1000000 / __tests_count / CLOCKS_PER_SEC; \
             return 1; \
         }
 
