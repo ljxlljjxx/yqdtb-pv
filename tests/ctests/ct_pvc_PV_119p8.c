@@ -7,7 +7,7 @@ gcc pvc_PV_119p8-macos.o ct_pvc_PV_119p8-macos.o pvc_defines-macos.o -o ct_pvc_P
 ./ct_pvc_PV_119p8-macos
 */
 
-#include "../main.h"
+#include "main.h"
 #include "pvc_PV_119p8.h"
 
 int test_pvc_PV_119p8_set(void)
