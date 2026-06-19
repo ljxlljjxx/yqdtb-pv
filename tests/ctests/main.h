@@ -21,6 +21,7 @@
 
 char test_format_buffer[100000];
 char test_temp_buffer[100000];
+double ok_time_use, __time_max;
 
 typedef int (*const testfunc_type)(void);
 
@@ -45,12 +46,8 @@ typedef struct Test
         start = got_time(); \
         ans = func(__VA_ARGS__); \
         end = got_time(); \
-        if ((double)(end - start) * 1000000 > __time_max * CLOCKS_PER_SEC) \
-        { \
-            sprintf(test_temp_buffer, "    in line %u useful_functest: TLE: %.0lfμs > %.0lfμs\n", __LINE__, (double)(end - start) * 1000000 / CLOCKS_PER_SEC, __time_max); \
-            strcat(test_format_buffer, test_temp_buffer); \
-            __return_val = 2; \
-        } \
+        __used_time += (end - start); \
+        __tests_count++; \
     } while (0)
 
 #define useful_functest_noreturnvalue(func, ...) \
@@ -59,16 +56,23 @@ typedef struct Test
         start = got_time(); \
         func(__VA_ARGS__); \
         end = got_time(); \
-        if ((end - start) * 1000000 > __time_max * CLOCKS_PER_SEC) \
-        { \
-            sprintf(test_temp_buffer, "    in line %u useful_functest: TLE: %.0lfμs > %.0lfμs\n", __LINE__, (double)(end - start) * 1000000 / CLOCKS_PER_SEC, __time_max); \
-            strcat(test_format_buffer, test_temp_buffer); \
-            __return_val = 2; \
-        } \
+        __used_time += (end - start); \
+        __tests_count++; \
     } while (0)
 
-#define test_start(_time_max) double __time_max = _time_max; int __return_val = 1
-#define test_end() return __return_val
+#define test_start(_time_max) __time_max = _time_max; double __used_time = 0; int __tests_count = 0
+#define test_end() if (__used_time * 1000000 > __time_max * CLOCKS_PER_SEC * __tests_count) \
+        { \
+            sprintf(test_temp_buffer, "    in line %u (%s): TLE: average %.3lfμs > %.0lfμs\n", __LINE__, __func__, __used_time * 1000000 / CLOCKS_PER_SEC / __tests_count, __time_max); \
+            strcat(test_format_buffer, test_temp_buffer); \
+            return 2; \
+        } \
+        else \
+        { \
+            ok_time_use = __used_time * 1000000 / __tests_count / CLOCKS_PER_SEC; \
+            return 1; \
+        }
+
 #define assert_equal(a, b) \
     do \
     { \
@@ -157,7 +161,6 @@ static int _ctest_sprintf(int s, ...)
 int test_runner(const Test *now)
 {
     const TestFunc *test_func;
-    uint64_t start, end;
     int ret_val;
     int count_fail = 0, count_ok = 0, count_tle = 0;
     printf("running: \033[0m%s\n", now->file_name);
@@ -167,16 +170,13 @@ int test_runner(const Test *now)
     {
         test_format_buffer[0] = 0;
         if (test_func->state == TestFuncState_disable) goto increase;
-        start = got_time();
         ret_val = test_func->func();
-        end = got_time();
         if (!ret_val)
         {
             count_fail++;
             printf(
-                "\033[91m%s failed: (used %llu μs)\n\033[1m%s\033[0m", 
+                "\033[91m%s failed:\n\033[1m%s\033[0m", 
                 test_func->name, 
-                (end - start) * 1000000ll / CLOCKS_PER_SEC, 
                 test_format_buffer
             );
         }
@@ -184,18 +184,18 @@ int test_runner(const Test *now)
         {
             count_ok++;
             printf(
-                "\033[92m%-40s Accepted (used %llu μs)\n\033[0m", 
+                "\033[92m%-40s Accepted (%.3lf μs in average < %.0lf)\n\033[0m", 
                 test_func->name, 
-                (end - start) * 1000000ll / CLOCKS_PER_SEC
+                ok_time_use,
+                __time_max
             );
         }
         else
         {
             count_tle++;
             printf(
-                "\033[93m%-40s TLE (used %llu μs)\n\033[1m%s\033[0m", 
+                "\033[93m%-40s TLE\n\033[1m%s\033[0m", 
                 test_func->name, 
-                (end - start) * 1000000ll / CLOCKS_PER_SEC, 
                 test_format_buffer
             );
         }
@@ -204,7 +204,7 @@ int test_runner(const Test *now)
     }
     if (now->end_func) now->end_func();
     printf("\033[91m%d failed\033[0m, \033[93m%d TLE\033[0m, \033[92m%d ok\n\033[0m", count_fail, count_tle, count_ok);
-    return count_fail;
+    return count_fail || count_tle;
 }
 
 #define CAPTURE_STROUT(buffer, sentence) \
@@ -248,12 +248,8 @@ int test_runner(const Test *now)
         size_t read_size = fread(buffer, 1, (size_t)size, temp); \
         buffer[read_size] = '\0'; \
         fclose(temp);  \
-        if ((end - start) * 1000000 > __time_max * CLOCKS_PER_SEC) \
-        { \
-            sprintf(test_temp_buffer, "    in line %u useful_functest: TLE: %.0lfμs > %.0lfμs\n", __LINE__, (double)(end - start) * 1000000 / CLOCKS_PER_SEC, __time_max); \
-            strcat(test_format_buffer, test_temp_buffer); \
-            __return_val = 2; \
-        } \
+        __used_time += (end - start); \
+        __tests_count++; \
     } while (0);
 
 #endif /* _CTESTS_MAIN_H */
