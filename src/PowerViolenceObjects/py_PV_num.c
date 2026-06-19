@@ -427,7 +427,7 @@ static PyObject *pv_num_set_global(PyObject *self, PyObject *value)
     if (!PyCallable_Check(value))
     {
         error_puts("set uncallable overflow_function");
-        PyErr_SetString(PyExc_TypeError, "overflow_function must be callable");
+        PyErr_SetString(PyExc_TypeError, "overflow_function must be callable or None");
         return NULL;
     }
     info_puts("set new overflow_function");
