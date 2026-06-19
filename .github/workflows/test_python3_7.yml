@@ -1,5 +1,5 @@
-name: Python test in 3.14
-run-name: Python test in 3.14 triggered bt ${{ github.actor }}
+name: Python test in 3.7
+run-name: Python test in 3.7 triggered bt ${{ github.actor }}
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 on:
@@ -16,17 +16,14 @@ on:
     - cron: "17 2 * * *"
 jobs:
   run-tests:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version: '3.14'
+          python-version: '3.7'
       - name: Install dependencies
         run: |
           pip install .
