@@ -131,5 +131,58 @@ class TestPv_55p8(unittest.TestCase):
         self.assertTrue(issubclass(PV_55p8, PV_num))
 
 
+class TestPv_55p8_as_number(unittest.TestCase):
+    def test_add(self):
+        def overflow_func(): raise OverflowError
+        set_overflow_function(overflow_func)
+
+        a: PV_55p8 = PV_55p8()
+        b: PV_55p8 = PV_55p8(1.0)
+        c: PV_55p8 = a + b
+        self.assertEqual(c._value, 256)
+
+        a: PV_55p8 = PV_55p8(35028797018963968.0)
+        b: PV_55p8 = PV_55p8(35028797018963968.0)
+        with self.assertRaises(OverflowError):
+            c: PV_55p8 = a + b
+        set_overflow_function(None)
+        c: PV_55p8 = a + b
+        self.assertEqual(c._value, 0)
+
+        for _ in range(1000):
+            a._value = randint(-2**63, 2**63-1)
+            b._value = randint(-2**63, 2**63-1)
+            trueans: int = a._value + b._value
+            if trueans > constant.PV_55p8__max_int or trueans < constant.PV_55p8__min_int:
+                trueans = 0
+            c = a + b
+            self.assertEqual(c._value, trueans)
+
+        d: PV_num = PV_num()
+        with self.assertRaises(TypeError):
+            a + d
+
+        e: PV_119p8 = PV_119p8()
+        a + e
+
+
+    def test_bool(self):
+        a = PV_55p8()
+        self.assertFalse(a)
+
+        a = PV_55p8(10000.0)
+        self.assertTrue(a)
+
+        a = PV_55p8(-10000.0)
+        self.assertTrue(a)
+
+        for i in range(10000):
+            a._value = randint(-2**63, 2**63-1)
+            if a._value:
+                self.assertTrue(a)
+            else:
+                self.assertFalse(a)
+
+
 if __name__ == '__main__':
     unittest.main()
