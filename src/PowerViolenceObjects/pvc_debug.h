@@ -18,14 +18,16 @@ char *format_microsecond_time(char *, size_t);
     static FILE *__debug_file;
     static char __debug_time_buf[64];
 
-    #define pv_deprint_forstr_info    "\033[92mInfo\033[0m"
-    #define pv_deprint_forstr_debug   "\033[94mDebug\033[0m"
-    #define pv_deprint_forstr_warning "\033[93mWarn\033[0m"
-    #define pv_deprint_forstr_error   "\033[91mError\033[0m"
+    #define __debug_file_open_mode "w"
+
+    #define pv_deprint_forstr_info    "\033[92m[Info\033[0m] "
+    #define pv_deprint_forstr_debug   "\033[94m[Debug\033[0m]"
+    #define pv_deprint_forstr_warning "\033[93m[Warn\033[0m] "
+    #define pv_deprint_forstr_error   "\033[91m[Error\033[0m]"
 
     #define pv_deprint_gettime() format_microsecond_time(__debug_time_buf, get_microseconds())
 
-    #define pv_deprint_defo(string) fprintf(__debug_file, "[%s] %s : " __FILE__ ", Line %d: ", string, pv_deprint_gettime(), __LINE__)
+    #define pv_deprint_defo(string) fprintf(__debug_file, "%s \033[95m%s\033[0m: \033[93m%-40s\033[0m , Line% -5d(\033[93m%-20s\033[0m): ", string, pv_deprint_gettime(), __FILE__, __LINE__, __func__)
 
     #define pv_deprint_getformat(a) _Generic((a),                   \
             int:                #a " = %d\n",                       \
@@ -41,21 +43,21 @@ char *format_microsecond_time(char *, size_t);
             void *:             #a " = %p\n",                       \
             default:            "Line " _DEBUG_STR(__LINE__) ": unknown type: Please goto src/PowerViolenceObjects/pvc_PVC_DEBUG_H.h\n" \
             )
-    #define debug_printf(format, ...) do { pv_deprint_defo(pv_deprint_forstr_debug); fprintf(__debug_file, format, ##__VA_ARGS__); } while (0)
-    #define debug_puts(string) do { pv_deprint_defo(pv_deprint_forstr_debug); fputs(string, __debug_file); fputc(10, __debug_file); } while (0)
-    #define debug_print(a) do { pv_deprint_defo(pv_deprint_forstr_debug); fprintf(__debug_file, pv_deprint_getformat(a), a); } while (0)
+    #define debug_printf(format, ...) do { pv_deprint_defo(pv_deprint_forstr_debug); fprintf(__debug_file, format, ##__VA_ARGS__); fflush(__debug_file); } while (0)
+    #define debug_puts(string) do { pv_deprint_defo(pv_deprint_forstr_debug); fputs(string, __debug_file); fputc(10, __debug_file); fflush(__debug_file); } while (0)
+    #define debug_print(a) do { pv_deprint_defo(pv_deprint_forstr_debug); fprintf(__debug_file, pv_deprint_getformat(a), a); fflush(__debug_file); } while (0)
 
-    #define info_printf(format, ...) do { pv_deprint_defo(pv_deprint_forstr_info); fprintf(__debug_file, format, ##__VA_ARGS__); } while (0)
-    #define info_puts(string) do { pv_deprint_defo(pv_deprint_forstr_info); fputs(string, __debug_file); fputc(10, __debug_file); } while (0)
-    #define info_print(a) do { pv_deprint_defo(pv_deprint_forstr_info); fprintf(__debug_file, pv_deprint_getformat(a), a); } while (0)
+    #define info_printf(format, ...) do { pv_deprint_defo(pv_deprint_forstr_info); fprintf(__debug_file, format, ##__VA_ARGS__); fflush(__debug_file); } while (0)
+    #define info_puts(string) do { pv_deprint_defo(pv_deprint_forstr_info); fputs(string, __debug_file); fputc(10, __debug_file); fflush(__debug_file); } while (0)
+    #define info_print(a) do { pv_deprint_defo(pv_deprint_forstr_info); fprintf(__debug_file, pv_deprint_getformat(a), a); fflush(__debug_file); } while (0)
 
-    #define warning_printf(format, ...) do { pv_deprint_defo(pv_deprint_forstr_warning); fprintf(__debug_file, format, ##__VA_ARGS__); } while (0)
-    #define warning_puts(string) do { pv_deprint_defo(pv_deprint_forstr_warning); fputs(string, __debug_file); fputc(10, __debug_file); } while (0)
-    #define warning_print(a) do { pv_deprint_defo(pv_deprint_forstr_warning); fprintf(__debug_file, pv_deprint_getformat(a), a); } while (0)
+    #define warning_printf(format, ...) do { pv_deprint_defo(pv_deprint_forstr_warning); fprintf(__debug_file, format, ##__VA_ARGS__); fflush(__debug_file); } while (0)
+    #define warning_puts(string) do { pv_deprint_defo(pv_deprint_forstr_warning); fputs(string, __debug_file); fputc(10, __debug_file); fflush(__debug_file); } while (0)
+    #define warning_print(a) do { pv_deprint_defo(pv_deprint_forstr_warning); fprintf(__debug_file, pv_deprint_getformat(a), a); fflush(__debug_file); } while (0)
 
-    #define error_printf(format, ...) do { pv_deprint_defo(pv_deprint_forstr_error); fprintf(__debug_file, format, ##__VA_ARGS__); } while (0)
-    #define error_puts(string) do { pv_deprint_defo(pv_deprint_forstr_error); fputs(string, __debug_file); fputc(10, __debug_file); } while (0)
-    #define error_print(a) do { pv_deprint_defo(pv_deprint_forstr_error); fprintf(__debug_file, pv_deprint_getformat(a), a); } while (0)
+    #define error_printf(format, ...) do { pv_deprint_defo(pv_deprint_forstr_error); fprintf(__debug_file, format, ##__VA_ARGS__); fflush(__debug_file); } while (0)
+    #define error_puts(string) do { pv_deprint_defo(pv_deprint_forstr_error); fputs(string, __debug_file); fputc(10, __debug_file); fflush(__debug_file); } while (0)
+    #define error_print(a) do { pv_deprint_defo(pv_deprint_forstr_error); fprintf(__debug_file, pv_deprint_getformat(a), a); fflush(__debug_file); } while (0)
 
     #define pv_deprint_overflow() warning_puts("overflow")
 #else

@@ -61,29 +61,42 @@ static int PV_119p8_init(PV_119p8_Object *self, PyObject *args, PyObject *kwds)
     return 0;
 }
 
+static PyObject *_PV_119p8_FromValue(pvc_PV_119p8 *val)
+{
+    PV_119p8_Object *obj;
+    obj = (PV_119p8_Object *)PV_119p8_Type.tp_alloc(&PV_119p8_Type, 0);
+    if (obj == NULL) return NULL;
+    obj->base.type_id = PVF_119;
+    if (val) obj->value = *val;
+    else obj->value._1 = 0ll, obj->value._2 = 0ull;
+    return (PyObject *)obj;
+}
+
 static PyObject *PV_119p8_richcmp(PyObject *lhs, PyObject *rhs, int op)
 {
     int64_t a1 = ((PV_119p8_Object *)lhs)->value._1, b1 = ((PV_119p8_Object *)rhs)->value._1;
     int64_t a2 = ((PV_119p8_Object *)lhs)->value._2, b2 = ((PV_119p8_Object *)rhs)->value._2;
     int c = 0;
-    if (!PyObject_TypeCheck(lhs, &PV_119p8_Type) || !PyObject_TypeCheck(rhs, &PV_119p8_Type))
+    PyObject *result;
+    if (PyObject_TypeCheck(lhs, g_PV_num_Type) && PyObject_TypeCheck(rhs, g_PV_num_Type))
     {
-        Py_RETURN_NOTIMPLEMENTED;
+        if (PvNUM_TypeCheck(lhs, PVF_119) && PvNUM_TypeCheck(rhs, PVF_119))
+        {
+            switch (op)
+            {
+            case Py_LT: if (a1 < b1 || (a1 == b1 && a2 < b2)) Py_RETURN_TRUE; Py_RETURN_FALSE;
+            case Py_LE: if (a1 < b1 || (a1 == b1 && a2 <= b2)) Py_RETURN_TRUE; Py_RETURN_FALSE;
+            case Py_EQ: if (a1 == b1 && a2 == b2) Py_RETURN_TRUE; Py_RETURN_FALSE;
+            case Py_NE: if (a1 != b1 || a2 != b2) Py_RETURN_TRUE; Py_RETURN_FALSE;
+            case Py_GE: if (a1 > b1 || (a1 == b1 && a2 >= b2)) Py_RETURN_TRUE; Py_RETURN_FALSE;
+            case Py_GT: if (a1 > b1 || (a1 == b1 && a2 > b2)) Py_RETURN_TRUE; Py_RETURN_FALSE;
+            default: abort();
+            }
+        }
+        info_printf("PV_119p8_richcmp ask PV_num's help (type1: %d, type2: %d)\n", GET_TYPE_ID(lhs), GET_TYPE_ID(rhs));
+        return g_PV_num_Type->tp_richcompare(lhs, rhs, op);
     }
-    switch (op)
-    {
-    case Py_LT: c = a1 < b1 || (a1 == b1 && a2 < b2); break;
-    case Py_LE: c = a1 < b1 || (a1 == b1 && a2 <= b2); break;
-    case Py_EQ: c = a1 == b1 && a2 == b2; break;
-    case Py_NE: c = a1 != b1 || a2 != b2; break;
-    case Py_GE: c = a1 > b1 || (a1 == b1 && a2 >= b2); break;
-    case Py_GT: c = a1 > b1 || (a1 == b1 && a2 > b2); break;
-    default: 
-        PyErr_SetString(PyExc_SystemError, "Unknown op");
-        return NULL;
-    }
-    if (c) Py_RETURN_TRUE;
-    else Py_RETURN_FALSE;
+    Py_RETURN_NOTIMPLEMENTED;
 }
 
 static Py_hash_t PV_119p8_hash(PyObject *op)
@@ -182,6 +195,107 @@ static PyGetSetDef PV_119p8_getsetters[] = {
     {NULL, NULL, NULL, NULL, NULL}
 };
 
+static PyObject *PV_119p8_add(PyObject *_lhs, PyObject *_rhs)
+{
+    PV_119p8_Object *lhs = (PV_119p8_Object *)_lhs;
+    PV_119p8_Object *rhs = (PV_119p8_Object *)_rhs;
+    pvc_PV_119p8 result;
+    PV_119p8_Object *ans;
+    if (PyObject_TypeCheck(_lhs, g_PV_num_Type) && PyObject_TypeCheck(_rhs, g_PV_num_Type))
+    {
+        if (PvNUM_TypeCheck(_lhs, PVF_119) && PvNUM_TypeCheck(_rhs, PVF_119))
+        {
+            if (pvc_PV_119p8_add(&lhs->value, &rhs->value, &result))
+                raise_overflow(NULL);
+            ans = _PV_119p8_FromValue(&result);
+            return ans;
+        }
+        info_puts("PV_119p8_add ask PV_num's help");
+        return g_PV_num_Type->tp_as_number->nb_add(_lhs, _rhs);
+    }
+    Py_RETURN_NOTIMPLEMENTED; 
+}
+
+static PyObject *PV_119p8_sub(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_mul(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_mod(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_pow(PyObject *a, PyObject *b, PyObject *c) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_divmod(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_truediv(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_floordiv(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_neg(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_pos(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_abs(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+
+int PV_119p8_bool(PyObject *a)
+{
+    PV_119p8_Object *hs = (PV_119p8_Object *)a;
+    return hs->value._1 || hs->value._2 ? 1 : 0;
+}
+
+static PyObject *PV_119p8_invert(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_int(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_float(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_lshift(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_rshift(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_and(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_xor(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_or(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+
+static PyObject *PV_119p8_iadd(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_isub(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_imul(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_imod(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_ipow(PyObject *a, PyObject *b, PyObject *c) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_itruediv(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_ifloordiv(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_ilshift(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_irshift(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_iand(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_ixor(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_119p8_ior(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+
+static PyObject *PV_119p8_index(PyObject *a) { Py_RETURN_NOTIMPLEMENTED; }
+
+static PyNumberMethods PV_119p8_as_number = {
+    .nb_add = (binaryfunc)PV_119p8_add,
+    .nb_subtract = (binaryfunc)PV_119p8_sub,
+    .nb_multiply = (binaryfunc)PV_119p8_mul,
+    .nb_remainder = (binaryfunc)PV_119p8_mod,
+    .nb_divmod = (binaryfunc)PV_119p8_divmod,
+    .nb_power = (ternaryfunc)PV_119p8_pow,
+    .nb_negative = (unaryfunc)PV_119p8_neg,
+    .nb_positive = (unaryfunc)PV_119p8_pos,
+    .nb_absolute = (unaryfunc)PV_119p8_abs,
+    .nb_bool = (inquiry)PV_119p8_bool,
+    .nb_invert = (unaryfunc)PV_119p8_invert,
+    .nb_int = (unaryfunc)PV_119p8_int,
+    .nb_float = (unaryfunc)PV_119p8_float,
+    .nb_lshift = (binaryfunc)PV_119p8_lshift,
+    .nb_rshift = (binaryfunc)PV_119p8_rshift,
+    .nb_and = (binaryfunc)PV_119p8_and,
+    .nb_xor = (binaryfunc)PV_119p8_xor,
+    .nb_or = (binaryfunc)PV_119p8_or,
+
+    .nb_inplace_add = (binaryfunc)PV_119p8_iadd,
+    .nb_inplace_subtract = (binaryfunc)PV_119p8_isub,
+    .nb_inplace_multiply = (binaryfunc)PV_119p8_imul,
+    .nb_inplace_remainder = (binaryfunc)PV_119p8_imod,
+    .nb_inplace_power = (ternaryfunc)PV_119p8_ipow,
+    .nb_inplace_lshift = (binaryfunc)PV_119p8_ilshift,
+    .nb_inplace_rshift = (binaryfunc)PV_119p8_irshift,
+    .nb_inplace_and = (binaryfunc)PV_119p8_iand,
+    .nb_inplace_xor = (binaryfunc)PV_119p8_ixor,
+    .nb_inplace_or = (binaryfunc)PV_119p8_ior,
+
+    .nb_true_divide = (binaryfunc)PV_119p8_truediv,
+    .nb_floor_divide = (binaryfunc)PV_119p8_floordiv,
+    .nb_inplace_true_divide = (binaryfunc)PV_119p8_itruediv,
+    .nb_inplace_floor_divide = (binaryfunc)PV_119p8_ifloordiv,
+
+    .nb_index = (unaryfunc)PV_119p8_index,
+};
+
 static PyTypeObject PV_119p8_Type = {
     .ob_base = PyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "pv_119p8.PV_119p8",
@@ -197,6 +311,7 @@ static PyTypeObject PV_119p8_Type = {
     .tp_dealloc = (destructor)PV_119p8_dealloc,
     .tp_methods = PV_119p8_methods,
     .tp_getset = PV_119p8_getsetters,
+    .tp_as_number = &PV_119p8_as_number,
 };
 
 static int pv_119p8_exec(PyObject *m)
@@ -221,7 +336,7 @@ static int pv_119p8_exec(PyObject *m)
         Py_DECREF(g_PV_num_Type);
         return -1;
     }
-    if (register_func(PVF_119, &PV_119p8_Type)) return -1;
+    if (register_func(PVF_119, &PV_119p8_Type, (PvNum_TypeMake)_PV_119p8_FromValue)) return -1;
     if (PyModule_AddObject(m, "PV_119p8", (PyObject *)&PV_119p8_Type) < 0) return -1;
     return 0;
 }

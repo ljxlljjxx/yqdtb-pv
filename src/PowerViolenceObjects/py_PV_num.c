@@ -41,12 +41,14 @@ static const char *type_str[MAX_DERIVED] = {
 };
 
 PyTypeObject *g_type_by_id[MAX_DERIVED];
+PvNum_TypeMake g_type_make[MAX_DERIVED];
 
-static int register_type(int type_id, PyTypeObject *type)
+static int register_type(int type_id, PyTypeObject *type, PvNum_TypeMake make_func)
 {
     if (type_id < 0 || type_id >= MAX_DERIVED) return 1;
     g_type_by_id[type_id] = type;
     Py_INCREF(type);
+    g_type_make[type_id] = make_func;
     return 0;
 }
 
@@ -74,13 +76,9 @@ static PyObject *PV_num_richcmp(PyObject *lhs, PyObject *rhs, int op)
         if (lhs_type && rhs_type)
         {
             result_type = _typetype_type[lhs_type][rhs_type];
-            lhs_new = g_type_by_id[result_type]->tp_alloc(g_type_by_id[result_type], 0);
-            ((PV_num_Object *)lhs_new)->type_id = result_type;
-            TYPE_TRANSFORM_TYPE(lhs_new, lhs, lhs_type);
-            rhs_new = g_type_by_id[result_type]->tp_alloc(g_type_by_id[result_type], 0);
-            ((PV_num_Object *)rhs_new)->type_id = result_type;
-            TYPE_TRANSFORM_TYPE(rhs_new, rhs, rhs_type);
-            info_printf("ask %s for help\n", type_str[result_type]);
+            lhs_new = g_type_make[result_type](NULL); TYPE_TRANSFORM_TYPE(lhs_new, lhs, result_type);
+            rhs_new = g_type_make[result_type](NULL); TYPE_TRANSFORM_TYPE(rhs_new, rhs, result_type);
+            info_printf("PV_num_richcmp ask %s for help (type1: %s, type2: %s)\n", type_str[result_type], type_str[lhs_type], type_str[rhs_type]);
             return g_type_by_id[result_type]->tp_richcompare(lhs_new, rhs_new, op);
         }
         if (lhs_type || rhs_type)
@@ -109,7 +107,31 @@ static Py_hash_t PV_num_hash(PyObject *op)
     return result;
 }
 
-static PyObject *PV_num_add(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
+static PyObject *PV_num_add(PyObject *lhs, PyObject *rhs)
+{
+    int lhs_type, rhs_type, result_type;
+    PyObject *lhs_new, *rhs_new;
+    if (PyObject_TypeCheck(lhs, g_PV_num_Type) && PyObject_TypeCheck(rhs, g_PV_num_Type))
+    {
+        lhs_type = GET_TYPE_ID(lhs);
+        rhs_type = GET_TYPE_ID(rhs);
+        if (lhs_type && rhs_type)
+        {
+            result_type = _typetype_type[lhs_type][rhs_type];
+            lhs_new = g_type_make[result_type](NULL); TYPE_TRANSFORM_TYPE(lhs_new, lhs, result_type);
+            rhs_new = g_type_make[result_type](NULL); TYPE_TRANSFORM_TYPE(rhs_new, rhs, result_type);
+            info_printf("PV_num_add ask %s for help (type1: %s, type2: %s)\n", type_str[result_type], type_str[lhs_type], type_str[rhs_type]);
+            return g_type_by_id[result_type]->tp_as_number->nb_add(lhs_new, rhs_new);
+        }
+        else
+        {
+            PyErr_SetString(PyExc_TypeError, "No calculation with PV_num");
+            return NULL;
+        }
+    }
+    Py_RETURN_NOTIMPLEMENTED;
+}
+
 static PyObject *PV_num_sub(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_mul(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
 static PyObject *PV_num_mod(PyObject *a, PyObject *b) { Py_RETURN_NOTIMPLEMENTED; }
@@ -405,7 +427,7 @@ static PyObject *pv_num_set_global(PyObject *self, PyObject *value)
     if (!PyCallable_Check(value))
     {
         error_puts("set uncallable overflow_function");
-        PyErr_SetString(PyExc_TypeError, "overflow_function must be callable");
+        PyErr_SetString(PyExc_TypeError, "overflow_function must be callable or None");
         return NULL;
     }
     info_puts("set new overflow_function");
@@ -450,7 +472,8 @@ static int pv_num_exec(PyObject *m)
     if (PyType_Ready(&PV_num_Type) < 0) return -1;
     if (PyModule_AddObject(m, "PV_num", (PyObject *)&PV_num_Type) < 0) return -1;
 #ifdef DEBUG
-    __debug_file = fopen("pv_num_debug.log", "a");
+    __debug_file = fopen("pv_num_debug.log", __debug_file_open_mode);
+    // __debug_file = stderr;
     capsule = PyCapsule_New((void *)__debug_file, "pv_num.__debug_file", NULL);
     PyModule_AddObject(m, "__debug_file", capsule);
 #endif

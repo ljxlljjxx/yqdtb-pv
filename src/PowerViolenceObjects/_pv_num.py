@@ -1,10 +1,29 @@
-from .pv_num import PV_num
+from typing import Callable
 
-class PV_55p8(PV_num):
-    _value: int
-    
-    def __init__(self, value: float | PV_num = 0) -> None: ...
-    
+
+_overflow_function: Callable | None = None
+
+def get_overflow_function() -> Callable | None:
+    return _overflow_function
+
+def set_overflow_function(new_func: Callable, /) -> None:
+    if not new_func is None and not isinstance(new_func, Callable):
+        raise TypeError
+    global _overflow_function
+    _overflow_function = new_func
+
+def get_type(arg: int | str, /) -> type:
+    if isinstance(arg, int):
+        if arg < 0 or arg >= 17:
+            raise ValueError('The arg must in [0, 17)')
+def typestr_int(arg: str, /) -> int: pass
+def typeint_str(arg: int, /) -> str: pass
+def type_int(arg: type, /) -> int: pass
+def type_str(arg: type, /) -> str: pass
+def typetype_type(arg1: int, arg2: int, /) -> int: pass
+
+# All instances of PV_num that are not of its subclass are equal.
+class PV_num:
     def __eq__(self, __value: PV_num) -> bool: ...
     def __ne__(self, __value: PV_num) -> bool: ...
     def __gt__(self, __value: PV_num) -> bool: ...
@@ -12,7 +31,7 @@ class PV_55p8(PV_num):
     def __ge__(self, __value: PV_num) -> bool: ...
     def __le__(self, __value: PV_num) -> bool: ...
 
-    def __hash__(self) -> int: ...
+    def __hash__(self) -> int: ...  # return id(PV_num)
 
     def __add__(self, other: PV_num):       pass
     def __sub__(self, other: PV_num):       return NotImplemented
@@ -50,6 +69,5 @@ class PV_55p8(PV_num):
     def __ixor__(self, other: PV_num):      return NotImplemented
     def __ior__(self, other: PV_num):       return NotImplemented
 
-    def __str__(self) -> str: ...
-
-    def strvalue(self) -> str: ...
+    def typename(self) -> str: pass
+    def typename_int(self) -> int: pass

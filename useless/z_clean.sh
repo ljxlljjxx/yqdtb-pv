@@ -1,3 +1,5 @@
+cd $PV_PATH
+
 rm *.o
 rm *-macos
 

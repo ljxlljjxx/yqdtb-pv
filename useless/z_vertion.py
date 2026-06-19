@@ -68,6 +68,8 @@ def change_version(file: TextIOWrapper, version: VertionType) -> str:
             newline = f'version = "{version}"\n'
         elif line.startswith('__version__ = '):
             newline = f'__version__ = "{version}"\n'
+        elif line.startswith('DEBUG = '):
+            newline = 'DEBUG = True\n'
         new_content.append(newline)
     return ''.join(new_content)
 
