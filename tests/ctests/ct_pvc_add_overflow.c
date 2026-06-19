@@ -1,13 +1,4 @@
-/* 
-Test:
-gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_add_overflow.c -o pvc_add_overflow-macos.o
-gcc -Wall -Wextra -c src/PowerViolenceObjects/pvc_defines.c -o pvc_defines-macos.o
-gcc -Wall -Wextra -c tests/ctests/ct_pvc_add_overflow.c -o ct_pvc_add_overflow-macos.o -Isrc/PowerViolenceObjects
-gcc pvc_add_overflow-macos.o ct_pvc_add_overflow-macos.o pvc_defines-macos.o -o ct_pvc_add_overflow-macos
-./ct_pvc_add_overflow-macos
-*/
-
-#include "../main.h"
+#include "main.h"
 #include "pvc_defines.h"
 
 int test_addi64_overflow(void)

@@ -3,12 +3,13 @@ return_val=0
 cd $PV
 rm *-macos
 
+source .venv/bin/activate
+
 echo '更改vertion'
 python useless/z_vertion.py
 
 echo 'Python tests'
 
-source .venv/bin/activate
 python setup.py clean --all
 pip install --no-cache-dir .
 if [ $? -eq 1 ]; then
