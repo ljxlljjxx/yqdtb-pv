@@ -28,7 +28,7 @@ jobs:
       - name: Compile PVOs/pvc_add_overflow.c
         run: gcc -Wformat=2 -Wconversion -Wreturn-type -Wshadow -Wnull-dereference -Wpointer-arith -Wfloat-equal -Wswitch-default -Wswitch-enum -Wall -Wextra -Werror -c tests/ctests/ct_pvc_add_overflow.c -o ct_pvc_add_overflow.o -Isrc/PowerViolenceObjects
       - name: link
-        run: gcc ct_pvc_add_overflow.o pvc_defines.o -o ct_pvc_add_overflow
+        run: gcc ct_pvc_add_overflow.o pvc_defines.o -o ct_pvc_add_overflow -lm
       - name: Run
         run: ./ct_pvc_add_overflow
         
