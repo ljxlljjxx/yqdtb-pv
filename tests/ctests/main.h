@@ -155,7 +155,7 @@ static int _ctest_sprintf(int s, ...)
         default:   _ctest_sprintf('?', a) \
     ); \
     strcat(test_format_buffer, test_temp_buffer); \
-    strcat(test_format_buffer, ")\n"); \
+    strcat(test_format_buffer, ")"); \
 } while (0)
 
 int test_runner(const Test *now)

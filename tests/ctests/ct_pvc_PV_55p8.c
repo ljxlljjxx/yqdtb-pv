@@ -2392,7 +2392,7 @@ int test_pvc_PV_55p8_print(void)
 
 int test_pvc_PV_55p8_null(void)
 {
-    pvc_PV_55p8 a;
+    pvc_PV_55p8 *a = (pvc_PV_55p8 *)(intptr_t)2541000;
     char s[1000];
     char *s2;
     int ans, format_length;
@@ -2401,8 +2401,12 @@ int test_pvc_PV_55p8_null(void)
     s2 = pvc_PV_55p8_tostring(NULL);
     assert_string_equal(s2, "(null)");
 
-    useful_functest(ans, pvc_PV_55p8_format, s, NULL, &a, &format_length);
+    useful_functest(ans, pvc_PV_55p8_format, s, NULL, a, &format_length);
     assert_equal(format_length, -1);
+    assert_equal(ans, -1);
+
+    useful_functest(ans, pvc_PV_55p8_format, s, NULL, NULL, &format_length);
+    assert_equal(format_length, 0);
     assert_equal(ans, -1);
 
     useful_functest(ans, pvc_PV_55p8_format, s, s2, NULL, &format_length);
