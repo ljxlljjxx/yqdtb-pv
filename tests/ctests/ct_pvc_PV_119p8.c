@@ -15,7 +15,7 @@ int test_pvc_PV_119p8_set(void)
     pvc_PV_119p8 a;
     __int128_t b, ccc = (__int128_t)1 << 64;
     double true_b;
-    test_start(50);
+    test_start(25);
 
     b = (__int128_t)0 * ccc + 0;
     true_b = (double)b / 256;
