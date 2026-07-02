@@ -170,34 +170,40 @@ int test_runner(const Test *now)
     {
         test_format_buffer[0] = 0;
         if (test_func->state == TestFuncState_disable) goto increase;
-        ret_val = test_func->func();
-        if (!ret_val)
+        for (int i = 0; ; i++)
         {
-            count_fail++;
-            printf(
-                "\033[91m%s failed:\n\033[1m%s\033[0m", 
-                test_func->name, 
-                test_format_buffer
-            );
-        }
-        else if (ret_val == 1)
-        {
-            count_ok++;
-            printf(
-                "\033[92m%-40s Accepted (%.3lf μs in average < %.0lf)\n\033[0m", 
-                test_func->name, 
-                ok_time_use,
-                __time_max
-            );
-        }
-        else
-        {
-            count_tle++;
-            printf(
-                "\033[93m%-40s TLE\n\033[1m%s\033[0m", 
-                test_func->name, 
-                test_format_buffer
-            );
+            ret_val = test_func->func();
+            if (!ret_val)
+            {
+                count_fail++;
+                printf(
+                    "\033[91m%s failed:\n\033[1m%s\033[0m", 
+                    test_func->name, 
+                    test_format_buffer
+                );
+                break;
+            }
+            else if (ret_val == 1)
+            {
+                count_ok++;
+                printf(
+                    "\033[92m%-40s Accepted (%.3lf μs in average < %.0lf)\n\033[0m", 
+                    test_func->name, 
+                    ok_time_use,
+                    __time_max
+                );
+                break;
+            }
+            else if (i == 2)
+            {
+                count_tle++;
+                printf(
+                    "\033[93m%-40s TLE\n\033[1m%s\033[0m", 
+                    test_func->name, 
+                    test_format_buffer
+                );
+                break;
+            }
         }
     increase:
         test_func++;
