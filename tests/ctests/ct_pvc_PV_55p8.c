@@ -2392,7 +2392,7 @@ int test_pvc_PV_55p8_print(void)
 
 int test_pvc_PV_55p8_null(void)
 {
-    pvc_PV_55p8 a;
+    pvc_PV_55p8 a = {2541};
     char s[1000];
     char *s2;
     int ans, format_length;
