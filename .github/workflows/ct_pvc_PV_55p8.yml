@@ -1,0 +1,36 @@
+name: C test pvc_PV_55p8
+run-name: C test pvc_PV_55p8 triggered bt ${{ github.actor }}
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+on:
+  label:
+    types:
+      - created
+      - edited
+      - deleted
+  push:
+    branches:
+      - main
+      - "**"
+  schedule:
+    - cron: "17 2 * * *"
+jobs:
+  run-tests:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Compile PVOs/pvc_defines.c
+        run: gcc -Wformat=2 -Wconversion -Wreturn-type -Wshadow -Wnull-dereference -Wpointer-arith -Wfloat-equal -Wswitch-default -Wswitch-enum -Wall -Wextra -Werror -c src/PowerViolenceObjects/pvc_defines.c -o pvc_defines.o
+      - name: Compile PVOs/pvc_PV_55p8.c
+        run: gcc -Wformat=2 -Wconversion -Wreturn-type -Wshadow -Wnull-dereference -Wpointer-arith -Wfloat-equal -Wswitch-default -Wswitch-enum -Wall -Wextra -Werror -c src/PowerViolenceObjects/pvc_PV_55p8.c -o pvc_PV_55p8.o
+      - name: Compile to *.o
+        run: gcc -Wformat=2 -Wconversion -Wreturn-type -Wshadow -Wnull-dereference -Wpointer-arith -Wfloat-equal -Wswitch-default -Wswitch-enum -Wall -Wextra -Werror -c tests/ctests/ct_pvc_PV_55p8.c -o ct_pvc_PV_55p8.o -Isrc/PowerViolenceObjects
+      - name: link
+        run: gcc pvc_PV_55p8.o ct_pvc_PV_55p8.o pvc_defines.o -o ct_pvc_PV_55p8 -lm
+      - name: Run
+        run: ./ct_pvc_PV_55p8
+        

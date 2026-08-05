@@ -1,0 +1,103 @@
+#include "main.h"
+#include "pvc_defines.h"
+
+int test_addi64_overflow(void)
+{
+    int64_t a, b, res;
+    bool ans;
+    test_start(5);
+
+    a = 1, b = 2;
+    useful_functest(ans, addi64_overflow, a, b, &res);
+    assert_equal(ans, false);
+    assert_equal(res, 3);
+
+    a = INT64_MAX, b = 1;
+    useful_functest(ans, addi64_overflow, a, b, &res);
+    assert_equal(ans, true);
+    assert_equal(res, INT64_MIN);
+
+    a = INT64_MAX, b = -1;
+    useful_functest(ans, addi64_overflow, a, b, &res);
+    assert_equal(ans, false);
+    assert_equal(res, INT64_MAX-1);
+
+    a = INT64_MIN, b = -1;
+    useful_functest(ans, addi64_overflow, a, b, &res);
+    assert_equal(ans, true);
+    assert_equal(res, INT64_MAX);
+
+    a = INT64_MIN, b = 0;
+    useful_functest(ans, addi64_overflow, a, b, &res);
+    assert_equal(ans, false);
+    assert_equal(res, INT64_MIN);
+
+    a = INT64_MIN, b = INT64_MIN;
+    useful_functest(ans, addi64_overflow, a, b, &res);
+    assert_equal(ans, true);
+    assert_equal(res, 0);
+
+    a = INT64_MAX, b = INT64_MIN;
+    useful_functest(ans, addi64_overflow, a, b, &res);
+    assert_equal(ans, false);
+    assert_equal(res, -1);
+
+    a = 1, b = INT64_MAX;
+    useful_functest(ans, addi64_overflow, a, b, &res);
+    assert_equal(ans, true);
+    assert_equal(res, INT64_MIN);
+
+    test_end();
+}
+
+int test_addu64_overflow(void)
+{
+    uint64_t a, b, res;
+    bool ans;
+    test_start(5);
+
+    a = 0, b = 0;
+    useful_functest(ans, addu64_overflow, a, b, &res);
+    assert_equal(ans, false);
+    assert_equal(res, 0);
+
+    a = UINT64_MAX, b = 1;
+    useful_functest(ans, addu64_overflow, a, b, &res);
+    assert_equal(ans, true);
+    assert_equal(res, 0);
+
+    a = UINT64_MAX, b = 0;
+    useful_functest(ans, addu64_overflow, a, b, &res);
+    assert_equal(ans, false);
+    assert_equal(res, UINT64_MAX);
+
+    a = 1, b = UINT64_MAX;
+    useful_functest(ans, addu64_overflow, a, b, &res);
+    assert_equal(ans, true);
+    assert_equal(res, 0);
+
+    a = UINT64_MAX, b = UINT64_MAX;
+    useful_functest(ans, addu64_overflow, a, b, &res);
+    assert_equal(ans, true);
+    assert_equal(res, UINT64_MAX-1);
+
+    test_end();
+}
+
+const TestFunc c_add_overflow_tests[] = {
+    {"test_addi64_overflow", test_addi64_overflow,    TestFuncState_enable},
+    {"test_addu64_overflow", test_addu64_overflow,    TestFuncState_enable},
+    {NULL, NULL, 0}
+};
+
+const Test c_add_overflow = {
+    .file_name = __FILE__,
+    .init_func = NULL,
+    .test_funcs = c_add_overflow_tests,
+    .end_func = NULL
+};
+
+int main()
+{
+    return test_runner(&c_add_overflow);
+}

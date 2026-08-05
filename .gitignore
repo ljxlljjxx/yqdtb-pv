@@ -1,0 +1,15 @@
+*.html
+PV_rule.png
+.*
+*.o
+*-macos
+__pycache__
+!.gitignore
+!docs/*
+!rule/
+build
+*.egg-info/
+!.github
+*.so
+.vscode
+*.log

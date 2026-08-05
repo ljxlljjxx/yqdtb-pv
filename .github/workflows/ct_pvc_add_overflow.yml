@@ -1,0 +1,34 @@
+name: C test pvc_add_overflow
+run-name: C test pvc_add_overflow triggered bt ${{ github.actor }}
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+on:
+  label:
+    types:
+      - created
+      - edited
+      - deleted
+  push:
+    branches:
+      - main
+      - "**"
+  schedule:
+    - cron: "17 2 * * *"
+jobs:
+  run-tests:
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Compile PVOs/pvc_defines.c
+        run: gcc -Wformat=2 -Wconversion -Wreturn-type -Wshadow -Wnull-dereference -Wpointer-arith -Wfloat-equal -Wswitch-default -Wswitch-enum -Wall -Wextra -Werror -c src/PowerViolenceObjects/pvc_defines.c -o pvc_defines.o
+      - name: Compile PVOs/pvc_add_overflow.c
+        run: gcc -Wformat=2 -Wconversion -Wreturn-type -Wshadow -Wnull-dereference -Wpointer-arith -Wfloat-equal -Wswitch-default -Wswitch-enum -Wall -Wextra -Werror -c tests/ctests/ct_pvc_add_overflow.c -o ct_pvc_add_overflow.o -Isrc/PowerViolenceObjects
+      - name: link
+        run: gcc ct_pvc_add_overflow.o pvc_defines.o -o ct_pvc_add_overflow -lm
+      - name: Run
+        run: ./ct_pvc_add_overflow
+        
