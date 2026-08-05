@@ -27,5 +27,3 @@ else
 fi
 
 echo '测试完成'
-
-coverage run -m unittest discover tests
