@@ -313,7 +313,7 @@ void pv_55p8_free(void *Py_UNUSED(module))
 static PyModuleDef pv_55p8 = {
     PyModuleDef_HEAD_INIT,
     .m_name = "pv_55p8",
-    .m_doc = "A module defines PV_55p8.",
+    .m_doc = "A module defines PV_55p8 in C.",
     .m_size = 0,
     .m_slots = pv_55p8_slots,
     .m_free = pv_55p8_free,

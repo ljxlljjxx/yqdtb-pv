@@ -13,3 +13,4 @@ build
 *.so
 .vscode
 *.log
+htmlcov
