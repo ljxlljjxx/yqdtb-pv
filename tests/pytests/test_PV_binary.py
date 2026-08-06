@@ -19,7 +19,20 @@ class TestPv_str(unittest.TestCase):
         c = PV_binary(b'2541')
         self.assertEqual(c.size, 4)
         self.assertEqual(c.data, bytearray(b'2541'))
-        
+
+    def test_repr(self):
+        a = PV_binary(5)
+        self.assertEqual(repr(a), '<PV_binary object, size = 5>: [0, 0, 0, 0, 0]')
+
+    def test_data(self):
+        a = PV_binary(5)
+        with self.assertRaises(ValueError):
+            a.data = b'2541'
+        a.data = b'2541a'
+        self.assertEqual(a.data, b'2541a')
+        with self.assertRaises(AttributeError):
+            del a.data
+
 
 if __name__ == '__main__':
     unittest.main()

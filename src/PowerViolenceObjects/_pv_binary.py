@@ -1,5 +1,8 @@
+from typing import Union
+
+
 class PV_binary:
-    def __init__(self, arg: 'PV_binary' | int | bytes):
+    def __init__(self, arg: Union['PV_binary', int, bytes]):
         if isinstance(arg, PV_binary):
             self.size: int = arg.size
             self._data: bytearray = arg._data.copy()
@@ -20,8 +23,10 @@ class PV_binary:
     
     @data.setter
     def data(self, value: bytes):
+        if len(value) != self.size:
+            raise ValueError("data's len must equal size")
         self._data = bytearray(value)
         
     def __repr__(self) -> str:
-        return f'<PV_binary object at {id(self)}, size = {self.size}>: {list(self._data)}'
+        return f'<PV_binary object, size = {self.size}>: {list(self._data)}'
     
