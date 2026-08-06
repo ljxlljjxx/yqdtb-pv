@@ -25,9 +25,9 @@ PowerViolenceObjects:
 |_  PV_struct
 """
 
-__version__ = "3.1.110"
+__version__ = "3.1.116"
 
-from typing import Union
+from typing import Any, Union
 from .pv_str import PV_str  # type: ignore
 from .pv_str_names import PV_str_names  # type: ignore
 
@@ -41,7 +41,8 @@ try:
 except ModuleNotFoundError:
     from ._pv_binary import PV_binary
 
-class _Constant:
+class _Constant:  # pragma: no cover
+    # this is a class to provide constants
     def __getattribute__(self, __name: str) -> Union[type, int, float]:
         name: list[str] = __name.lower().split('__')
         if len(name) != 2:
@@ -95,6 +96,9 @@ class _Constant:
                 return 0.00390625
         else:
             return AttributeError
+        
+    def __setattr__(self, __name: str, __value: Any) -> None:
+        pass
 
 
 constant: _Constant = _Constant()
