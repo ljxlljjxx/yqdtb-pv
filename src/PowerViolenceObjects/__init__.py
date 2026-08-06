@@ -25,7 +25,7 @@ PowerViolenceObjects:
 |_  PV_struct
 """
 
-__version__ = "3.1.94"
+__version__ = "3.1.110"
 
 from typing import Union
 from .pv_str import PV_str  # type: ignore
@@ -34,6 +34,12 @@ from .pv_str_names import PV_str_names  # type: ignore
 from .pv_num import PV_num, get_type, typestr_int, typeint_str, type_int, type_str, typetype_type, get_overflow_function, set_overflow_function  # type: ignore
 from .pv_55p8 import PV_55p8  # type: ignore
 from .pv_119p8 import PV_119p8  # type: ignore
+
+try:
+    raise ModuleNotFoundError
+    from .pv_binary import PV_binary
+except ModuleNotFoundError:
+    from ._pv_binary import PV_binary
 
 class _Constant:
     def __getattribute__(self, __name: str) -> Union[type, int, float]:
@@ -100,4 +106,5 @@ __all__ = [
     'PV_num', 'get_type', 'typestr_int', 'typeint_str', 'type_int', 'type_str', 'typetype_type', 'get_overflow_function', 'set_overflow_function',
     'PV_55p8',
     'PV_119p8',
+    'PV_binary',
 ]

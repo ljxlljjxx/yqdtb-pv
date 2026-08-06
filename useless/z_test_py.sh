@@ -15,9 +15,12 @@ pip install --no-cache-dir .
 if [ $? -eq 1 ]; then
     return_val=1;
 else
-    python -m unittest discover tests
+    coverage run -m unittest discover tests
     if [[ $? > 0 ]]; then
         return_val=1;
+    else
+        coverage report -m
+        coverage html
     fi
 fi
 
