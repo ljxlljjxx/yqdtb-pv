@@ -82,3 +82,44 @@ class PV_binary:
     def __len__(self) -> int:
         return self.size
     
+    def __getitem__(self, index: int) -> bool:
+        if isinstance(index, int):
+            if -self.size <= index < self.size:
+                return self._data[index]
+            else:
+                raise ValueError('index out of range')
+        else:
+            raise TypeError('index must be int or slice')
+    
+    def __setitem__(self, index: Union[int, slice], value: Union[int, bool]):
+        """
+        when the index is a slice, it must be [:] or [::].
+        if it isn't, function will raise ValueError
+
+        when the value is a int, it must be 0 or 1.
+        if it isn't, function will raise ValueError
+        """
+        if isinstance(value, int):
+            if value == 0 or value == 1:
+                value = bool(value)
+            else:
+                raise ValueError('when arg be int, it must be 0 or 1')
+        if not isinstance(value, bool):
+            raise TypeError('value must be int or bool')
+        if isinstance(index, int):
+            if -self.size <= index < self.size:
+                self._data[index] = value
+            else:
+                raise ValueError('index out of range')
+        elif isinstance(index, slice):
+            if index.start is index.stop is index.step is None:
+                for i in range(self.size):
+                    self._data[i] = value
+            else:
+                raise ValueError('when index be slice, it must be [:] or [::]')
+        else:
+            raise TypeError('index must be int or slice')
+        
+    def __delitem__(self, _index):
+        raise TypeError('PV_binary object does not support item deletion')
+        

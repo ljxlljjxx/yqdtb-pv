@@ -77,6 +77,47 @@ class TestPv_str(unittest.TestCase):
         a = PV_binary((0, 1, 0, 1, 0))
         self.assertEqual(len(a), 5)
 
+    def test_item(self):
+        a = PV_binary((0, 1, 0, 1, 0))
+        self.assertEqual(a[0], False)
+        self.assertEqual(a[1], True)
+        self.assertEqual(a[2], False)
+        self.assertEqual(a[3], True)
+        self.assertEqual(a[4], False)
+        self.assertEqual(a[-5], False)
+        self.assertEqual(a[-4], True)
+        self.assertEqual(a[-3], False)
+        self.assertEqual(a[-2], True)
+        self.assertEqual(a[-1], False)
+        with self.assertRaises(ValueError):
+            a[6]
+        with self.assertRaises(TypeError):
+            a['6']
+        with self.assertRaises(ValueError):
+            a[0] = 5
+        with self.assertRaises(TypeError):
+            a[0] = '5'
+        a[0] = True
+        self.assertEqual(a[0], True)
+        a[-5] = 0
+        self.assertEqual(a[0], False)
+        with self.assertRaises(ValueError):
+            a[6] = 1
+        with self.assertRaises(TypeError):
+            a['6'] = 1
+        a[:] = 0
+        for i in range(5):
+            self.assertEqual(a[i], False)
+        a[::] = 1
+        for i in range(5):
+            self.assertEqual(a[i], True)
+        with self.assertRaises(ValueError):
+            a[1:1] = 1
+        with self.assertRaises(ValueError):
+            a[::-1] = 1
+        with self.assertRaises(TypeError):
+            del a[-1]
+
 
 if __name__ == '__main__':
     unittest.main()
