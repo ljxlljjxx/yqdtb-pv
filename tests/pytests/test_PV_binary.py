@@ -14,6 +14,16 @@ class TestPv_str(unittest.TestCase):
         a = PV_binary(5)
         self.assertEqual(a.size, 5)
         self.assertEqual(len(list(a.data)), 5)
+        a = PV_binary(5, 0)
+        self.assertEqual(a.size, 5)
+        self.assertEqual(len(list(a.data)), 5)
+        a = PV_binary(5, False)
+        with self.assertRaises(ValueError):
+            a = PV_binary(5, 2)
+        with self.assertRaises(TypeError):
+            a = PV_binary(5, '2')
+        self.assertEqual(a.size, 5)
+        self.assertEqual(len(list(a.data)), 5)
         b = PV_binary(a)
         self.assertEqual(b.size, 5)
         self.assertEqual(len(list(b.data)), 5)
@@ -117,6 +127,12 @@ class TestPv_str(unittest.TestCase):
             a[::-1] = 1
         with self.assertRaises(TypeError):
             del a[-1]
+
+    def test_int(self):
+        a = PV_binary(10, 0)
+        self.assertEqual(int(a), 0)
+        a[4] = a[5] = 1
+        self.assertEqual(int(a), 48)
 
 
 if __name__ == '__main__':

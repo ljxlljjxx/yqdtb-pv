@@ -8,21 +8,24 @@ class PV_binary:
 
     the upper limit of size is UINT64_MAX(65535)
 
-    In fact, there is no guarantee that the data
-    will be all zeros at initialization.
-
     In the implementation using C, it is not
     guaranteed that data is a list, but it is
     guaranteed that data is an Interable, and the
     object taken out each time is of type bool.
     """
 
-    def __init__(self, arg: Union['PV_binary', int, Iterable]):
+    def __init__(self, arg: Union['PV_binary', int, Iterable], init_value: Union[None, int, bool] = None):
         """
         the arg must be PV_binary or int or Interable, 
         if arg is the Interable, it must be
         Iterable[bool] or Iterable[int], and the int
-        must be 0 or 1
+        must be 0 or 1.
+
+        when arg is an int, the initial value will set
+        by init_value. it must be None or int or bool,
+        default is None. when it is an int object, it
+        must be 0 or 1. if it is None, we won't init
+        the value, so the value will be randomly.
         """
         if isinstance(arg, PV_binary):
             self._size: int = arg._size
@@ -33,7 +36,17 @@ class PV_binary:
             if arg >= 65536:
                 raise OverflowError('Python int too large for C unsigned short')
             self._size: int = arg
-            self._data: list = [0] * self._size
+            if isinstance(init_value, int):
+                if init_value == 0 or init_value == 1:
+                    init_value = bool(init_value)
+                else:
+                    raise ValueError('when init_value be int, it must be 0 or 1')
+            if isinstance(init_value, bool):
+                self._data: list = [init_value] * self._size
+            elif init_value is None:
+                self._data: list = [False] * self._size
+            else:
+                raise TypeError('init_value must be int or bool or None')
         else:
             self._data = []
             try:
@@ -72,7 +85,7 @@ class PV_binary:
         a: int = 0
         P: int = 9985244353
         for i in self.data:
-            a = (a << 1) + i
+            a = (a << 1) + int(i)
             a %= P
         return a
 
@@ -122,4 +135,10 @@ class PV_binary:
         
     def __delitem__(self, _index):
         raise TypeError('PV_binary object does not support item deletion')
+    
+    def __int__(self) -> int:
+        ans: int = 0
+        for i in self.data:
+            ans = (ans << 1) + int(i)
+        return ans
         
