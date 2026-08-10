@@ -48,8 +48,12 @@ _TYPETYPE_TYPE: list[list[int]] = [
 ]
 
 
+def _empty_func():
+    raise NotImplementedError
+
+
 _TYPE_BY_ID: list[type] = [object] * MAX_DERIVED
-_TYPE_MAKE: list[function] = 0 * MAX_DERIVED
+_TYPE_MAKE: list[Callable] = [_empty_func] * MAX_DERIVED
 _TYPE_STR: list[str] = [
     "PV_num",
     "PV_pID", 
@@ -154,7 +158,7 @@ def pv_num_type_check(obj, tp) -> bool:
     return get_type_id(obj) == tp
 
 
-def register_type(type_id: int, tp: type, make_func: function) -> int:
+def register_type(type_id: int, tp: type, make_func: Callable) -> int:
     if 0 <= type_id < MAX_DERIVED:
         _TYPE_BY_ID[type_id] = tp
         _TYPE_MAKE[type_id] = make_func
