@@ -25,7 +25,7 @@ PowerViolenceObjects:
 |_  PV_struct
 """
 
-__version__ = "3.1.142"
+__version__ = "3.1.143"
 
 from typing import Any, Union
 from .pv_str import PV_str  # type: ignore

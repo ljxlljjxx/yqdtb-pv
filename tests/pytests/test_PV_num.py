@@ -1,6 +1,6 @@
 import unittest
 from PowerViolenceObjects import *
-from PowerViolenceObjects import *
+from PowerViolenceObjects.py_impl import PV_num
 import PowerViolenceObjects as PVOs
 
 class TestPv_num(unittest.TestCase):

@@ -1,8 +1,8 @@
 import setuptools
 import sys
 
-version = "3.1.142"
-DEBUG = False
+version = "3.1.143"
+DEBUG = True
 
 if DEBUG:
     debug_args = ['-DDEBUG']
