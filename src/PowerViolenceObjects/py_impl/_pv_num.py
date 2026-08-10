@@ -1,4 +1,4 @@
-from typing import Union, Callable
+from typing import Union, Callable, List
 
 
 _overflow_function = None
@@ -27,7 +27,7 @@ PVC_POW = PVC_256
 PVC_LVS = PVC_128
 
 
-_TYPETYPE_TYPE: list[list[int]] = [
+_TYPETYPE_TYPE: List[List[int]] = [
     [PVO_NUM, PVI_PID, PVI_SID, PVI_NRS, PVI_LRS, PVF_11P, PVF_27P, PVF_55P, PVF_119, PVC_64C, PVC_128, PVC_256, PVH_SRT, PVH_NOR, PVO_NOR, PVF_447, PVO_PFT],
     [PVI_PID, PVI_PID, PVI_SID, PVI_NRS, PVI_LRS, PVF_11P, PVF_27P, PVF_55P, PVF_119, PVC_64C, PVC_128, PVC_256, PVH_SRT, PVH_NOR, PVO_NOR, PVF_447, PVO_PFT],
     [PVI_SID, PVI_SID, PVI_SID, PVI_NRS, PVI_LRS, PVF_27P, PVF_27P, PVF_55P, PVF_119, PVC_64C, PVC_128, PVC_256, PVH_SRT, PVH_NOR, PVO_NOR, PVF_447, PVO_PFT],
@@ -52,9 +52,9 @@ def _empty_func():
     raise NotImplementedError
 
 
-_TYPE_BY_ID: list[type] = [object] * MAX_DERIVED
-_TYPE_MAKE: list[Callable] = [_empty_func] * MAX_DERIVED
-_TYPE_STR: list[str] = [
+_TYPE_BY_ID: List[type] = [object] * MAX_DERIVED
+_TYPE_MAKE: List[Callable] = [_empty_func] * MAX_DERIVED
+_TYPE_STR: List[str] = [
     "PV_num",
     "PV_pID", 
     "PV_sID", 
