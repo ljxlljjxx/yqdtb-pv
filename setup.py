@@ -1,7 +1,7 @@
 import setuptools
 import sys
 
-version = "3.1.136"
+version = "3.1.141"
 DEBUG = False
 
 if DEBUG:
@@ -25,7 +25,7 @@ else:
     math_libs = []
 
 setuptools.setup(
-    packages=['PowerViolenceObjects'],
+    packages=['PowerViolenceObjects', 'PowerViolenceObjects.py_impl'],
     package_dir={'': 'src'},
     ext_modules=[
         setuptools.Extension(
