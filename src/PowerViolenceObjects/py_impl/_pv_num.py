@@ -75,11 +75,11 @@ _TYPE_STR: List[str] = [
 ]
 
 
-def get_overflow_function() -> None | Callable:
+def get_overflow_function() -> Union[None, Callable]:
     return _overflow_function
 
 
-def set_overflow_function(__value: None | Callable):
+def set_overflow_function(__value: Union[None, Callable]):
     if __value is None:
         _overflow_function = None
     if callable(__value):
@@ -124,7 +124,7 @@ def type_str(__arg: type) -> str:
     raise ValueError('Unknown type')
     
 
-def get_type(__arg: int | str) -> str:
+def get_type(__arg: Union[int, str]) -> str:
     if isinstance(__arg, int):
         if 0 <= __arg < MAX_DERIVED:
             if _TYPE_BY_ID[__arg] != object:
@@ -242,7 +242,7 @@ class PV_num:
 
     def __mul__(self, other: 'PV_num'):       return NotImplemented
     def __mod__(self, other: 'PV_num'):       return NotImplemented
-    def __pow__(self, other: 'PV_num', modulo: int | None = None):      return NotImplemented
+    def __pow__(self, other: 'PV_num', modulo: Union[int, None] = None):      return NotImplemented
     def __divmod__(self, other: 'PV_num'):    return NotImplemented
     def __truediv__(self, other: 'PV_num'):   return NotImplemented
     def __floordiv__(self, other: 'PV_num'):  return NotImplemented
