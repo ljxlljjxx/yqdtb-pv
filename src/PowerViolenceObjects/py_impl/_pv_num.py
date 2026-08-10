@@ -1,4 +1,4 @@
-from typing import Union, Callable, List
+from typing import Union, Callable, List, Tuple
 
 
 _overflow_function = None
@@ -175,7 +175,7 @@ class PV_num:
     __type_id = 0
 
     @staticmethod
-    def _type_transform(a: 'PV_num', b: 'PV_num') -> tuple['PV_num', 'PV_num', type]:
+    def _type_transform(a: 'PV_num', b: 'PV_num') -> Tuple['PV_num', 'PV_num', type]:
         if not isinstance(a, PV_num) or not isinstance(b, PV_num):
             raise TypeError
         lhs_type = get_type_id(a)
@@ -223,7 +223,7 @@ class PV_num:
         return id(PV_num) if id(PV_num) != -1 else -2
     
     @staticmethod
-    def _calculate(lhs: 'PV_num', rhs: 'PV_num') -> Union[tuple['PV_num', 'PV_num'], object]:
+    def _calculate(lhs: 'PV_num', rhs: 'PV_num') -> Union[Tuple['PV_num', 'PV_num'], object]:
         try:
             lhs_new, rhs_new, result_type = PV_num._type_transform(lhs, rhs)
         except TypeError:
