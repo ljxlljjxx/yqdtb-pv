@@ -25,7 +25,7 @@ PowerViolenceObjects:
 |_  PV_struct
 """
 
-__version__ = "3.1.136"
+__version__ = "3.1.187"
 
 from typing import Any, Union
 from .pv_str import PV_str  # type: ignore
@@ -35,11 +35,13 @@ from .pv_num import PV_num, get_type, typestr_int, typeint_str, type_int, type_s
 from .pv_55p8 import PV_55p8  # type: ignore
 from .pv_119p8 import PV_119p8  # type: ignore
 
+from . import py_impl as _test_py_impl
+
 try:
     raise ModuleNotFoundError
     from .pv_binary import PV_binary
 except ModuleNotFoundError:
-    from ._pv_binary import PV_binary
+    from .py_impl import PV_binary
 
 class _Constant:  # pragma: no cover
     # this is a class to provide constants
@@ -111,4 +113,6 @@ __all__ = [
     'PV_55p8',
     'PV_119p8',
     'PV_binary',
+
+    '_test_py_impl'
 ]
