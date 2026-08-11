@@ -48,7 +48,7 @@ _TYPETYPE_TYPE: List[List[int]] = [
 ]
 
 
-def _empty_func():
+def _empty_func():  # pragma: no cover
     raise NotImplementedError
 
 
@@ -80,9 +80,10 @@ def get_overflow_function() -> Union[None, Callable]:
 
 
 def set_overflow_function(__value: Union[None, Callable]):
+    global _overflow_function
     if __value is None:
         _overflow_function = None
-    if callable(__value):
+    elif callable(__value):
         _overflow_function = __value
     else:
         raise TypeError('overflow_function must be callable or None')
@@ -106,22 +107,19 @@ def typeint_str(__arg: int) -> str:
         raise ValueError(f'The arg must in [0, {MAX_DERIVED})')
     
 
-def type_int(__arg: type) -> int:
+def type_int(__arg: type | 'PV_num') -> int:
+    if isinstance(__arg, PV_num):
+        return get_type_id(__arg)
     if not isinstance(__arg, type):
-        raise TypeError('arg must be type')
+        raise TypeError('arg must be type or PV_num object')
     for i in range(MAX_DERIVED):
         if _TYPE_BY_ID[i] == __arg:
             return i
     raise ValueError('Unknown type')
-    
 
-def type_str(__arg: type) -> str:
-    if not isinstance(__arg, type):
-        raise TypeError('arg must be type')
-    for i in range(MAX_DERIVED):
-        if _TYPE_BY_ID[i] == __arg:
-            return _TYPE_STR[i]
-    raise ValueError('Unknown type')
+
+def type_str(__arg: type | 'PV_num') -> str:
+    return _TYPE_STR[type_int(__arg)]
     
 
 def get_type(__arg: Union[int, str]) -> str:
@@ -147,14 +145,15 @@ def typetype_type(__arg1: int, __arg2: int) -> int:
     return _TYPETYPE_TYPE[__arg1][__arg2]
 
 
-def get_type_id(obj) -> int:
+def get_type_id(obj: 'PV_num') -> int:
     try:
-        return obj.__type_id
+        return obj._type_id
     except AttributeError:
-        raise TypeError('obj must be PV_num Object')
+        pass
+    raise TypeError('obj must be PV_num Object')
     
 
-def pv_num_type_check(obj, tp) -> bool:
+def pv_num_type_check(obj: 'PV_num', tp: type) -> bool:
     return get_type_id(obj) == tp
 
 
@@ -172,7 +171,7 @@ def get_result_type_id(a, b):
 
 
 class PV_num:
-    __type_id = 0
+    _type_id = 0
 
     @staticmethod
     def _type_transform(a: 'PV_num', b: 'PV_num') -> Tuple['PV_num', 'PV_num', type]:
@@ -195,7 +194,7 @@ class PV_num:
         try:
             lhs_new, rhs_new, result_type = PV_num._type_transform(lhs, rhs)
             if result_type is PV_num:
-                return bool((op & 1) ^ (op & 2))
+                return bool((op & 1) ^ ((op & 2) >> 1))
             return _TYPE_BY_ID[result_type]._richcmp(lhs_new, rhs_new, op)
         except TypeError:
             return NotImplemented
@@ -274,7 +273,8 @@ class PV_num:
     def __ixor__(self, other: 'PV_num'):      return NotImplemented
     def __ior__(self, other: 'PV_num'):       return NotImplemented
 
-    def __str__(self) -> str: ...
+    def __repr__(self) -> str:
+        return f'<PV_num object at {id(self)}>'
 
     def strvalue(self) -> str: ...
 

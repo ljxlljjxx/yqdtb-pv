@@ -1,12 +1,12 @@
 from ._pv_num import PV_num
 
 class PV_55p8(PV_num):
-    __type_id = 7  # const
+    _type_id = 7  # const
     def __init__(self, value: float | PV_num = 0) -> None:
         if isinstance(value, float):
             self._value = int(value * 256)
         elif isinstance(value, PV_num):
-
+            pass
     
     def __eq__(self, __value: PV_num) -> bool: ...
     def __ne__(self, __value: PV_num) -> bool: ...

@@ -106,6 +106,12 @@ static Py_hash_t PV_num_hash(PyObject *op)
     return result;
 }
 
+static PyObject *PV_num_repr(PyObject *_self)
+{
+    PV_num_Object *self = (PV_num_Object *)_self;
+    return PyUnicode_FromFormat("<PV_num object at %p>", self);
+}
+
 static PyObject *PV_num_add(PyObject *lhs, PyObject *rhs)
 {
     int lhs_type, rhs_type, result_type;
@@ -205,22 +211,6 @@ static PyNumberMethods PV_num_as_number = {
     .nb_index = (unaryfunc)PV_num_index,
 };
 
-static PyObject *PV_num_typename_int(PyObject *self, PyObject *Py_UNUSED(args))
-{
-    return PyLong_FromLong((long)GET_TYPE_ID(self));
-}
-
-static PyObject *PV_num_typename(PyObject *self, PyObject *Py_UNUSED(args))
-{
-    return PyUnicode_FromString(type_str[GET_TYPE_ID(self)]);
-}
-
-static PyMethodDef PV_num_methods[] = {
-    {"typename_int", PV_num_typename_int, METH_NOARGS, "return the typename by int. You can use pv_num.get_type() to get the type"},
-    {"typename", PV_num_typename, METH_NOARGS, "return the typename by str.  You can use pv_num.get_type() to get the type"},
-    {NULL, NULL, 0, NULL}
-};
-
 static PyTypeObject PV_num_Type = {
     PyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "PV_num.PV_num",
@@ -233,7 +223,7 @@ static PyTypeObject PV_num_Type = {
     .tp_richcompare = PV_num_richcmp,
     .tp_hash = PV_num_hash,
     .tp_as_number = &PV_num_as_number,
-    .tp_methods = PV_num_methods,
+    .tp_repr = PV_num_repr
 };
 
 static int pv_num_typestr_to_typeint(PyObject *arg)
@@ -293,6 +283,10 @@ static PyObject *pv_num_typeint_str(PyObject *Py_UNUSED(self), PyObject *arg)
 
 static PyObject *pv_num_type_int(PyObject *Py_UNUSED(self), PyObject *arg)
 {
+    if (PyObject_TypeCheck(arg, g_PV_num_Type))
+    {
+        return PyLong_FromLong((long)((PV_num_Object *)arg)->type_id);
+    }
     if (PyType_Check(arg))
     {
         int value = pv_num_type_to_typeint((PyTypeObject *)(arg));
@@ -303,12 +297,16 @@ static PyObject *pv_num_type_int(PyObject *Py_UNUSED(self), PyObject *arg)
         }
         return PyLong_FromLong((long)value);
     }
-    PyErr_SetString(PyExc_TypeError, "arg must be type");
+    PyErr_SetString(PyExc_TypeError, "arg must be type or PV_num object");
     return NULL;
 }
 
 static PyObject *pv_num_type_str(PyObject *Py_UNUSED(self), PyObject *arg)
 {
+    if (PyObject_TypeCheck(arg, g_PV_num_Type))
+    {
+        return PyUnicode_FromString(type_str[((PV_num_Object *)arg)->type_id]);
+    }
     if (PyType_Check(arg))
     {
         int value = pv_num_type_to_typeint((PyTypeObject *)arg);
@@ -319,7 +317,7 @@ static PyObject *pv_num_type_str(PyObject *Py_UNUSED(self), PyObject *arg)
         }
         return PyUnicode_FromString(type_str[value]);
     }
-    PyErr_SetString(PyExc_TypeError, "arg must be type");
+    PyErr_SetString(PyExc_TypeError, "arg must be type or PV_num object");
     return NULL;
 }
 

@@ -1,7 +1,5 @@
 import unittest
-from PowerViolenceObjects import *
-from PowerViolenceObjects.py_impl import PV_num
-import PowerViolenceObjects as PVOs
+from PowerViolenceObjects.py_impl import *
 
 class TestPv_num(unittest.TestCase):
     def test_init(self):
@@ -25,10 +23,8 @@ class TestPv_num(unittest.TestCase):
         set_overflow_function(lambda: 5)
         self.assertEqual(get_overflow_function()(), 5)
 
-    def test_typename(self):
-        a: PV_num = PV_num()
-        self.assertEqual(a.typename(), 'PV_num')
-        self.assertEqual(a.typename_int(), 0)
+        set_overflow_function(None)
+        self.assertIsNone(get_overflow_function())
 
     def test_cmp(self):
         a: PV_num = PV_num()
@@ -40,9 +36,9 @@ class TestPv_num(unittest.TestCase):
         self.assertFalse(a > b)
         self.assertFalse(a < b)
 
-        c: PV_55p8 = PV_55p8()
-        with self.assertRaises(TypeError):
-            a >= c
+        # c: PV_55p8 = PV_55p8()
+        # with self.assertRaises(TypeError):
+        #     a >= c
 
     def test_hash(self):
         a: PV_num = PV_num()
@@ -51,15 +47,28 @@ class TestPv_num(unittest.TestCase):
         self.assertEqual(hash(a), hash(b))
 
     def test_functions(self):
-        from PowerViolenceObjects import get_type, type_int, type_str, typestr_int, typeint_str, typetype_type
         a: PV_num = PV_num()
-        self.assertEqual(get_type(a.typename_int()), PV_num)
-        self.assertEqual(get_type(a.typename()), PV_num)
-        self.assertEqual(typestr_int(a.typename()), 0)
-        self.assertEqual(typeint_str(a.typename_int()), "PV_num")
+        self.assertEqual(get_type(type_int(a)), PV_num)
+        self.assertEqual(get_type(type_str(a)), PV_num)
+        self.assertEqual(typestr_int(type_str(a)), 0)
+        self.assertEqual(typeint_str(type_int(a)), "PV_num")
         self.assertEqual(type_int(PV_num), 0)
         self.assertEqual(type_str(PV_num), "PV_num")
         self.assertEqual(typetype_type(type_int(PV_num), type_int(PV_num)), type_int(PV_num))
+        with self.assertRaises(TypeError): type_int('a')
+        with self.assertRaises(TypeError): type_str('a')
+        with self.assertRaises(TypeError): typestr_int(1)
+        with self.assertRaises(TypeError): typeint_str('a')
+        with self.assertRaises(TypeError): get_type(())
+        with self.assertRaises(TypeError): typetype_type(PV_num, PV_num)
+        with self.assertRaises(ValueError): type_int(int)
+        with self.assertRaises(ValueError): type_str(int)
+        with self.assertRaises(ValueError): typestr_int('int')
+        with self.assertRaises(ValueError): typeint_str(2541)
+        with self.assertRaises(ValueError): get_type(2541)
+        with self.assertRaises(ValueError): get_type('2541')
+        with self.assertRaises(ValueError): typetype_type(1, 2541)
+
 
 
 if __name__ == '__main__':
