@@ -107,7 +107,7 @@ def typeint_str(__arg: int) -> str:
         raise ValueError(f'The arg must in [0, {MAX_DERIVED})')
     
 
-def type_int(__arg: type | 'PV_num') -> int:
+def type_int(__arg: Union[type, 'PV_num']) -> int:
     if isinstance(__arg, PV_num):
         return get_type_id(__arg)
     if not isinstance(__arg, type):
@@ -118,7 +118,7 @@ def type_int(__arg: type | 'PV_num') -> int:
     raise ValueError('Unknown type')
 
 
-def type_str(__arg: type | 'PV_num') -> str:
+def type_str(__arg: Union[type, 'PV_num']) -> str:
     return _TYPE_STR[type_int(__arg)]
     
 
