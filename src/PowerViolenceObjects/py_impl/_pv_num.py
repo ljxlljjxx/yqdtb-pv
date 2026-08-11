@@ -276,7 +276,5 @@ class PV_num:
     def __repr__(self) -> str:
         return f'<PV_num object at {id(self)}>'
 
-    def strvalue(self) -> str: ...
-
 
 _TYPE_BY_ID[0] = PV_num
