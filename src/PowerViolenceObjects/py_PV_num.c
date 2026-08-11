@@ -1,6 +1,6 @@
 #include "py_PV_num.h"
 
-static const int _typetype_type[MAX_DERIVED][MAX_DERIVED] = {
+static const int _TYPETYPE_TYPE[MAX_DERIVED][MAX_DERIVED] = {
     {PVO_NUM, PVI_PID, PVI_SID, PVI_NRS, PVI_LRS, PVF_11P, PVF_27P, PVF_55P, PVF_119, PVC_64C, PVC_128, PVC_256, PVH_SRT, PVH_NOR, PVO_NOR, PVF_447, PVO_PFT},
     {PVI_PID, PVI_PID, PVI_SID, PVI_NRS, PVI_LRS, PVF_11P, PVF_27P, PVF_55P, PVF_119, PVC_64C, PVC_128, PVC_256, PVH_SRT, PVH_NOR, PVO_NOR, PVF_447, PVO_PFT},
     {PVI_SID, PVI_SID, PVI_SID, PVI_NRS, PVI_LRS, PVF_27P, PVF_27P, PVF_55P, PVF_119, PVC_64C, PVC_128, PVC_256, PVH_SRT, PVH_NOR, PVO_NOR, PVF_447, PVO_PFT},
@@ -75,7 +75,7 @@ static PyObject *PV_num_richcmp(PyObject *lhs, PyObject *rhs, int op)
         rhs_type = GET_TYPE_ID(rhs);
         if (lhs_type && rhs_type)
         {
-            result_type = _typetype_type[lhs_type][rhs_type];
+            result_type = _TYPETYPE_TYPE[lhs_type][rhs_type];
             lhs_new = g_type_make[result_type](NULL); TYPE_TRANSFORM_TYPE(lhs_new, lhs, result_type);
             rhs_new = g_type_make[result_type](NULL); TYPE_TRANSFORM_TYPE(rhs_new, rhs, result_type);
             info_printf("PV_num_richcmp ask %s for help (type1: %s, type2: %s)\n", type_str[result_type], type_str[lhs_type], type_str[rhs_type]);
@@ -83,8 +83,7 @@ static PyObject *PV_num_richcmp(PyObject *lhs, PyObject *rhs, int op)
         }
         if (lhs_type || rhs_type)
         {
-            PyErr_SetString(PyExc_TypeError, "No compare with PV_num");
-            return NULL;
+            Py_RETURN_NOTIMPLEMENTED;
         }
         switch (op)
         {
@@ -107,6 +106,12 @@ static Py_hash_t PV_num_hash(PyObject *op)
     return result;
 }
 
+static PyObject *PV_num_repr(PyObject *_self)
+{
+    PV_num_Object *self = (PV_num_Object *)_self;
+    return PyUnicode_FromFormat("<PV_num object at %p>", self);
+}
+
 static PyObject *PV_num_add(PyObject *lhs, PyObject *rhs)
 {
     int lhs_type, rhs_type, result_type;
@@ -117,7 +122,7 @@ static PyObject *PV_num_add(PyObject *lhs, PyObject *rhs)
         rhs_type = GET_TYPE_ID(rhs);
         if (lhs_type && rhs_type)
         {
-            result_type = _typetype_type[lhs_type][rhs_type];
+            result_type = _TYPETYPE_TYPE[lhs_type][rhs_type];
             lhs_new = g_type_make[result_type](NULL); TYPE_TRANSFORM_TYPE(lhs_new, lhs, result_type);
             rhs_new = g_type_make[result_type](NULL); TYPE_TRANSFORM_TYPE(rhs_new, rhs, result_type);
             info_printf("PV_num_add ask %s for help (type1: %s, type2: %s)\n", type_str[result_type], type_str[lhs_type], type_str[rhs_type]);
@@ -206,22 +211,6 @@ static PyNumberMethods PV_num_as_number = {
     .nb_index = (unaryfunc)PV_num_index,
 };
 
-static PyObject *PV_num_typename_int(PyObject *self, PyObject *Py_UNUSED(args))
-{
-    return PyLong_FromLong((long)GET_TYPE_ID(self));
-}
-
-static PyObject *PV_num_typename(PyObject *self, PyObject *Py_UNUSED(args))
-{
-    return PyUnicode_FromString(type_str[GET_TYPE_ID(self)]);
-}
-
-static PyMethodDef PV_num_methods[] = {
-    {"typename_int", PV_num_typename_int, METH_NOARGS, "return the typename by int. You can use pv_num.get_type() to get the type"},
-    {"typename", PV_num_typename, METH_NOARGS, "return the typename by str.  You can use pv_num.get_type() to get the type"},
-    {NULL, NULL, 0, NULL}
-};
-
 static PyTypeObject PV_num_Type = {
     PyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "PV_num.PV_num",
@@ -234,7 +223,7 @@ static PyTypeObject PV_num_Type = {
     .tp_richcompare = PV_num_richcmp,
     .tp_hash = PV_num_hash,
     .tp_as_number = &PV_num_as_number,
-    .tp_methods = PV_num_methods,
+    .tp_repr = PV_num_repr
 };
 
 static int pv_num_typestr_to_typeint(PyObject *arg)
@@ -294,6 +283,10 @@ static PyObject *pv_num_typeint_str(PyObject *Py_UNUSED(self), PyObject *arg)
 
 static PyObject *pv_num_type_int(PyObject *Py_UNUSED(self), PyObject *arg)
 {
+    if (PyObject_TypeCheck(arg, g_PV_num_Type))
+    {
+        return PyLong_FromLong((long)((PV_num_Object *)arg)->type_id);
+    }
     if (PyType_Check(arg))
     {
         int value = pv_num_type_to_typeint((PyTypeObject *)(arg));
@@ -304,12 +297,16 @@ static PyObject *pv_num_type_int(PyObject *Py_UNUSED(self), PyObject *arg)
         }
         return PyLong_FromLong((long)value);
     }
-    PyErr_SetString(PyExc_TypeError, "arg must be type");
+    PyErr_SetString(PyExc_TypeError, "arg must be type or PV_num object");
     return NULL;
 }
 
 static PyObject *pv_num_type_str(PyObject *Py_UNUSED(self), PyObject *arg)
 {
+    if (PyObject_TypeCheck(arg, g_PV_num_Type))
+    {
+        return PyUnicode_FromString(type_str[((PV_num_Object *)arg)->type_id]);
+    }
     if (PyType_Check(arg))
     {
         int value = pv_num_type_to_typeint((PyTypeObject *)arg);
@@ -320,7 +317,7 @@ static PyObject *pv_num_type_str(PyObject *Py_UNUSED(self), PyObject *arg)
         }
         return PyUnicode_FromString(type_str[value]);
     }
-    PyErr_SetString(PyExc_TypeError, "arg must be type");
+    PyErr_SetString(PyExc_TypeError, "arg must be type or PV_num object");
     return NULL;
 }
 
@@ -375,7 +372,7 @@ static PyObject *pv_num_typetype_type(PyObject *Py_UNUSED(self), PyObject *const
         if (arg1 == -1 && PyErr_Occurred()) return NULL;
         if (arg1 < 0 || arg1 >= MAX_DERIVED)
         {
-            PyErr_Format(PyExc_ValueError, "arg1 must in [0, %d)", MAX_DERIVED);
+            PyErr_Format(PyExc_ValueError, "args must in [0, %d)", MAX_DERIVED);
             return NULL;
         }
     }
@@ -390,11 +387,11 @@ static PyObject *pv_num_typetype_type(PyObject *Py_UNUSED(self), PyObject *const
         if (arg2 == -1 && PyErr_Occurred()) return NULL;
         if (arg2 < 0 || arg2 >= MAX_DERIVED)
         {
-            PyErr_Format(PyExc_ValueError, "arg2 must in [0, %d)", MAX_DERIVED);
+            PyErr_Format(PyExc_ValueError, "args must in [0, %d)", MAX_DERIVED);
             return NULL;
         }
     }
-    return PyLong_FromLong((long)_typetype_type[arg1][arg2]);
+    return PyLong_FromLong((long)_TYPETYPE_TYPE[arg1][arg2]);
 }
 
 static PvNumState *pv_num_get_state(PyObject *module)

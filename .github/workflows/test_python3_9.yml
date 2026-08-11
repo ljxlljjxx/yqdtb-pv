@@ -32,4 +32,4 @@ jobs:
           pip install .
       - name: Run unittest
         run: |
-          python -m unittest discover tests
+          python -m unittest discover tests/pytests

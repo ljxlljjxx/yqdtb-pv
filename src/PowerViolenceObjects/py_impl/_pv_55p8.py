@@ -1,13 +1,12 @@
-from .pv_num import PV_num
+from ._pv_num import PV_num  # pragma: no cover
 
-class PV_119p8(PV_num):
-    def __init__(self, value: float | PV_num = 0) -> None: ...
-
-    @property
-    def _value(self) -> int: ...
-
-    @_value.setter
-    def _value(self, value: int): ...
+class PV_55p8(PV_num):  # pragma: no cover
+    _type_id = 7  # const
+    def __init__(self, value: float | PV_num = 0) -> None:
+        if isinstance(value, float):
+            self._value = int(value * 256)
+        elif isinstance(value, PV_num):
+            pass
     
     def __eq__(self, __value: PV_num) -> bool: ...
     def __ne__(self, __value: PV_num) -> bool: ...

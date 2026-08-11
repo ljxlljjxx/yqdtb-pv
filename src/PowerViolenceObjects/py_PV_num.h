@@ -49,7 +49,7 @@ typedef int (*register_type_func_t)(int, PyTypeObject *, PvNum_TypeMake);
 #define TYPE_TRANSFORM_TYPE(a, b, type) (pvc_type_trans_func[type][GET_TYPE_ID(b)](((int8_t *)(a) + sizeof(PV_num_Object)), ((int8_t *)(b) + sizeof(PV_num_Object))))
 #define TYPE_TRANSFORM(a, b) (TYPE_TRANSFORM_TYPE((a), (b), GET_TYPE_ID(a)))
 
-#define _GET_RESULT_TYPE_ID(a, b) (_typetype_type[GET_TYPE_ID(a)][GET_TYPE_ID(b)])
+#define _GET_RESULT_TYPE_ID(a, b) (_TYPETYPE_TYPE[GET_TYPE_ID(a)][GET_TYPE_ID(b)])
 
 typedef struct PvNumState {
     PyObject *overflow_function;
