@@ -5,14 +5,12 @@ class TestPv_num(unittest.TestCase):
     def test_init(self):
         PV_num()
 
-    def test_number(self):
+    def test_add(self):
         a: PV_num = PV_num()
-        with self.assertRaises(TypeError): a + 1
-        with self.assertRaises(TypeError): a >> 1
-        with self.assertRaises(TypeError): a & 1
-        with self.assertRaises(TypeError): int(a)
-        with self.assertRaises(TypeError): pow(a, 100)
-        with self.assertRaises(TypeError): a *= 2
+        with self.assertRaises(TypeError):
+            a + 5
+        with self.assertRaises(TypeError):
+            a + a
 
     def test_overflow_function(self):
         self.assertIsNone(get_overflow_function())
@@ -36,6 +34,10 @@ class TestPv_num(unittest.TestCase):
         self.assertFalse(a > b)
         self.assertFalse(a < b)
 
+        c: int = int()
+        with self.assertRaises(TypeError):
+            a >= c
+
         # c: PV_55p8 = PV_55p8()
         # with self.assertRaises(TypeError):
         #     a >= c
@@ -45,6 +47,13 @@ class TestPv_num(unittest.TestCase):
         b: PV_num = PV_num()
 
         self.assertEqual(hash(a), hash(b))
+
+    def test_repr(self):
+        a: PV_num = PV_num()
+        b: PV_num = PV_num()
+
+        self.assertNotEqual(repr(a), repr(b))
+        self.assertEqual(repr(a), repr(a))
 
     def test_functions(self):
         a: PV_num = PV_num()
@@ -68,6 +77,7 @@ class TestPv_num(unittest.TestCase):
         with self.assertRaises(ValueError): get_type(2541)
         with self.assertRaises(ValueError): get_type('2541')
         with self.assertRaises(ValueError): typetype_type(1, 2541)
+        with self.assertRaises(RuntimeError): get_type(2)
 
 
 

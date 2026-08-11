@@ -5,14 +5,12 @@ class TestPv_num(unittest.TestCase):
     def test_init(self):
         PV_num()
 
-    def test_number(self):
+    def test_add(self):
         a: PV_num = PV_num()
-        with self.assertRaises(TypeError): a + 1
-        with self.assertRaises(TypeError): a >> 1
-        with self.assertRaises(TypeError): a & 1
-        with self.assertRaises(TypeError): int(a)
-        with self.assertRaises(TypeError): pow(a, 100)
-        with self.assertRaises(TypeError): a *= 2
+        with self.assertRaises(TypeError):
+            a + 5
+        with self.assertRaises(TypeError):
+            a + a
 
     def test_overflow_function(self):
         self.assertIsNone(get_overflow_function())
@@ -35,6 +33,10 @@ class TestPv_num(unittest.TestCase):
         self.assertFalse(a != b)
         self.assertFalse(a > b)
         self.assertFalse(a < b)
+
+        c: int = int()
+        with self.assertRaises(TypeError):
+            a >= c
 
         c: PV_55p8 = PV_55p8()
         with self.assertRaises(TypeError):

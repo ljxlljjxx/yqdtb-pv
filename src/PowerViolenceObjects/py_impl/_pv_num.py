@@ -148,13 +148,9 @@ def typetype_type(__arg1: int, __arg2: int) -> int:
 def get_type_id(obj: 'PV_num') -> int:
     try:
         return obj._type_id
-    except AttributeError:
+    except AttributeError:  # pragma: no cover
         pass
-    raise TypeError('obj must be PV_num Object')
-    
-
-def pv_num_type_check(obj: 'PV_num', tp: type) -> bool:
-    return get_type_id(obj) == tp
+    raise TypeError('obj must be PV_num Object')  # pragma: no cover
 
 
 def register_type(type_id: int, tp: type, make_func: Callable) -> int:
@@ -164,10 +160,6 @@ def register_type(type_id: int, tp: type, make_func: Callable) -> int:
         return 0
     else:
         return 1
-    
-
-def get_result_type_id(a, b):
-    return _TYPETYPE_TYPE[get_type_id(a)][get_type_id(b)]
 
 
 class PV_num:

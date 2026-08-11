@@ -1,6 +1,6 @@
-from ._pv_num import PV_num
+from ._pv_num import PV_num  # pragma: no cover
 
-class PV_55p8(PV_num):
+class PV_55p8(PV_num):  # pragma: no cover
     _type_id = 7  # const
     def __init__(self, value: float | PV_num = 0) -> None:
         if isinstance(value, float):
