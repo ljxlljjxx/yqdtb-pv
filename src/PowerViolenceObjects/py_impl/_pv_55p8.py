@@ -110,7 +110,7 @@ class PV_55p8(PV_num):
     def __sub__(self, other: PV_num):       return NotImplemented
     def __mul__(self, other: PV_num):       return NotImplemented
     def __mod__(self, other: PV_num):       return NotImplemented
-    def __pow__(self, other: PV_num, modulo: int | None = None):      return NotImplemented
+    def __pow__(self, other: PV_num, modulo: Union[int, None] = None):      return NotImplemented
     def __divmod__(self, other: PV_num):    return NotImplemented
     def __truediv__(self, other: PV_num):   return NotImplemented
     def __floordiv__(self, other: PV_num):  return NotImplemented
