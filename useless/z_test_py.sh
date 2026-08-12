@@ -11,7 +11,8 @@ python useless/z_vertion.py
 echo 'Python tests'
 
 python setup.py clean --all
-pip install --no-cache-dir .
+# pip uninstall PowerViolenceObjects
+pip install --no-cache-dir --force-reinstall .
 if [ $? -eq 1 ]; then
     return_val=1;
 else

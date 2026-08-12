@@ -111,16 +111,6 @@ static PyObject *PV_119p8_str(PyObject *op)
     return PyUnicode_FromString(pvc_PV_119p8_tostring(&((PV_119p8_Object *)op)->value));
 }
 
-static PyObject *PV_119p8_Object_strvalue(PV_119p8_Object *self, PyObject *Py_UNUSED(unused))
-{
-    return PyUnicode_FromString(pvc_PV_119p8_tostring(&self->value));
-}
-
-static PyMethodDef PV_119p8_methods[] = {
-    {"strvalue", (PyCFunction)PV_119p8_Object_strvalue, METH_NOARGS, "Return the value by string"},
-    {NULL, NULL, 0, NULL}
-};
-
 static int PV_119p8_set__value(PyObject *op, PyObject *value, void *closure)
 {
     PV_119p8_Object *self = (PV_119p8_Object *)op;
@@ -309,10 +299,16 @@ static PyTypeObject PV_119p8_Type = {
     .tp_new = (newfunc)PV_119p8_new,
     .tp_init = (initproc)PV_119p8_init,
     .tp_dealloc = (destructor)PV_119p8_dealloc,
-    .tp_methods = PV_119p8_methods,
     .tp_getset = PV_119p8_getsetters,
     .tp_as_number = &PV_119p8_as_number,
 };
+
+PyObject *_create_huge_number_via_string(const char *hex_str)
+{
+    PyObject *num = PyLong_FromString(hex_str, NULL, 0);
+    if (!num) { PyErr_Print(); }
+    return num;
+}
 
 static int pv_119p8_exec(PyObject *m)
 {
@@ -331,6 +327,16 @@ static int pv_119p8_exec(PyObject *m)
     if (!g_PV_num_Type || !register_func) return -1;
 
     (&PV_119p8_Type)->tp_base = g_PV_num_Type;
+
+    PyObject *dict = PyDict_New();
+    PyDict_SetItemString(dict, "max_int", _create_huge_number_via_string("0x7fffffffffffffffffffffffffffffff"));
+    PyDict_SetItemString(dict, "min_int", _create_huge_number_via_string("-0x80000000000000000000000000000000"));
+    PyDict_SetItemString(dict, "step_int", PyLong_FromLongLong(256ll));
+    PyDict_SetItemString(dict, "max_float", PyFloat_FromString(PyUnicode_FromString("664613997892457936451903530140172288.0")));
+    PyDict_SetItemString(dict, "min_float", PyFloat_FromString(PyUnicode_FromString("-664613997892457936451903530140172288.0")));
+    PyDict_SetItemString(dict, "step_float", PyFloat_FromDouble(0.00390625));
+    PV_119p8_Type.tp_dict = dict;
+
     if (PyType_Ready(&PV_119p8_Type) < 0)
     {
         Py_DECREF(g_PV_num_Type);
