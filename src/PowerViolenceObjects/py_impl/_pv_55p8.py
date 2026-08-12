@@ -1,3 +1,4 @@
+from typing import Union
 from ._pv_num import PV_num, get_type_id, call_overflow_function, register_type
 
 class PV_55p8(PV_num):
@@ -10,7 +11,7 @@ class PV_55p8(PV_num):
     min_float = float(-2 ** 55)       # const
     step_float = 0.00390625           # const
 
-    def __init__(self, value: float | PV_num = 0.0) -> None:
+    def __init__(self, value: Union[float, PV_num] = 0.0) -> None:
         if isinstance(value, float):
             self._value = int(value * 256)
         elif isinstance(value, PV_num):
