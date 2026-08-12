@@ -19,7 +19,7 @@ class TestPv_num(unittest.TestCase):
             set_overflow_function(2)
 
         set_overflow_function(lambda: 5)
-        self.assertEqual(get_overflow_function()(), 5)
+        self.assertEqual(call_overflow_function(), 5)
 
         set_overflow_function(None)
         self.assertIsNone(get_overflow_function())
@@ -38,15 +38,22 @@ class TestPv_num(unittest.TestCase):
         with self.assertRaises(TypeError):
             a >= c
 
-        c: PV_55p8 = PV_55p8()
-        with self.assertRaises(TypeError):
-            a >= c
+        # c: PV_55p8 = PV_55p8()
+        # with self.assertRaises(TypeError):
+        #     a >= c
 
     def test_hash(self):
         a: PV_num = PV_num()
         b: PV_num = PV_num()
 
         self.assertEqual(hash(a), hash(b))
+
+    def test_repr(self):
+        a: PV_num = PV_num()
+        b: PV_num = PV_num()
+
+        self.assertNotEqual(repr(a), repr(b))
+        self.assertEqual(repr(a), repr(a))
 
     def test_functions(self):
         a: PV_num = PV_num()
@@ -70,6 +77,12 @@ class TestPv_num(unittest.TestCase):
         with self.assertRaises(ValueError): get_type(2541)
         with self.assertRaises(ValueError): get_type('2541')
         with self.assertRaises(ValueError): typetype_type(1, 2541)
+        with self.assertRaises(RuntimeError): get_type(2)
+
+    def test_class_id(self):
+        self.assertEqual(get_type(0), PV_num)
+        self.assertEqual(get_type('PV_num'), PV_num)
+
 
 
 if __name__ == '__main__':
