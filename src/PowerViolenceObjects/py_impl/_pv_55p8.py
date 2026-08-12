@@ -157,7 +157,7 @@ class PV_55p8(PV_num):
             value = -value
         if value % 256 == 0:
             return ans + f'{value // 256}'
-        return ans + f'{value // 256}.{str(value % 256 * 100000000 // 256).zfill(8).rstrip('0')}'
+        return ans + f'{value // 256}.{str(value % 256 * 100000000 // 256).zfill(8).rstrip("0")}'
 
 
 register_type(PV_55p8._type_id, PV_55p8)
