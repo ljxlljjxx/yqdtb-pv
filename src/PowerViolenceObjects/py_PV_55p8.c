@@ -13,7 +13,7 @@ static PyObject *PV_55p8_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
     obj->type_id = PVF_55P;
     self = (PV_55p8_Object *)obj;
     if (self != NULL) self->value._1 = 0;
-    return (PyObject *) self;
+    return (PyObject *)self;
 }
 
 static int PV_55p8_init(PV_55p8_Object *self, PyObject *args, PyObject *kwds)
@@ -29,8 +29,16 @@ static int PV_55p8_init(PV_55p8_Object *self, PyObject *args, PyObject *kwds)
         if (PyFloat_Check(value))
         {
             val = PyFloat_AsDouble(value);
-            self->value._1 = (int64_t)(val * 256);
-            return 0;
+            if (INT64_MIN > val * 256 || INT64_MAX < val * 256)
+            {
+                self->value._1 = 0;
+                raise_overflow(-1);
+            }
+            else
+            {
+                self->value._1 = (int64_t)(val * 256);
+                return 0;
+            }
         }
         else
         {
@@ -57,7 +65,7 @@ static int PV_55p8_init(PV_55p8_Object *self, PyObject *args, PyObject *kwds)
     return 0;
 }
 
-static PyObject *_PV_55p8_FromValue(pvc_PV_55p8 *val)
+static PV_55p8_Object *_PV_55p8_FromValue(pvc_PV_55p8 *val)
 {
     PV_55p8_Object *obj;
     obj = (PV_55p8_Object *)PV_55p8_Type.tp_alloc(&PV_55p8_Type, 0);
@@ -65,14 +73,12 @@ static PyObject *_PV_55p8_FromValue(pvc_PV_55p8 *val)
     obj->base.type_id = PVF_55P;
     if (val) obj->value = *val;
     else obj->value._1 = 0ll;
-    return (PyObject *)obj;
+    return obj;
 }
 
 static PyObject *PV_55p8_richcmp(PyObject *lhs, PyObject *rhs, int op)
 {
     int64_t a = ((PV_55p8_Object *)lhs)->value._1, b = ((PV_55p8_Object *)rhs)->value._1;
-    int c = 0;
-    PyObject *result;
     if (PyObject_TypeCheck(lhs, g_PV_num_Type) && PyObject_TypeCheck(rhs, g_PV_num_Type))
     {
         if (PvNUM_TypeCheck(lhs, PVF_55P) && PvNUM_TypeCheck(rhs, PVF_55P))
@@ -94,27 +100,22 @@ static PyObject *PV_55p8_richcmp(PyObject *lhs, PyObject *rhs, int op)
     Py_RETURN_NOTIMPLEMENTED;
 }
 
-static Py_hash_t PV_55p8_hash(PyObject *op)
+static Py_hash_t PV_55p8_hash(PyObject *self)
 {
-    Py_hash_t result = ((PV_55p8_Object *)op)->value._1;
+    Py_hash_t result = ((PV_55p8_Object *)self)->value._1;
     if (result == -1) return -2;
     return result;
 }
 
-static PyObject *PV_55p8_str(PyObject *op)
+static PyObject *PV_55p8_repr(PyObject *self)
 {
-    return PyUnicode_FromString(pvc_PV_55p8_tostring(&((PV_55p8_Object *)op)->value));
+    return PyUnicode_FromFormat("<PV_55p8 object at %p>: _value = %"PRId64, self, ((PV_55p8_Object *)self)->value._1);
 }
 
-static PyObject *PV_55p8_Object_strvalue(PV_55p8_Object *self, PyObject *Py_UNUSED(unused))
+static PyObject *PV_55p8_str(PyObject *self)
 {
-    return PyUnicode_FromString(pvc_PV_55p8_tostring(&self->value));
+    return PyUnicode_FromString(pvc_PV_55p8_tostring(&((PV_55p8_Object *)self)->value));
 }
-
-static PyMethodDef PV_55p8_methods[] = {
-    {"strvalue", (PyCFunction)PV_55p8_Object_strvalue, METH_NOARGS, "Return the value by string"},
-    {NULL, NULL, 0, NULL}
-};
 
 static int PV_55p8_set__value(PyObject *op, PyObject *value, void *closure)
 {
@@ -126,7 +127,7 @@ static int PV_55p8_set__value(PyObject *op, PyObject *value, void *closure)
     }
     if (!PyLong_Check(value))
     {
-        PyErr_Format(PyExc_TypeError, "The 'first' attribute must be an int, not '%.200s'", Py_TYPE(value)->tp_name);
+        PyErr_Format(PyExc_TypeError, "_value must be int");
         return -1;
     }
     long long ret = PyLong_AsLongLong(value);
@@ -159,7 +160,7 @@ static PyObject *PV_55p8_add(PyObject *_lhs, PyObject *_rhs)
             if (pvc_PV_55p8_add(&lhs->value, &rhs->value, &result))
                 raise_overflow(NULL);
             ans = _PV_55p8_FromValue(&result);
-            return ans;
+            return (PyObject *)ans;
         }
         info_puts("PV_55p8_add ask PV_num's help");
         return g_PV_num_Type->tp_as_number->nb_add(_lhs, _rhs);
@@ -256,13 +257,14 @@ static PyTypeObject PV_55p8_Type = {
     .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
     .tp_richcompare = (richcmpfunc)PV_55p8_richcmp,
     .tp_hash = (hashfunc)PV_55p8_hash,
+    .tp_repr = (reprfunc)PV_55p8_repr,
     .tp_str = (reprfunc)PV_55p8_str,
     .tp_new = (newfunc)PV_55p8_new,
     .tp_init = (initproc)PV_55p8_init,
     .tp_dealloc = (destructor)PV_55p8_dealloc,
-    .tp_methods = PV_55p8_methods,
     .tp_getset = PV_55p8_getsetters,
     .tp_as_number = &PV_55p8_as_number,
+    .tp_dict = NULL,
 };
 
 static int pv_55p8_exec(PyObject *m)
@@ -282,6 +284,16 @@ static int pv_55p8_exec(PyObject *m)
     if (!g_PV_num_Type || !register_func) return -1;
 
     (&PV_55p8_Type)->tp_base = g_PV_num_Type;
+
+    PyObject *dict = PyDict_New();
+    PyDict_SetItemString(dict, "max_int", PyLong_FromLongLong(INT64_MAX));
+    PyDict_SetItemString(dict, "min_int", PyLong_FromLongLong(INT64_MIN));
+    PyDict_SetItemString(dict, "step_int", PyLong_FromLongLong(256ll));
+    PyDict_SetItemString(dict, "max_float", PyFloat_FromDouble((1ll << 55) - 0.00390625));
+    PyDict_SetItemString(dict, "min_float", PyFloat_FromDouble(-(double)(1ll << 55)));
+    PyDict_SetItemString(dict, "step_float", PyFloat_FromDouble(0.00390625));
+    PV_55p8_Type.tp_dict = dict;
+
     if (PyType_Ready(&PV_55p8_Type) < 0)
     {
         Py_DECREF(g_PV_num_Type);

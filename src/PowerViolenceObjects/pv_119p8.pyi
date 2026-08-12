@@ -1,6 +1,13 @@
 from .pv_num import PV_num
 
 class PV_119p8(PV_num):
+    max_int = 2 ** 127 - 1             # const
+    min_int = -2 ** 127                # const
+    step_int = 256                     # const
+    max_float = 2 ** 119 - 0.00390625  # const
+    min_float = float(-2 ** 119)       # const
+    step_float = 0.00390625            # const
+
     def __init__(self, value: float | PV_num = 0) -> None: ...
 
     @property
@@ -17,6 +24,9 @@ class PV_119p8(PV_num):
     def __le__(self, __value: PV_num) -> bool: ...
 
     def __hash__(self) -> int: ...
+    def __bool__(self) -> bool: ...
+    def __repr__(self) -> str: ...
+    def __str__(self) -> str: ...
 
     def __add__(self, other: PV_num):       pass
     def __sub__(self, other: PV_num):       return NotImplemented
@@ -28,7 +38,6 @@ class PV_119p8(PV_num):
     def __floordiv__(self, other: PV_num):  return NotImplemented
     def __neg__(self):                      return NotImplemented
     def __pos__(self):                      return NotImplemented
-    def __abs__(self):                      return NotImplemented
     def __bool__(self):                     pass
     def __abs__(self):                      return NotImplemented
     def __invert__(self):                   return NotImplemented
@@ -55,5 +64,3 @@ class PV_119p8(PV_num):
     def __ior__(self, other: PV_num):       return NotImplemented
 
     def __str__(self) -> str: ...
-
-    def strvalue(self) -> str: ...

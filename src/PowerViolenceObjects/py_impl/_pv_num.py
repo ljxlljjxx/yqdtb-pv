@@ -53,7 +53,6 @@ def _empty_func():  # pragma: no cover
 
 
 _TYPE_BY_ID: List[type] = [object] * MAX_DERIVED
-_TYPE_MAKE: List[Callable] = [_empty_func] * MAX_DERIVED
 _TYPE_STR: List[str] = [
     "PV_num",
     "PV_pID", 
@@ -74,19 +73,29 @@ _TYPE_STR: List[str] = [
     "PV_perfect"
 ]
 
+def default_function():
+    raise OverflowError
 
 def get_overflow_function() -> Union[None, Callable]:
     return _overflow_function
 
 
-def set_overflow_function(__value: Union[None, Callable]):
+def call_overflow_function():
+    if _overflow_function is None:
+        return
+    return _overflow_function()
+
+
+def set_overflow_function(__value: Union[None, Callable, str]):
     global _overflow_function
     if __value is None:
         _overflow_function = None
+    elif __value == 'default':
+        _overflow_function = default_function
     elif callable(__value):
         _overflow_function = __value
     else:
-        raise TypeError('overflow_function must be callable or None')
+        raise TypeError("overflow_function must be callable or None or 'default'")
     
 
 def typestr_int(__arg: str) -> int:
@@ -122,7 +131,7 @@ def type_str(__arg: Union[type, 'PV_num']) -> str:
     return _TYPE_STR[type_int(__arg)]
     
 
-def get_type(__arg: Union[int, str]) -> str:
+def get_type(__arg: Union[int, str]) -> type:
     if isinstance(__arg, int):
         if 0 <= __arg < MAX_DERIVED:
             if _TYPE_BY_ID[__arg] != object:
@@ -153,17 +162,16 @@ def get_type_id(obj: 'PV_num') -> int:
     raise TypeError('obj must be PV_num Object')  # pragma: no cover
 
 
-def register_type(type_id: int, tp: type, make_func: Callable) -> int:
+def register_type(type_id: int, tp: type) -> int:
     if 0 <= type_id < MAX_DERIVED:
         _TYPE_BY_ID[type_id] = tp
-        _TYPE_MAKE[type_id] = make_func
         return 0
-    else:
+    else:  # pragma: no cover
         return 1
 
 
 class PV_num:
-    _type_id = 0
+    _type_id = 0  # const
 
     @staticmethod
     def _type_transform(a: 'PV_num', b: 'PV_num') -> Tuple['PV_num', 'PV_num', type]:
@@ -187,7 +195,7 @@ class PV_num:
             lhs_new, rhs_new, result_type = PV_num._type_transform(lhs, rhs)
             if result_type is PV_num:
                 return bool((op & 1) ^ ((op & 2) >> 1))
-            return _TYPE_BY_ID[result_type]._richcmp(lhs_new, rhs_new, op)
+            return result_type._richcmp(lhs_new, rhs_new, op)
         except TypeError:
             return NotImplemented
 
@@ -227,10 +235,7 @@ class PV_num:
         a = PV_num._calculate(self, other)
         return a[0] + a[1] if a is not NotImplemented else NotImplemented
         
-    def __sub__(self, other: 'PV_num'):
-        a = PV_num._calculate(self, other)
-        return a[0] - a[1] if a is not NotImplemented else NotImplemented
-
+    def __sub__(self, other: 'PV_num'):       return NotImplemented
     def __mul__(self, other: 'PV_num'):       return NotImplemented
     def __mod__(self, other: 'PV_num'):       return NotImplemented
     def __pow__(self, other: 'PV_num', modulo: Union[int, None] = None):      return NotImplemented

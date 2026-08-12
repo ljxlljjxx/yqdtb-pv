@@ -399,16 +399,36 @@ static PvNumState *pv_num_get_state(PyObject *module)
     return (PvNumState *)PyModule_GetState(module);
 }
 
+static PyObject *pv_num_default_overflow_function()
+{
+    PyErr_SetString(PyExc_OverflowError, "");
+    return NULL;
+}
+
 static PyObject *pv_num_get_global(PyObject *self, PyObject *Py_UNUSED(ig))
 {
     PvNumState *state = pv_num_get_state(self);
+    if (state->overflow_function == Py_True) return PyUnicode_FromString("default");
     Py_INCREF(state->overflow_function);
     return state->overflow_function;
+}
+
+static PyObject *pv_num_call_global(PyObject *self, PyObject *Py_UNUSED(ig))
+{
+    PvNumState *state = pv_num_get_state(self);
+    if (state->overflow_function == Py_None) return Py_None;
+    if (state->overflow_function == Py_True)
+    {
+        PyErr_SetString(PyExc_OverflowError, "");
+        return NULL;
+    }
+    return PyObject_CallObject(state->overflow_function, NULL);
 }
 
 static PyObject *pv_num_set_global(PyObject *self, PyObject *value)
 {
     PvNumState *state = pv_num_get_state(self);
+    fflush(stdout);
     if (!value)
     {
         PyErr_SetString(PyExc_AttributeError, "can not remove the overflow_function");
@@ -421,10 +441,27 @@ static PyObject *pv_num_set_global(PyObject *self, PyObject *value)
         state->overflow_function = Py_None;
         Py_RETURN_NONE;
     }
+    if (PyObject_TypeCheck(value, &PyUnicode_Type))
+    {
+        switch (PyObject_RichCompareBool(value, PyUnicode_FromString("default"), Py_EQ))
+        {
+        case 0:
+            break;
+
+        case 1:
+            Py_INCREF(Py_True);
+            Py_DECREF(state->overflow_function);
+            state->overflow_function = Py_True;
+            Py_RETURN_NONE;
+        
+        default:
+            return NULL;
+        }
+    }
     if (!PyCallable_Check(value))
     {
         error_puts("set uncallable overflow_function");
-        PyErr_SetString(PyExc_TypeError, "overflow_function must be callable or None");
+        PyErr_SetString(PyExc_TypeError, "overflow_function must be callable or None or 'default'");
         return NULL;
     }
     info_puts("set new overflow_function");
@@ -436,6 +473,7 @@ static PyObject *pv_num_set_global(PyObject *self, PyObject *value)
 
 static PyMethodDef pv_num_methods[] = {
     {"get_overflow_function", pv_num_get_global, METH_NOARGS, "Get overflow_function"},
+    {"call_overflow_function", pv_num_call_global, METH_NOARGS, "Call overflow_function"},
     {"set_overflow_function", pv_num_set_global, METH_O, "Set overflow_function"},
     {"typestr_int", (PyCFunction)pv_num_typestr_int, METH_O, "change the str to int"},
     {"typeint_str", (PyCFunction)pv_num_typeint_str, METH_O, "change the int to str"},

@@ -3,6 +3,14 @@ from random import randint
 from PowerViolenceObjects import *
 
 class TestPv_119p8(unittest.TestCase):
+    def test_classvalue(self):
+        self.assertEqual(PV_119p8.max_int, 2 ** 127 - 1)
+        self.assertEqual(PV_119p8.min_int, -2 ** 127)
+        self.assertEqual(PV_119p8.step_int, 256)
+        self.assertEqual(PV_119p8.max_float, 2 ** 119 - 2 ** -8)
+        self.assertEqual(PV_119p8.min_float, -float(2 ** 119))
+        self.assertEqual(PV_119p8.step_float, 0.00390625)
+
     def test_init(self):
         a: PV_119p8 = PV_119p8()
         self.assertEqual(a._value, 0)
@@ -49,18 +57,6 @@ class TestPv_119p8(unittest.TestCase):
         
         set_overflow_function(None)
 
-    def test_strvalue(self):
-        a: PV_119p8 = PV_119p8()
-
-        a._value = 10
-        self.assertEqual(a.strvalue(), '0.0390625')
-
-        a._value = -324523
-        self.assertEqual(a.strvalue(), '-1267.66796875')
-
-        a._value = 42323570892357
-        self.assertEqual(a.strvalue(), '165326448798.26953125')
-
     def test_cmp(self):
         a: PV_119p8 = PV_119p8()
         b: PV_119p8 = PV_119p8()
@@ -105,12 +101,16 @@ class TestPv_119p8(unittest.TestCase):
     def test_str(self):
         a = PV_119p8()
 
-        for i in range(1000):
-            a._value = randint(-2**63, 2**63-1)
-            self.assertEqual(a.strvalue(), str(a))
+        a._value = 10
+        self.assertEqual(str(a), '0.0390625')
+
+        a._value = -324523
+        self.assertEqual(str(a), '-1267.66796875')
+
+        a._value = 42323570892357
+        self.assertEqual(str(a), '165326448798.26953125')
 
     def test_issubclass(self):
-        from PowerViolenceObjects import PV_num
         self.assertTrue(issubclass(PV_119p8, PV_num))
 
 
@@ -136,7 +136,7 @@ class TestPv_119p8_as_number(unittest.TestCase):
             a._value = randint(-2**119, 2**119-1)
             b._value = randint(-2**119, 2**119-1)
             trueans: int = a._value + b._value
-            if trueans > constant.PV_119p8__max_int or trueans < constant.PV_119p8__min_int:
+            if trueans > PV_119p8.max_int or trueans < PV_119p8.min_int:
                 trueans = 0
             c = a + b
             self.assertEqual(c._value, trueans)
