@@ -13,26 +13,36 @@ gcc pvc_PV_119p8-macos.o ct_pvc_PV_119p8-macos.o pvc_defines-macos.o -o ct_pvc_P
 int test_pvc_PV_119p8_set(void)
 {
     pvc_PV_119p8 a;
+    int s;
     __int128_t b, ccc = (__int128_t)1 << 64;
     double true_b;
     test_start(50);
 
     b = (__int128_t)0 * ccc + 0;
     true_b = (double)b / 256;
-    useful_functest_noreturnvalue(pvc_PV_119p8_set, &a, true_b);
+    useful_functest(s, pvc_PV_119p8_set, &a, true_b);
+    assert_equal(s, 0);
     assert_equal(a._1, 0);
     assert_equal(a._2, 0);
 
     b = (__int128_t)0 * ccc + 123456789ULL;
     true_b = (double)b / 256;
-    useful_functest_noreturnvalue(pvc_PV_119p8_set, &a, true_b);
+    useful_functest(s, pvc_PV_119p8_set, &a, true_b);
+    assert_equal(s, 0);
     assert_equal(a._1, 0);
     assert_equal(a._2, 123456789ULL);
 
     b = (__int128_t)123 * ccc;
     true_b = (double)b / 256;
-    useful_functest_noreturnvalue(pvc_PV_119p8_set, &a, true_b);
+    useful_functest(s, pvc_PV_119p8_set, &a, true_b);
+    assert_equal(s, 0);
     assert_equal(a._1, 123);
+    assert_equal(a._2, 0);
+
+    true_b = 1e125;
+    useful_functest(s, pvc_PV_119p8_set, &a, true_b);
+    assert_equal(s, 1);
+    assert_equal(a._1, 0);
     assert_equal(a._2, 0);
 
     test_end();

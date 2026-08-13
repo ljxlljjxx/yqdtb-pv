@@ -9,7 +9,7 @@
  * @author  ljx
  * @date    2026-04-24 20:12
  */
-void pvc_PV_119p8_set(pvc_PV_119p8 *res, double a)
+int pvc_PV_119p8_set(pvc_PV_119p8 *res, double a)
 {
     if (fabs(a) < 0.00390625)
     {
@@ -20,6 +20,12 @@ void pvc_PV_119p8_set(pvc_PV_119p8 *res, double a)
     {
         double val = a * 256.0;
         const double c = ldexp(1.0, 64);
+        if ((double)INT64_MIN > val / c || (double)INT64_MAX < val / c)
+        {
+            res->_1 = 0ll;
+            res->_2 = 0ull;
+            return 1;
+        }
         res->_1 = (int64_t)(val / c);
         res->_2 = (uint64_t)fmod(val, c);
     }
@@ -27,9 +33,16 @@ void pvc_PV_119p8_set(pvc_PV_119p8 *res, double a)
     {
         double val = -a * 256.0;
         const double c = ldexp(1.0, 64);
+        if ((double)INT64_MIN > val / c || (double)INT64_MAX < val / c)
+        {
+            res->_1 = 0ll;
+            res->_2 = 0ull;
+            return 1;
+        }
         res->_1 = ~(int64_t)(val / c);
         res->_2 = -(uint64_t)fmod(val, c);
     }
+    return 0;
 }
 
 /**

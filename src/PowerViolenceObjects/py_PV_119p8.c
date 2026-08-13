@@ -33,7 +33,10 @@ static int PV_119p8_init(PV_119p8_Object *self, PyObject *args, PyObject *kwds)
         if (PyFloat_Check(value))
         {
             val = PyFloat_AsDouble(value);
-            pvc_PV_119p8_set(&self->value, val);
+            if (pvc_PV_119p8_set(&self->value, val))
+            {
+                raise_overflow(-1);
+            }
             return 0;
         }
         else
@@ -99,16 +102,22 @@ static PyObject *PV_119p8_richcmp(PyObject *lhs, PyObject *rhs, int op)
     Py_RETURN_NOTIMPLEMENTED;
 }
 
-static Py_hash_t PV_119p8_hash(PyObject *op)
+static Py_hash_t PV_119p8_hash(PyObject *self)
 {
-    Py_hash_t result = (Py_hash_t)((PV_119p8_Object *)op)->value._2;
+    Py_hash_t result = (Py_hash_t)((PV_119p8_Object *)self)->value._2;
     if (result == -1) return -2;
     return result;
 }
 
-static PyObject *PV_119p8_str(PyObject *op)
+static PyObject *PV_119p8_str(PyObject *self)
 {
-    return PyUnicode_FromString(pvc_PV_119p8_tostring(&((PV_119p8_Object *)op)->value));
+    return PyUnicode_FromString(pvc_PV_119p8_tostring(&((PV_119p8_Object *)self)->value));
+}
+
+static PyObject *PV_119p8_repr(PyObject *op)
+{
+    PV_119p8_Object *self = (PV_119p8_Object *)op;
+    return PyUnicode_FromFormat("<PV_119p8 object at %p>: _value = (%"PRId64", %"PRIu64")", self, self->value._1, self->value._2);
 }
 
 static int PV_119p8_set__value(PyObject *op, PyObject *value, void *closure)
@@ -295,6 +304,7 @@ static PyTypeObject PV_119p8_Type = {
     .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
     .tp_richcompare = (richcmpfunc)PV_119p8_richcmp,
     .tp_hash = (hashfunc)PV_119p8_hash,
+    .tp_repr = (reprfunc)PV_119p8_repr,
     .tp_str = (reprfunc)PV_119p8_str,
     .tp_new = (newfunc)PV_119p8_new,
     .tp_init = (initproc)PV_119p8_init,
