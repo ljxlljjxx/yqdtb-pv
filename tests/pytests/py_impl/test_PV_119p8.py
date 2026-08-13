@@ -11,7 +11,7 @@ class TestPv_119p8(unittest.TestCase):
         self.assertEqual(PV_119p8.min_float, -float(2 ** 119))
         self.assertEqual(PV_119p8.step_float, 0.00390625)
 
-    def test_init(self):
+    def test_init_with_float(self):
         a: PV_119p8 = PV_119p8()
         self.assertEqual(a._value, 0)
 
@@ -29,6 +29,23 @@ class TestPv_119p8(unittest.TestCase):
 
         a: PV_119p8 = PV_119p8(float(2**100))
         self.assertEqual(a._value, 324518553658426726783156020576256)
+
+        with self.assertRaises(TypeError):
+            a: PV_119p8 = PV_119p8(10)
+
+    def test_init_with_PV_num(self):
+        a = PV_num()
+        ans: PV_119p8 = PV_119p8(a)
+        self.assertEqual(ans._value, 0)
+
+        b: PV_119p8 = PV_119p8()
+        b._value = randint(PV_119p8.min_int, PV_119p8.max_int)
+        ans: PV_119p8 = PV_119p8(b)
+        self.assertEqual(ans._value, b._value)
+
+        c: PV_55p8 = PV_55p8(10.0)
+        ans: PV_119p8 = PV_119p8(c)
+        self.assertEqual(ans._value, 2560)
 
     def test_typename(self):
         a: PV_119p8 = PV_119p8()
@@ -85,20 +102,28 @@ class TestPv_119p8(unittest.TestCase):
         self.assertTrue(a <= b)
         self.assertTrue(a >= b)
 
+        c: PV_55p8 = PV_55p8(10.0)
+        self.assertFalse(a < c)
+        self.assertTrue(a > c)
+        self.assertFalse(a == c)
+        self.assertTrue(a != c)
+        self.assertFalse(a <= c)
+        self.assertTrue(a >= c)
+
         with self.assertRaises(TypeError):
             a < '1'
 
     def test_hash(self):
         a = PV_119p8()
-        
-        def uint64_to_int64(x: int) -> int:
-            return x if x < 2**63 else x - 2**64 
-        
-        for _ in range(1000):
-            a._value = randint(-2**127, 2**127-1)
-            self.assertEqual(hash(a), uint64_to_int64(a._value % 2**64) if uint64_to_int64(a._value % 2**64) != -1 else -2)
-
-    
+        b = PV_119p8()
+        c = PV_119p8(10.0)
+        d = PV_119p8(10.0)
+        self.assertEqual(hash(a), hash(b))
+        self.assertNotEqual(hash(a), hash(c))
+        self.assertNotEqual(hash(a), hash(d))
+        self.assertNotEqual(hash(b), hash(c))
+        self.assertNotEqual(hash(b), hash(d))
+        self.assertEqual(hash(c), hash(d))
 
     def test_str(self):
         a = PV_119p8()
@@ -112,8 +137,23 @@ class TestPv_119p8(unittest.TestCase):
         a._value = 42323570892357
         self.assertEqual(str(a), '165326448798.26953125')
 
+        a._value = -2560
+        self.assertEqual(str(a), '-10')
+
     def test_issubclass(self):
         self.assertTrue(issubclass(PV_119p8, PV_num))
+
+    def test_repr(self):
+        a = PV_119p8()
+
+        a._value = 10
+        self.assertRegex(repr(a), fr'<PV_119p8 object at .*>: _value = \({0}, {10}\)')
+
+        a._value = -324523
+        self.assertRegex(repr(a), fr'<PV_119p8 object at .*>: _value = \({-1}, {18446744073709227093}\)')
+
+        a._value = 42323570892357
+        self.assertRegex(repr(a), fr'<PV_119p8 object at .*>: _value = \({0}, {42323570892357}\)')
 
 
 class TestPv_119p8_as_number(unittest.TestCase):
@@ -126,10 +166,14 @@ class TestPv_119p8_as_number(unittest.TestCase):
         c: PV_119p8 = a + b
         self.assertEqual(c._value, 256)
 
-        a: PV_119p8 = PV_119p8(1e120)
-        b: PV_119p8 = PV_119p8(1e120)
         with self.assertRaises(OverflowError):
-            c: PV_119p8 = a + b
+            a: PV_119p8 = PV_119p8(1e120)
+        with self.assertRaises(OverflowError):
+            b: PV_119p8 = PV_119p8(1e120)
+        a: PV_119p8 = PV_119p8(PV_119p8.max_float / 1.5)
+        b: PV_119p8 = PV_119p8(PV_119p8.max_float / 1.5)
+        with self.assertRaises(OverflowError):
+            a + b
         set_overflow_function(None)
         c: PV_119p8 = a + b
         self.assertEqual(c._value, 0)
@@ -147,9 +191,12 @@ class TestPv_119p8_as_number(unittest.TestCase):
         with self.assertRaises(TypeError):
             a + d
 
-        e: PV_119p8 = PV_119p8()
-        a + e
-
+        e: PV_55p8 = PV_55p8()
+        e._value = PV_55p8.max_int
+        f: PV_119p8 = PV_119p8()
+        f._value = PV_55p8.max_int
+        g: PV_119p8 = e + f
+        self.assertEqual(g._value, 2 * PV_55p8.max_int)
 
     def test_bool(self):
         a = PV_119p8()

@@ -30,13 +30,25 @@ class TestPv_55p8(unittest.TestCase):
         a: PV_55p8 = PV_55p8(2.0 ** 127)
         self.assertEqual(a._value, 0)
 
+        with self.assertRaises(TypeError):
+            a: PV_55p8 = PV_55p8(10)
+
     def test_init_with_PV_num(self):
         a = PV_num()
         b: PV_55p8 = PV_55p8(a)
         self.assertEqual(b._value, 0)
+
         b._value = randint(PV_55p8.min_int, PV_55p8.max_int)
         c: PV_55p8 = PV_55p8(b)
         self.assertEqual(c._value, b._value)
+
+        d: PV_119p8 = PV_119p8(10.0)
+        c: PV_55p8 = PV_55p8(d)
+        self.assertEqual(c._value, 2560)
+
+        d: PV_119p8 = PV_119p8(1e100)
+        c: PV_55p8 = PV_55p8(d)
+        self.assertEqual(c._value, 0)
 
     def test_typename(self):
         a: PV_55p8 = PV_55p8()

@@ -25,7 +25,7 @@ PowerViolenceObjects:
 |_  PV_struct
 """
 
-__version__ = "3.1.256"
+__version__ = "3.1.294"
 
 from typing import Any, Union
 from .pv_str import PV_str  # type: ignore
@@ -37,9 +37,9 @@ try:
     from .pv_119p8 import PV_119p8  # type: ignore
 except (ModuleNotFoundError, ImportError):  # pragma: no cover
     from .py_impl import PV_num, get_type, typestr_int, typeint_str, type_int, type_str, typetype_type, get_overflow_function, set_overflow_function, call_overflow_function
-    from .py_impl import PV_55p8
+    from .py_impl import PV_55p8, PV_119p8
 
-from . import py_impl as _test_py_impl
+from . import py_impl
 
 try:
     raise ModuleNotFoundError
@@ -56,5 +56,5 @@ __all__ = [
     'PV_119p8',
     'PV_binary',
 
-    '_test_py_impl'
+    'py_impl'
 ]

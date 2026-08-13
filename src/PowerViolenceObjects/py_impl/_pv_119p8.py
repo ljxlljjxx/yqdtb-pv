@@ -1,15 +1,15 @@
 from typing import Union
 from ._pv_num import PV_num, get_type_id, call_overflow_function, register_type
 
-class PV_55p8(PV_num):
-    _type_id = 7  # const
+class PV_119p8(PV_num):
+    _type_id = 8  # const
 
-    max_int = 9223372036854775807     # const
-    min_int = -9223372036854775808    # const
-    step_int = 256                    # const
-    max_float = 2 ** 55 - 0.00390625  # const
-    min_float = float(-2 ** 55)       # const
-    step_float = 0.00390625           # const
+    max_int = 2 ** 127 - 1             # const
+    min_int = -2 ** 127                # const
+    step_int = 256                     # const
+    max_float = 2 ** 119 - 0.00390625  # const
+    min_float = float(-2 ** 119)       # const
+    step_float = 0.00390625            # const
 
     def __init__(self, value: Union[float, PV_num] = 0.0) -> None:
         if isinstance(value, float):
@@ -30,7 +30,7 @@ class PV_55p8(PV_num):
                 raise NotImplementedError
             elif tp == 6:  # PVF_27P    # pragma: no cover
                 raise NotImplementedError
-            elif tp == 7:  # PVF_55P
+            elif tp == 7:  # PVF_119P
                 self._value = value._value
             elif tp == 8:  # PVF_119
                 self._value = value._value
@@ -61,7 +61,7 @@ class PV_55p8(PV_num):
     def _value(self, new_val: int):
         if not isinstance(new_val, int):
             raise TypeError('_value must be int')
-        if PV_55p8.min_int <= new_val <= PV_55p8.max_int:
+        if PV_119p8.min_int <= new_val <= PV_119p8.max_int:
             self.__value = new_val
         else:
             self.__value = 0
@@ -69,7 +69,7 @@ class PV_55p8(PV_num):
             
     @staticmethod
     def _richcmp(lhs: 'PV_num', rhs: 'PV_num', op: int):
-        if isinstance(lhs, PV_55p8) and isinstance(rhs, PV_55p8):
+        if isinstance(lhs, PV_119p8) and isinstance(rhs, PV_119p8):
             if op == 0:   return lhs._value < rhs._value
             elif op == 1: return lhs._value <= rhs._value
             elif op == 2: return lhs._value == rhs._value
@@ -80,27 +80,27 @@ class PV_55p8(PV_num):
             return PV_num._richcmp(lhs, rhs, op)
 
     def __eq__(self, __value: 'PV_num') -> bool:
-        return PV_55p8._richcmp(self, __value, 2)
+        return PV_119p8._richcmp(self, __value, 2)
     
     def __ne__(self, __value: 'PV_num') -> bool:
-        return PV_55p8._richcmp(self, __value, 3)
+        return PV_119p8._richcmp(self, __value, 3)
     
     def __gt__(self, __value: 'PV_num') -> bool:
-        return PV_55p8._richcmp(self, __value, 4)
+        return PV_119p8._richcmp(self, __value, 4)
     
     def __lt__(self, __value: 'PV_num') -> bool:
-        return PV_55p8._richcmp(self, __value, 0)
+        return PV_119p8._richcmp(self, __value, 0)
     
     def __ge__(self, __value: 'PV_num') -> bool:
-        return PV_55p8._richcmp(self, __value, 5)
+        return PV_119p8._richcmp(self, __value, 5)
     
     def __le__(self, __value: 'PV_num') -> bool:
-        return PV_55p8._richcmp(self, __value, 1)
+        return PV_119p8._richcmp(self, __value, 1)
 
     def __add__(self, other: PV_num):
-        if isinstance(self, PV_55p8) and isinstance(other, PV_55p8):
-            new_obj = PV_55p8()
-            if PV_55p8.min_int <= self._value + other._value <= PV_55p8.max_int:
+        if isinstance(self, PV_119p8) and isinstance(other, PV_119p8):
+            new_obj = PV_119p8()
+            if PV_119p8.min_int <= self._value + other._value <= PV_119p8.max_int:
                 new_obj._value = self._value + other._value
             else:
                 new_obj._value = 0
@@ -150,7 +150,7 @@ class PV_55p8(PV_num):
         return self._value if self._value != -1 else -2
 
     def __repr__(self) -> str:
-        return f'<PV_55p8 object at {id(self)}>: _value = {self._value}'
+        return f'<PV_119p8 object at {id(self)}>: _value = {self._value // (1 << 64), self._value % (1 << 64)}'
 
     def __str__(self) -> str:
         value: int = self._value
@@ -163,4 +163,4 @@ class PV_55p8(PV_num):
         return ans + f'{value // 256}.{str(value % 256 * 100000000 // 256).zfill(8).rstrip("0")}'
 
 
-register_type(PV_55p8._type_id, PV_55p8)
+register_type(PV_119p8._type_id, PV_119p8)
