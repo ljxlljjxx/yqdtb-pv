@@ -14,6 +14,30 @@ class TestPv_num(unittest.TestCase):
 
     def test_overflow_function(self):
         self.assertIs(overflow.func, overflow.initial)
+
+        with overflow.set(True) as of:
+            self.assertIsNone(of)
+            self.assertIs(overflow.func, overflow.default)
+            with self.assertRaises(OverflowError):
+                overflow()
+        self.assertIs(overflow.func, overflow.initial)
+
+        with self.assertRaises(RuntimeError):
+            with overflow.set(False):
+                with overflow.set(False):
+                    pass
+
+        overflow.func = False
+
+        with self.assertRaises(OverflowError):
+            with overflow.set(True):
+                overflow()
+        self.assertIs(overflow.func, overflow.initial)
+
+        with overflow.set(True):
+            overflow.func = lambda: 5
+            self.assertEqual(overflow(), 5)
+        self.assertIs(overflow.func, overflow.initial)
         
         with self.assertRaises(TypeError):
             overflow.func = 2
@@ -21,7 +45,21 @@ class TestPv_num(unittest.TestCase):
         overflow.func = lambda: 5
         self.assertEqual(overflow(), 5)
 
-        overflow.func = None
+        def fun():
+            raise RuntimeError
+        
+        overflow.func = fun
+        self.assertIs(overflow.func, fun)
+
+        with overflow.set(True) as of:
+            self.assertIsNone(of)
+            self.assertIs(overflow.func, overflow.default)
+            with self.assertRaises(OverflowError):
+                overflow()
+
+        self.assertIs(overflow.func, fun)
+
+        overflow.func = False
         self.assertIs(overflow.func, overflow.initial)
 
     def test_cmp(self):
