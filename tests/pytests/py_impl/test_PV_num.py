@@ -13,16 +13,16 @@ class TestPv_num(unittest.TestCase):
             a + a
 
     def test_overflow_function(self):
-        self.assertIsNone(get_overflow_function())
+        self.assertIs(overflow.func, overflow.initial)
         
         with self.assertRaises(TypeError):
-            set_overflow_function(2)
+            overflow.func = 2
 
-        set_overflow_function(lambda: 5)
-        self.assertEqual(call_overflow_function(), 5)
+        overflow.func = lambda: 5
+        self.assertEqual(overflow(), 5)
 
-        set_overflow_function(None)
-        self.assertIsNone(get_overflow_function())
+        overflow.func = None
+        self.assertIs(overflow.func, overflow.initial)
 
     def test_cmp(self):
         a: PV_num = PV_num()

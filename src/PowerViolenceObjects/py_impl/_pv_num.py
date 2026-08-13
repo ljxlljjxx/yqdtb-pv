@@ -1,4 +1,4 @@
-from typing import Union, Callable, List, Tuple
+from typing import Any, Union, Callable, List, Tuple
 
 
 _overflow_function = None
@@ -73,29 +73,36 @@ _TYPE_STR: List[str] = [
     "PV_perfect"
 ]
 
-def default_function():
-    raise OverflowError
 
-def get_overflow_function() -> Union[None, Callable]:
-    return _overflow_function
+class _OverflowFunctionType_getset:
+    def __get__(self, obj: '_OverflowFunctionType', _objtype) -> Union[Callable, str]:
+        return self.value 
+    
+    def __set__(self, _obj: '_OverflowFunctionType', value: Union[None, Callable, str]):
+        if value is None:
+            self.value = _obj.initial
+        elif callable(value):
+            self.value = value
+        elif value == 'default':
+            self.value = _obj.default
+        else:
+            raise TypeError("overflow_function must be callable or None or 'default'")
 
 
-def call_overflow_function():
-    if _overflow_function is None:
-        return
-    return _overflow_function()
+class _OverflowFunctionType:
+    func: _OverflowFunctionType_getset = _OverflowFunctionType_getset()
 
+    @staticmethod
+    def default(): raise OverflowError
 
-def set_overflow_function(__value: Union[None, Callable, str]):
-    global _overflow_function
-    if __value is None:
-        _overflow_function = None
-    elif __value == 'default':
-        _overflow_function = default_function
-    elif callable(__value):
-        _overflow_function = __value
-    else:
-        raise TypeError("overflow_function must be callable or None or 'default'")
+    @staticmethod
+    def initial(): pass
+
+    def __init__(self): self.func = None
+    def __call__(self): return self.func()
+        
+
+overflow = _OverflowFunctionType()
     
 
 def typestr_int(__arg: str) -> int:
