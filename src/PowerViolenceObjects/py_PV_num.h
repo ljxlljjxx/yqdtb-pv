@@ -55,19 +55,14 @@ typedef struct PvNumState {
     PyObject *overflow_function;
 } PvNumState;
 
-static PvNumState *pv_num_state;
+// static PvNumState *pv_num_state;
+static PyObject *g_overflow_instance = NULL;
 
 #define raise_overflow(error_ret)\
     do { \
         pv_deprint_overflow(); \
-        if (pv_num_state->overflow_function != Py_None) \
-            if (pv_num_state->overflow_function == Py_True) \
-                { \
-                    PyErr_SetString(PyExc_OverflowError, ""); \
-                    return error_ret; \
-                } \
-            else if (!PyObject_CallObject(pv_num_state->overflow_function, NULL)) \
-                return error_ret; \
+        if (!PyObject_CallObject(g_overflow_instance, NULL)) \
+            return error_ret; \
     } while (0)
 
 #endif /* _PY_PV_num_H */

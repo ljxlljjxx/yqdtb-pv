@@ -272,9 +272,10 @@ static int pv_55p8_exec(PyObject *m)
     PyObject *base_module = PyImport_ImportModule("PowerViolenceObjects.pv_num");
     if (!base_module) return -1;
     g_PV_num_Type = (PyTypeObject *)PyObject_GetAttrString(base_module, "PV_num");
-    PyObject *capsule = PyObject_GetAttrString(base_module, "_state");
-    pv_num_state = (PvNumState *)PyCapsule_GetPointer(capsule, "pv_num.state");
-    capsule = PyObject_GetAttrString(base_module, "_register_type_capsule");
+    g_overflow_instance = (PyObject *)PyObject_GetAttrString(base_module, "overflow");
+    // PyObject *capsule = PyObject_GetAttrString(base_module, "_state");
+    // pv_num_state = (PvNumState *)PyCapsule_GetPointer(capsule, "pv_num.state");
+    PyObject *capsule = PyObject_GetAttrString(base_module, "_register_type_capsule");
     register_type_func_t register_func = (register_type_func_t)PyCapsule_GetPointer(capsule, "pv_num.register_type");
 #ifdef DEBUG
     capsule = PyObject_GetAttrString(base_module, "__debug_file");

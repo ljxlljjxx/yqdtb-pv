@@ -394,87 +394,314 @@ static PyObject *pv_num_typetype_type(PyObject *Py_UNUSED(self), PyObject *const
     return PyLong_FromLong((long)_TYPETYPE_TYPE[arg1][arg2]);
 }
 
-static PvNumState *pv_num_get_state(PyObject *module)
+static PyObject *g_value = NULL;
+static PyObject *g_pre = NULL;
+static int g_nest = 0;
+
+typedef struct {
+    PyObject_HEAD
+} OverflowGetSetObject;
+
+typedef struct {
+    PyObject_HEAD
+} OverflowFunctionObject;
+
+static int _check_value(PyObject *v)
 {
-    return (PvNumState *)PyModule_GetState(module);
+    return (v == Py_True || v == Py_False || PyCallable_Check(v));
 }
 
-static PyObject *pv_num_default_overflow_function()
+static PyObject *OverflowGetSet_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
+{
+    PyObject *obj = Py_False;
+    PyObject *value = Py_False;
+    static char *kwlist[] = {"obj", "value", NULL};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|OO", kwlist, &obj, &value))
+        return NULL;
+
+    if (obj == Py_True && !g_nest)
+    {
+        Py_XSETREF(g_pre, g_value);
+        Py_XINCREF(g_value);
+
+        if (!_check_value(value))
+        {
+            PyErr_SetString(PyExc_TypeError, "overflow_function must be callable or bool");
+            return NULL;
+        }
+        Py_XSETREF(g_value, value);
+        Py_XINCREF(value);
+    }
+
+    return type->tp_alloc(type, 0);
+}
+
+static PyObject *OverflowGetSet_descr_get(PyObject *Py_UNUSED(self), PyObject *obj, PyObject *Py_UNUSED(type))
+{
+    if (g_value == Py_False)
+    {
+        PyObject *initial = PyObject_GetAttrString(obj, "initial");
+        return initial;
+    }
+    else if (g_value == Py_True)
+    {
+        PyObject *default_ = PyObject_GetAttrString(obj, "default");
+        return default_;
+    }
+    else
+    {
+        Py_XINCREF(g_value);
+        return g_value;
+    }
+}
+
+static int OverflowGetSet_descr_set(PyObject *Py_UNUSED(self), PyObject *Py_UNUSED(obj), PyObject *value)
+{
+    if (!_check_value(value))
+    {
+        PyErr_SetString(PyExc_TypeError, "overflow_function must be callable or bool");
+        return -1;
+    }
+    Py_XSETREF(g_value, value);
+    Py_XINCREF(value);
+    return 0;
+}
+
+static PyObject *OverflowGetSet_enter(PyObject *Py_UNUSED(self), PyObject *Py_UNUSED(args))
+{
+    if (g_nest)
+    {
+        PyErr_SetString(PyExc_RuntimeError, "This context manager does not support nesting.");
+        return NULL;
+    }
+    g_nest = 1;
+    Py_RETURN_NONE;
+}
+
+static PyObject *OverflowGetSet_exit(PyObject *Py_UNUSED(self), PyObject *Py_UNUSED(args))
+{
+    Py_XSETREF(g_value, g_pre);
+    g_pre = NULL;
+    g_nest = 0;
+    Py_RETURN_NONE;
+}
+
+static PyMethodDef OverflowGetSet_methods[] = {
+    {"__enter__", (PyCFunction)OverflowGetSet_enter, METH_NOARGS, NULL},
+    {"__exit__", (PyCFunction)OverflowGetSet_exit, METH_VARARGS, NULL},
+    {NULL, NULL, 0, NULL}
+};
+
+static PyTypeObject OverflowGetSetType = {
+    PyVarObject_HEAD_INIT(NULL, 0)
+    .tp_name = "_OverflowFunctionType_getset",
+    .tp_basicsize = sizeof(OverflowGetSetObject),
+    .tp_flags = Py_TPFLAGS_DEFAULT,
+    .tp_new = OverflowGetSet_new,
+    .tp_methods = OverflowGetSet_methods,
+    .tp_descr_get = OverflowGetSet_descr_get,
+    .tp_descr_set = OverflowGetSet_descr_set,
+};
+
+static PyObject *OverflowFunction_default(PyObject *Py_UNUSED(self), PyObject *Py_UNUSED(args))
 {
     PyErr_SetString(PyExc_OverflowError, "");
     return NULL;
 }
 
-static PyObject *pv_num_get_global(PyObject *self, PyObject *Py_UNUSED(ig))
+static PyObject *OverflowFunction_initial(PyObject *Py_UNUSED(self), PyObject *Py_UNUSED(args))
 {
-    PvNumState *state = pv_num_get_state(self);
-    if (state->overflow_function == Py_True) return PyUnicode_FromString("default");
-    Py_INCREF(state->overflow_function);
-    return state->overflow_function;
-}
-
-static PyObject *pv_num_call_global(PyObject *self, PyObject *Py_UNUSED(ig))
-{
-    PvNumState *state = pv_num_get_state(self);
-    if (state->overflow_function == Py_None) return Py_None;
-    if (state->overflow_function == Py_True)
-    {
-        PyErr_SetString(PyExc_OverflowError, "");
-        return NULL;
-    }
-    return PyObject_CallObject(state->overflow_function, NULL);
-}
-
-static PyObject *pv_num_set_global(PyObject *self, PyObject *value)
-{
-    PvNumState *state = pv_num_get_state(self);
-    fflush(stdout);
-    if (!value)
-    {
-        PyErr_SetString(PyExc_AttributeError, "can not remove the overflow_function");
-        return NULL;
-    }
-    if (value == Py_None)
-    {
-        Py_INCREF(Py_None);
-        Py_DECREF(state->overflow_function);
-        state->overflow_function = Py_None;
-        Py_RETURN_NONE;
-    }
-    if (PyObject_TypeCheck(value, &PyUnicode_Type))
-    {
-        switch (PyObject_RichCompareBool(value, PyUnicode_FromString("default"), Py_EQ))
-        {
-        case 0:
-            break;
-
-        case 1:
-            Py_INCREF(Py_True);
-            Py_DECREF(state->overflow_function);
-            state->overflow_function = Py_True;
-            Py_RETURN_NONE;
-        
-        default:
-            return NULL;
-        }
-    }
-    if (!PyCallable_Check(value))
-    {
-        error_puts("set uncallable overflow_function");
-        PyErr_SetString(PyExc_TypeError, "overflow_function must be callable or None or 'default'");
-        return NULL;
-    }
-    info_puts("set new overflow_function");
-    Py_INCREF(value);
-    Py_DECREF(state->overflow_function);
-    state->overflow_function = value;
     Py_RETURN_NONE;
 }
 
+static PyObject *OverflowFunction_call(PyObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds))
+{
+    PyObject *func = PyObject_GetAttrString(self, "func");
+    if (!func) return NULL;
+    PyObject *result = PyObject_CallObject(func, NULL);
+    Py_DECREF(func);
+    return result;
+}
+
+static PyObject *OverflowFunction_set(PyObject *self, PyObject *value)
+{
+    if (!_check_value(value))
+    {
+        PyErr_SetString(PyExc_TypeError, "overflow_function must be callable or bool");
+        return NULL;
+    }
+
+    PyObject *args2 = Py_BuildValue("(OO)", Py_True, value);
+    if (!args2) return NULL;
+    PyObject *descr = PyObject_CallObject((PyObject *)&OverflowGetSetType, args2);
+    Py_DECREF(args2);
+    return descr;
+}
+
+static PyMethodDef OverflowFunction_methods[] = {
+    {"set", (PyCFunction)(void*)OverflowFunction_set, METH_O,
+     "warning: it only can use after with\n\nfor example:\n\nwith overflow.set(True):\n    ..."},
+    {NULL, NULL, 0, NULL}
+};
+
+static PyTypeObject OverflowFunctionType = {
+    PyVarObject_HEAD_INIT(NULL, 0)
+    .tp_name = "_OverflowFunctionType",
+    .tp_basicsize = sizeof(OverflowFunctionObject),
+    .tp_flags = Py_TPFLAGS_DEFAULT,
+    .tp_new = PyType_GenericNew,
+    .tp_call = OverflowFunction_call,
+    .tp_methods = OverflowFunction_methods,
+};
+
+static int init_types(void)
+{
+    if (PyType_Ready(&OverflowGetSetType) < 0) return -1;
+    if (PyType_Ready(&OverflowFunctionType) < 0) return -1;
+
+    PyObject *dict = OverflowFunctionType.tp_dict;
+    if (!dict) return -1;
+
+    PyObject *descr_inst = PyObject_CallObject((PyObject *)&OverflowGetSetType, NULL);
+    if (!descr_inst) return -1;
+    if (PyDict_SetItemString(dict, "func", descr_inst) < 0)
+    {
+        Py_DECREF(descr_inst);
+        return -1;
+    }
+    Py_DECREF(descr_inst);
+
+    static PyMethodDef default_def = {"default", (PyCFunction)OverflowFunction_default, METH_NOARGS, NULL};
+    static PyMethodDef initial_def = {"initial", (PyCFunction)OverflowFunction_initial, METH_NOARGS, NULL};
+
+    PyObject *default_func = PyCFunction_New(&default_def, NULL);
+    PyObject *initial_func = PyCFunction_New(&initial_def, NULL);
+    if (!default_func || !initial_func)
+    {
+        Py_XDECREF(default_func);
+        Py_XDECREF(initial_func);
+        return -1;
+    }
+
+    PyObject *default_static = PyStaticMethod_New(default_func);
+    PyObject *initial_static = PyStaticMethod_New(initial_func);
+    Py_DECREF(default_func);
+    Py_DECREF(initial_func);
+    if (!default_static || !initial_static)
+    {
+        Py_XDECREF(default_static);
+        Py_XDECREF(initial_static);
+        return -1;
+    }
+
+    if (PyDict_SetItemString(dict, "default", default_static) < 0 ||
+        PyDict_SetItemString(dict, "initial", initial_static) < 0)
+    {
+        Py_DECREF(default_static);
+        Py_DECREF(initial_static);
+        return -1;
+    }
+    Py_DECREF(default_static);
+    Py_DECREF(initial_static);
+
+    g_value = Py_False;
+    Py_INCREF(g_value);
+    g_pre = NULL;
+    g_nest = 0;
+
+    return 0;
+}
+
+PyObject *get_overflow_instance(void)
+{
+    if (!g_overflow_instance)
+    {
+        if (init_types() < 0) return NULL;
+        g_overflow_instance = PyObject_CallObject((PyObject *)&OverflowFunctionType, NULL);
+        if (!g_overflow_instance) return NULL;
+    }
+    Py_INCREF(g_overflow_instance);
+    return g_overflow_instance;
+}
+
+// static PvNumState *pv_num_get_state(PyObject *module)
+// {
+//     return (PvNumState *)PyModule_GetState(module);
+// }
+
+// static PyObject *pv_num_default_overflow_function()
+// {
+//     PyErr_SetString(PyExc_OverflowError, "");
+//     return NULL;
+// }
+
+// static PyObject *pv_num_get_global(PyObject *self, PyObject *Py_UNUSED(ig))
+// {
+//     PvNumState *state = pv_num_get_state(self);
+//     if (state->overflow_function == Py_True) return PyUnicode_FromString("default");
+//     Py_INCREF(state->overflow_function);
+//     return state->overflow_function;
+// }
+
+// static PyObject *pv_num_call_global(PyObject *self, PyObject *Py_UNUSED(ig))
+// {
+//     PvNumState *state = pv_num_get_state(self);
+//     if (state->overflow_function == Py_None) return Py_None;
+//     if (state->overflow_function == Py_True)
+//     {
+//         PyErr_SetString(PyExc_OverflowError, "");
+//         return NULL;
+//     }
+//     return PyObject_CallObject(state->overflow_function, NULL);
+// }
+
+// static PyObject *pv_num_set_global(PyObject *self, PyObject *value)
+// {
+//     PvNumState *state = pv_num_get_state(self);
+//     fflush(stdout);
+//     if (!value)
+//     {
+//         PyErr_SetString(PyExc_AttributeError, "can not remove the overflow_function");
+//         return NULL;
+//     }
+//     if (value == Py_None)
+//     {
+//         Py_INCREF(Py_None);
+//         Py_DECREF(state->overflow_function);
+//         state->overflow_function = Py_None;
+//         Py_RETURN_NONE;
+//     }
+//     if (PyObject_TypeCheck(value, &PyUnicode_Type))
+//     {
+//         switch (PyObject_RichCompareBool(value, PyUnicode_FromString("default"), Py_EQ))
+//         {
+//         case 0:
+//             break;
+
+//         case 1:
+//             Py_INCREF(Py_True);
+//             Py_DECREF(state->overflow_function);
+//             state->overflow_function = Py_True;
+//             Py_RETURN_NONE;
+        
+//         default:
+//             return NULL;
+//         }
+//     }
+//     if (!PyCallable_Check(value))
+//     {
+//         error_puts("set uncallable overflow_function");
+//         PyErr_SetString(PyExc_TypeError, "overflow_function must be callable or None or 'default'");
+//         return NULL;
+//     }
+//     info_puts("set new overflow_function");
+//     Py_INCREF(value);
+//     Py_DECREF(state->overflow_function);
+//     state->overflow_function = value;
+//     Py_RETURN_NONE;
+// }
+
 static PyMethodDef pv_num_methods[] = {
-    {"get_overflow_function", pv_num_get_global, METH_NOARGS, "Get overflow_function"},
-    {"call_overflow_function", pv_num_call_global, METH_NOARGS, "Call overflow_function"},
-    {"set_overflow_function", pv_num_set_global, METH_O, "Set overflow_function"},
     {"typestr_int", (PyCFunction)pv_num_typestr_int, METH_O, "change the str to int"},
     {"typeint_str", (PyCFunction)pv_num_typeint_str, METH_O, "change the int to str"},
     {"type_int", (PyCFunction)pv_num_type_int, METH_O, "change the type to int"},
@@ -497,15 +724,19 @@ static int pv_num_exec(PyObject *m)
 {
     g_PV_num_Type = &PV_num_Type;
     *g_type_by_id = &PV_num_Type;
-    pv_num_state = pv_num_get_state(m);
-    Py_INCREF(Py_None);
-    pv_num_state->overflow_function = Py_None;
-    PyObject *capsule = PyCapsule_New((void *)pv_num_state, "pv_num.state", NULL);
-    PyModule_AddObject(m, "_state", capsule);
-    capsule = PyCapsule_New((void *)register_type, "pv_num.register_type", NULL);
+    // pv_num_state = pv_num_get_state(m);
+    // Py_INCREF(Py_None);
+    // pv_num_state->overflow_function = Py_None;
+    PyObject *capsule = PyCapsule_New((void *)register_type, "pv_num.register_type", NULL);
     PyModule_AddObject(m, "_register_type_capsule", capsule);
     if (PyType_Ready(&PV_num_Type) < 0) return -1;
     if (PyModule_AddObject(m, "PV_num", (PyObject *)&PV_num_Type) < 0) return -1;
+    if (init_types() < 0) return NULL;
+    PyObject *inst = get_overflow_instance();
+    if (!inst) return NULL;
+    PyModule_AddObject(m, "overflow", inst);
+    // capsule = PyCapsule_New((void *)get_overflow_instance, "pv_num.overflow", NULL);
+    // PyModule_AddObject(m, "_overflow", capsule);
 #ifdef DEBUG
     __debug_file = fopen("pv_num_debug.log", __debug_file_open_mode);
     // __debug_file = stderr;
@@ -538,4 +769,3 @@ PyMODINIT_FUNC PyInit_pv_num(void)
 {
     return PyModuleDef_Init(&pv_num_module);
 }
-

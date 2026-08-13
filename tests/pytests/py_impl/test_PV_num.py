@@ -27,6 +27,10 @@ class TestPv_num(unittest.TestCase):
                 with overflow.set(False):
                     pass
 
+        with self.assertRaises(TypeError):
+            with overflow.set(0):
+                pass
+
         overflow.func = False
 
         with self.assertRaises(OverflowError):
