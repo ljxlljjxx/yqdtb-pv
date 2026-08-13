@@ -731,9 +731,9 @@ static int pv_num_exec(PyObject *m)
     PyModule_AddObject(m, "_register_type_capsule", capsule);
     if (PyType_Ready(&PV_num_Type) < 0) return -1;
     if (PyModule_AddObject(m, "PV_num", (PyObject *)&PV_num_Type) < 0) return -1;
-    if (init_types() < 0) return NULL;
+    if (init_types() < 0) return -1;
     PyObject *inst = get_overflow_instance();
-    if (!inst) return NULL;
+    if (!inst) return -1;
     PyModule_AddObject(m, "overflow", inst);
     // capsule = PyCapsule_New((void *)get_overflow_instance, "pv_num.overflow", NULL);
     // PyModule_AddObject(m, "_overflow", capsule);
