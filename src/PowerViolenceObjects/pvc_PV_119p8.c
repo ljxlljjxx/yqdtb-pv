@@ -33,7 +33,7 @@ int pvc_PV_119p8_set(pvc_PV_119p8 *res, double a)
     {
         double val = -a * 256.0;
         const double c = ldexp(1.0, 64);
-        if (INT64_MIN > val / c || INT64_MAX < val / c)
+        if ((double)INT64_MIN > val / c || (double)INT64_MAX < val / c)
         {
             res->_1 = 0ll;
             res->_2 = 0ull;
