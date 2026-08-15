@@ -13,16 +13,58 @@ class TestPv_num(unittest.TestCase):
             a + a
 
     def test_overflow_function(self):
-        self.assertIsNone(get_overflow_function())
+        self.assertIs(overflow.func, overflow.initial)
+
+        with overflow.set(True) as of:
+            self.assertIsNone(of)
+            self.assertIs(overflow.func, overflow.default)
+            with self.assertRaises(OverflowError):
+                overflow()
+        self.assertIs(overflow.func, overflow.initial)
+
+        with self.assertRaises(RuntimeError):
+            with overflow.set(False):
+                with overflow.set(False):
+                    pass
+
+        with self.assertRaises(TypeError):
+            with overflow.set(0):
+                pass
+
+        overflow.func = False
+
+        with self.assertRaises(OverflowError):
+            with overflow.set(True):
+                overflow()
+        self.assertIs(overflow.func, overflow.initial)
+
+        with overflow.set(True):
+            overflow.func = lambda: 5
+            self.assertEqual(overflow(), 5)
+        self.assertIs(overflow.func, overflow.initial)
         
         with self.assertRaises(TypeError):
-            set_overflow_function(2)
+            overflow.func = 2
 
-        set_overflow_function(lambda: 5)
-        self.assertEqual(call_overflow_function(), 5)
+        overflow.func = lambda: 5
+        self.assertEqual(overflow(), 5)
 
-        set_overflow_function(None)
-        self.assertIsNone(get_overflow_function())
+        def fun():
+            raise RuntimeError
+        
+        overflow.func = fun
+        self.assertIs(overflow.func, fun)
+
+        with overflow.set(True) as of:
+            self.assertIsNone(of)
+            self.assertIs(overflow.func, overflow.default)
+            with self.assertRaises(OverflowError):
+                overflow()
+
+        self.assertIs(overflow.func, fun)
+
+        overflow.func = False
+        self.assertIs(overflow.func, overflow.initial)
 
     def test_cmp(self):
         a: PV_num = PV_num()

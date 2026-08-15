@@ -1,4 +1,4 @@
-from typing import Union, Callable, List, Tuple
+from typing import Any, Union, Callable, List, Tuple
 
 
 _overflow_function = None
@@ -54,48 +54,96 @@ def _empty_func():  # pragma: no cover
 
 _TYPE_BY_ID: List[type] = [object] * MAX_DERIVED
 _TYPE_STR: List[str] = [
-    "PV_num",
-    "PV_pID", 
-    "PV_sID", 
-    "PV_nRounds", 
-    "PV_lRounds", 
-    "PV_11p4", 
-    "PV_27p4", 
-    "PV_55p8", 
-    "PV_119p8", 
-    "PV_power", 
-    "PV_lives", 
-    "PV_com64", 
-    "PV_quaternion", 
-    "PV_s_quaternion", 
-    "PV_octonion", 
-    "PV_447p64", 
-    "PV_perfect"
+    'PV_num',
+    'PV_pID', 
+    'PV_sID', 
+    'PV_nRounds', 
+    'PV_lRounds', 
+    'PV_11p4', 
+    'PV_27p4', 
+    'PV_55p8', 
+    'PV_119p8', 
+    'PV_power', 
+    'PV_lives', 
+    'PV_com64', 
+    'PV_quaternion', 
+    'PV_s_quaternion', 
+    'PV_octonion', 
+    'PV_447p64', 
+    'PV_perfect'
 ]
 
-def default_function():
-    raise OverflowError
 
-def get_overflow_function() -> Union[None, Callable]:
-    return _overflow_function
+class _OverflowFunctionType_getset:
+    """
+    This type is of the singleton pattern.
+    """
+    __value: Union[bool, Callable] = False
+    __pre: Union[None, Callable] = None
+    __nest: bool = False
+
+    def __new__(cls, obj: bool = False, value = False):
+        if obj and not cls.__nest:
+            cls.__pre = cls.__value
+            cls.__value = value
+        return super().__new__(cls)
+
+    def __get__(self, obj: '_OverflowFunctionType', _objtype) -> Callable:
+        if _OverflowFunctionType_getset.__value is False:
+            return obj.initial
+        if _OverflowFunctionType_getset.__value is True:
+            return obj.default
+        return _OverflowFunctionType_getset.__value
+    
+    def __set__(self, _obj: '_OverflowFunctionType', value: Union[bool, Callable]):
+        if isinstance(value, bool) or callable(value):
+            _OverflowFunctionType_getset.__value = value
+        else:
+            raise TypeError('overflow_function must be callable or bool')
+        
+    def __enter__(self):
+        if _OverflowFunctionType_getset.__nest:
+            raise RuntimeError('This context manager does not support nesting.')
+        _OverflowFunctionType_getset.__nest = True
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        _OverflowFunctionType_getset.__value = _OverflowFunctionType_getset.__pre
+        _OverflowFunctionType_getset.__pre = None
+        _OverflowFunctionType_getset.__nest = False
 
 
-def call_overflow_function():
-    if _overflow_function is None:
-        return
-    return _overflow_function()
+class _OverflowFunctionType:
+    """
+    Does not support multithreading and asynchrony.
+    This type is of the singleton pattern.
+    """
+    func: _OverflowFunctionType_getset = _OverflowFunctionType_getset()
 
+    @staticmethod
+    def default(): raise OverflowError
 
-def set_overflow_function(__value: Union[None, Callable, str]):
-    global _overflow_function
-    if __value is None:
-        _overflow_function = None
-    elif __value == 'default':
-        _overflow_function = default_function
-    elif callable(__value):
-        _overflow_function = __value
-    else:
-        raise TypeError("overflow_function must be callable or None or 'default'")
+    @staticmethod
+    def initial(): pass
+
+    def __call__(self):
+        return self.func()
+    
+    def set(self, value):
+        """
+        warning: it only can use after keyword 'with'
+        
+        for example:
+            
+        with overflow.set(True):
+            ...
+        """
+        if isinstance(value, bool) or callable(value):
+            return _OverflowFunctionType_getset(True, value)
+        else:
+            raise TypeError('overflow_function must be callable or bool')
+        
+
+overflow = _OverflowFunctionType()
     
 
 def typestr_int(__arg: str) -> int:

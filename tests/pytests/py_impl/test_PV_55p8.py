@@ -69,10 +69,10 @@ class TestPv_55p8(unittest.TestCase):
         with self.assertRaises(TypeError):
             a._value = '10'
 
-        set_overflow_function('default')
+        overflow.func = True
         with self.assertRaises(OverflowError):
             a._value = 10 ** 100
-        set_overflow_function(None)
+        overflow.func = False
 
     def test_cmp(self):
         a: PV_55p8 = PV_55p8()
@@ -152,8 +152,7 @@ class TestPv_55p8(unittest.TestCase):
 
 class TestPv_55p8_as_number(unittest.TestCase):
     def test_add(self):
-        def overflow_func(): raise OverflowError
-        set_overflow_function(overflow_func)
+        overflow.func = True
 
         a: PV_55p8 = PV_55p8()
         b: PV_55p8 = PV_55p8(1.0)
@@ -164,7 +163,7 @@ class TestPv_55p8_as_number(unittest.TestCase):
         b: PV_55p8 = PV_55p8(35028797018963968.0)
         with self.assertRaises(OverflowError):
             c: PV_55p8 = a + b
-        set_overflow_function(None)
+        overflow.func = False
         c: PV_55p8 = a + b
         self.assertEqual(c._value, 0)
 

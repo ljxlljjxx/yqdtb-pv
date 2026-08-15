@@ -1,5 +1,5 @@
 from typing import Union
-from ._pv_num import PV_num, get_type_id, call_overflow_function, register_type
+from ._pv_num import PV_num, get_type_id, overflow, register_type
 
 class PV_55p8(PV_num):
     _type_id = 7  # const
@@ -65,7 +65,7 @@ class PV_55p8(PV_num):
             self.__value = new_val
         else:
             self.__value = 0
-            call_overflow_function()
+            overflow()
             
     @staticmethod
     def _richcmp(lhs: 'PV_num', rhs: 'PV_num', op: int):
@@ -104,7 +104,7 @@ class PV_55p8(PV_num):
                 new_obj._value = self._value + other._value
             else:
                 new_obj._value = 0
-                call_overflow_function()
+                overflow()
             return new_obj
         else:
             return PV_num.__add__(self, other)

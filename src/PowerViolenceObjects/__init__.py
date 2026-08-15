@@ -25,18 +25,18 @@ PowerViolenceObjects:
 |_  PV_struct
 """
 
-__version__ = "3.1.296"
+__version__ = "3.1.349"
 
 from typing import Any, Union
 from .pv_str import PV_str  # type: ignore
 from .pv_str_names import PV_str_names  # type: ignore
 
 try:
-    from .pv_num import PV_num, get_type, typestr_int, typeint_str, type_int, type_str, typetype_type, get_overflow_function, set_overflow_function, call_overflow_function  # type: ignore
+    from .pv_num import PV_num, get_type, typestr_int, typeint_str, type_int, type_str, typetype_type, overflow  # type: ignore
     from .pv_55p8 import PV_55p8  # type: ignore
     from .pv_119p8 import PV_119p8  # type: ignore
 except (ModuleNotFoundError, ImportError):  # pragma: no cover
-    from .py_impl import PV_num, get_type, typestr_int, typeint_str, type_int, type_str, typetype_type, get_overflow_function, set_overflow_function, call_overflow_function
+    from .py_impl import PV_num, get_type, typestr_int, typeint_str, type_int, type_str, typetype_type, overflow
     from .py_impl import PV_55p8, PV_119p8
 
 from . import py_impl
@@ -51,7 +51,7 @@ except ModuleNotFoundError:
 __all__ = [
     'PV_str',
     'PV_str_names',
-    'PV_num', 'get_type', 'typestr_int', 'typeint_str', 'type_int', 'type_str', 'typetype_type', 'get_overflow_function', 'set_overflow_function', 'call_overflow_function',
+    'PV_num', 'get_type', 'typestr_int', 'typeint_str', 'type_int', 'type_str', 'typetype_type', 'overflow',
     'PV_55p8',
     'PV_119p8',
     'PV_binary',
